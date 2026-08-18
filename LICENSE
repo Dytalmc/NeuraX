@@ -1,21 +1,29 @@
-MIT License
+NEURAX PROPRIETARY SOFTWARE LICENSE AGREEMENT
 
-Copyright (c) 2026 Dytalmc
+Copyright (c) 2026 Anish Sandeep Bhargav & NeuraX. All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+IMPORTANT: READ CAREFULLY BEFORE USING, DOWNLOADING, INSTALLING, OR ACCESSING THIS SOFTWARE.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. EXCLUSIVE OWNERSHIP
+This software, including all source code, compiled binaries, graphical assets, user interfaces, documentation, and associated materials (collectively, the "Software"), is the sole and exclusive intellectual property of Anish Sandeep Bhargav (Owner) and NeuraX (Company). All rights, title, interest, copyrights, patents, trademarks, and trade secrets in and to the Software remain strictly with the Owner and Company.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. PROHIBITION OF COPYING & DISTRIBUTION
+No person or entity is granted any license, right, or permission to copy, reproduce, duplicate, distribute, sell, lease, sublicense, host, modify, or translate any portion of this Software without explicit, written prior consent directly from Anish Sandeep Bhargav or NeuraX.
+
+3. RESTRICTIONS ON REVERSE ENGINEERING
+You are strictly prohibited from:
+- Decompiling, disassembling, reverse engineering, or attempting to derive the source code of the Software.
+- Bypassing, disabling, or tampering with any security, authentication, licensing, or encryption systems integrated within the Software.
+- Creating derivative works, forks, or modifications based on any component of this Software.
+
+4. PROTECTION OF SOFTWARE, INFRASTRUCTURE, AND USERS
+You expressly agree NOT to engage in any activity that could cause potential harm, disruption, or compromise to the Software, NeuraX, or its users. Prohibited acts include, but are not limited to:
+- Injecting malicious code, telemetry tools, keyloggers, or unauthorized modifications.
+- Attempting to exploit, disrupt, or damage the application, its servers, APIs, network protocols, or infrastructure.
+- Utilizing the Software to collect, compromise, steal, or expose the personal data, system access, or credentials of any user.
+
+5. ENFORCEMENT & LEGAL RECOURSE
+Any violation of this Agreement constitutes severe copyright infringement and unauthorized computer access. Violations will result in immediate termination of access and will be met with civil litigation and criminal prosecution under all applicable national and international intellectual property and cybersecurity laws.
+
+6. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. IN NO EVENT SHALL ANISH SANDEEP BHARGAV OR NEURAX BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
