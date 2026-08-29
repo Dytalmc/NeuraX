@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="k0yUsHezRLnXt8ods-DQmRhFdgAbZ-LlhjdwNzNhIGo" />
+    <title>NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows</title>
+    <meta
+        name="description"
+        content="NeuraX 4.0.0 is a fast, modern and open-source Minecraft launcher for Windows. It adds the NeuraX Community console, cross-device nx.py dashboard, glassmorphic UI, Modrinth integration, server tools, AI crash analyzer, smart server discovery and advanced configuration." />
+    <meta name="author" content="Anish Sandeep Bhargav (Dytalmc)" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#08090f" />
+    <link rel="canonical" href="https://dytalmc.github.io/NeuraX/" />
+    <link rel="preconnect" href="https://raw.githubusercontent.com" />
+    <link rel="preconnect" href="https://github.com" />
+    <link rel="preload" as="image" href="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/dashboard.png" fetchpriority="high" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NeuraX" />
+    <meta property="og:title" content="NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows" />
+    <meta property="og:description" content="NeuraX 4.0.0 ships the new NeuraX Community console, a cross-device nx.py dashboard, glassmorphic UI, Modrinth, server tools, smart server discovery and an AI crash analyzer." />
+    <meta property="og:url" content="https://dytalmc.github.io/NeuraX/" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.png" />
+    <meta property="og:image:alt" content="NeuraX 4.0.0 Minecraft Launcher" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows" />
+    <meta name="twitter:description" content="NeuraX 4.0.0 ships the new NeuraX Community console, a cross-device nx.py dashboard, glassmorphic UI, Modrinth, server tools, smart server discovery and an AI crash analyzer." />
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.png" />
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "https://dytalmc.github.io/NeuraX/#website",
+                "url": "https://dytalmc.github.io/NeuraX/",
+                "name": "NeuraX",
+                "description": "Open-source Minecraft launcher for Windows, with the new NeuraX Community console and the cross-device nx.py dashboard.",
+                "inLanguage": "en-US"
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": "https://dytalmc.github.io/NeuraX/#software",
+                "name": "NeuraX",
+                "applicationCategory": "GameApplication",
+                "applicationSubCategory": "Minecraft Launcher",
+                "operatingSystem": "Windows",
+                "softwareVersion": "4.0.0",
+                "isAccessibleForFree": true,
+                "url": "https://dytalmc.github.io/NeuraX/",
+                "downloadUrl": "https://github.com/Dytalmc/NeuraX/releases/download/4.0.0/NeuraX.exe",
+                "codeRepository": "https://github.com/Dytalmc/NeuraX",
+                "image": "https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.png",
+                "author": {
+                    "@type": "Person",
+                    "name": "Anish Sandeep Bhargav",
+                    "alternateName": "Dytalmc"
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://dytalmc.github.io/NeuraX/#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "NeuraX",
+                        "item": "https://dytalmc.github.io/NeuraX/"
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+    :root {
+        --background: #07080d;
+        --background-deep: #04050a;
+        --surface: #0e1119;
+        --surface-2: #121722;
+        --surface-3: #181e2b;
+        --white: #ffffff;
+        --text: #f5f5f7;
+        --muted: #9ca3af;
+        --dim: #687083;
+        --purple: #7c3aed;
+        --purple-bright: #8b5cf6;
+        --purple-light: #a78bfa;
+        --purple-glow: rgba(124, 58, 237, 0.34);
+        --purple-soft: rgba(124, 58, 237, 0.10);
+        --border: rgba(255, 255, 255, 0.075);
+        --border-bright: rgba(255, 255, 255, 0.15);
+        --container: min(1180px, calc(100% - 32px));
+        --radius: 16px;
+        --radius-large: 24px;
+        --radius-xl: 30px;
+        --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        --transition: 300ms var(--ease);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+            radial-gradient(circle at 50% -15%, rgba(124, 58, 237, 0.16), transparent 38%),
+            linear-gradient(180deg, #08090f 0%, #05060a 100%);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+    body.menu-open { overflow: hidden; }
+    img { max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { background: rgba(124, 58, 237, 0.45); color: white; }
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #06070b; }
+    ::-webkit-scrollbar-thumb { background: #292d38; border-radius: 999px; border: 2px solid #06070b; }
+    ::-webkit-scrollbar-thumb:hover { background: #3c4351; }
+    :focus-visible { outline: 2px solid var(--purple-light); outline-offset: 4px; }
+    .container { width: var(--container); margin: 0 auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    section { scroll-margin-top: 90px; }
+
+    /* Navigation */
+    .navbar {
+        position: sticky; top: 0; z-index: 1000;
+        border-bottom: 1px solid var(--border);
+        background: rgba(7, 8, 13, 0.76);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.13);
+    }
+    .navbar::after {
+        content: ""; position: absolute; left: 0; bottom: -1px;
+        width: 100%; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.28), transparent);
+        opacity: 0.75;
+    }
+    .nav-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: inline-flex; align-items: center; font-size: 1.5rem; font-weight: 900; letter-spacing: -0.8px; }
+    .logo-mark {
+        width: 9px; height: 9px; margin-right: 10px; border-radius: 50%;
+        background: var(--purple);
+        box-shadow: 0 0 10px var(--purple), 0 0 25px rgba(124, 58, 237, 0.52);
+        animation: logoPulse 3s ease-in-out infinite;
+    }
+    @keyframes logoPulse {
+        0%, 100% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.22); opacity: 1; }
+    }
+    .nav-links { display: flex; align-items: center; gap: 1.65rem; }
+    .nav-links a:not(.button) {
+        position: relative; color: var(--muted);
+        font-size: 0.92rem; font-weight: 650;
+        transition: color var(--transition);
+    }
+    .nav-links a:not(.button)::after {
+        content: ""; position: absolute; left: 0; right: 0; bottom: -7px;
+        height: 2px; border-radius: 999px; background: var(--purple);
+        transform: scaleX(0); transform-origin: center;
+        transition: transform var(--transition);
+    }
+    .nav-links a:not(.button):hover { color: white; }
+    .nav-links a:not(.button):hover::after { transform: scaleX(1); }
+    .mobile-toggle {
+        display: none; width: 44px; height: 44px;
+        align-items: center; justify-content: center;
+        border: 1px solid var(--border); border-radius: 11px;
+        background: rgba(255,255,255,0.025); color: white;
+        cursor: pointer;
+        transition: background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+    .mobile-toggle:hover { background: var(--surface-3); border-color: var(--border-bright); }
+    .mobile-toggle:active { transform: scale(0.96); }
+
+    /* Buttons */
+    .button {
+        position: relative; display: inline-flex;
+        align-items: center; justify-content: center; gap: 0.6rem;
+        min-height: 48px; padding: 0.78rem 1.3rem;
+        border: 1px solid transparent; border-radius: 12px;
+        font-size: 0.94rem; font-weight: 750;
+        cursor: pointer; overflow: hidden; isolation: isolate;
+        transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+    }
+    .button::before {
+        content: ""; position: absolute; top: 0; left: -120%;
+        width: 70%; height: 100%;
+        transform: skewX(-20deg);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+        transition: left 600ms var(--ease); pointer-events: none;
+    }
+    .button:hover::before { left: 140%; }
+    .button-primary {
+        color: white;
+        background: linear-gradient(135deg, #6d28d9, #9333ea);
+        box-shadow: 0 0 24px rgba(124,58,237,0.28), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .button-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 38px rgba(124,58,237,0.42), 0 15px 30px rgba(0,0,0,0.22);
+    }
+    .button-secondary {
+        color: white;
+        border-color: var(--border);
+        background: rgba(255,255,255,0.025);
+    }
+    .button-secondary:hover {
+        transform: translateY(-2px);
+        background: var(--surface-3);
+        border-color: var(--border-bright);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.20);
+    }
+    .button-large { min-height: 56px; padding: 0.95rem 1.55rem; border-radius: 14px; font-size: 0.98rem; }
+
+    /* Hero */
+    .hero { position: relative; padding: 8.6rem 0 5.5rem; overflow: hidden; text-align: center; }
+    .hero-background { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .hero-orb { position: absolute; border-radius: 50%; filter: blur(3px); opacity: 0.5; animation: floatingOrb 12s ease-in-out infinite; }
+    .hero-orb.one { width: 330px; height: 330px; top: 8%; left: 3%; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 68%); }
+    .hero-orb.two { width: 430px; height: 430px; top: -8%; right: 0; background: radial-gradient(circle, rgba(139,92,246,0.09), transparent 70%); animation-delay: -4s; }
+    .hero-orb.three { width: 240px; height: 240px; bottom: -10%; left: 42%; background: radial-gradient(circle, rgba(124,58,237,0.075), transparent 70%); animation-delay: -7s; }
+    @keyframes floatingOrb { 0%, 100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(0,-24px,0) scale(1.06); } }
+    .hero-content { position: relative; z-index: 2; }
+    .eyebrow {
+        display: inline-flex; align-items: center; gap: 9px;
+        margin-bottom: 1.45rem; padding: 0.45rem 0.9rem;
+        border: 1px solid rgba(124,58,237,0.27); border-radius: 999px;
+        background: rgba(124,58,237,0.075);
+        color: var(--purple-light);
+        font-size: 0.76rem; font-weight: 800;
+        letter-spacing: 0.09em; text-transform: uppercase;
+        animation: fadeSlideUp 700ms var(--ease) both;
+    }
+    .eyebrow-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--purple-bright);
+        box-shadow: 0 0 10px var(--purple);
+    }
+    .hero h1 {
+        max-width: 1020px; margin: 0 auto 1.45rem;
+        font-size: clamp(2.8rem, 7.3vw, 5.8rem);
+        line-height: 0.98; letter-spacing: -0.065em;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e1e7 45%, #8f93a0 100%);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeSlideUp 800ms 70ms var(--ease) both;
+    }
+    .hero-accent {
+        display: inline-block;
+        background: linear-gradient(135deg, #d8b4fe, #8b5cf6, #a855f7);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 22px rgba(124,58,237,0.22));
+    }
+    .hero-description {
+        max-width: 800px; margin: 0 auto 2.35rem; color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.18rem);
+        animation: fadeSlideUp 800ms 150ms var(--ease) both;
+    }
+    .hero-actions {
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 0.8rem;
+        animation: fadeSlideUp 800ms 220ms var(--ease) both;
+    }
+    .hero-stats {
+        display: flex; align-items: center; justify-content: center;
+        flex-wrap: wrap; gap: 0.8rem 2.2rem; margin-top: 2.55rem;
+        animation: fadeSlideUp 800ms 290ms var(--ease) both;
+    }
+    .hero-stat { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.85rem; font-weight: 650; }
+    .hero-stat svg { flex-shrink: 0; }
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Intro */
+    .intro { padding: 0 0 5rem; }
+    .intro-card {
+        position: relative; max-width: 940px; margin: 0 auto;
+        padding: 2.1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-large);
+        background: linear-gradient(145deg, rgba(17,20,29,0.95), rgba(10,12,18,0.94));
+        box-shadow: 0 25px 65px rgba(0,0,0,0.25);
+        overflow: hidden;
+    }
+    .intro-card::before {
+        content: ""; position: absolute;
+        width: 300px; height: 300px;
+        top: -180px; right: -100px;
+        background: radial-gradient(circle, rgba(124,58,237,0.13), transparent 68%);
+        pointer-events: none;
+    }
+    .intro-card h2 { margin-bottom: 0.8rem; font-size: clamp(1.55rem, 4vw, 2.15rem); letter-spacing: -0.04em; }
+    .intro-card p { position: relative; z-index: 1; color: var(--muted); font-size: 0.98rem; }
+    .intro-card ul { position: relative; z-index: 1; margin-top: 1rem; padding-left: 1.2rem; color: var(--muted); font-size: 0.92rem; }
+    .intro-card ul li { margin: 0.25rem 0; }
+
+    /* Section */
+    .section { position: relative; }
+    .section-header { max-width: 790px; margin: 0 auto 3rem; text-align: center; }
+    .section-header h2 { margin-bottom: 0.85rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; letter-spacing: -0.05em; }
+    .section-header p { color: var(--muted); font-size: 1rem; }
+
+    /* Screenshots */
+    .screenshots {
+        padding: 6.5rem 0 7rem;
+        background: linear-gradient(180deg, var(--background), var(--background-deep));
+    }
+    .carousel-frame { position: relative; max-width: 1160px; margin: 0 auto; }
+    .carousel {
+        position: relative; width: 100%; aspect-ratio: 16 / 9;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.09);
+        border-radius: var(--radius-xl);
+        background: #040509;
+        box-shadow: 0 35px 100px rgba(0,0,0,0.48), 0 0 55px rgba(124,58,237,0.11);
+        isolation: isolate;
+        touch-action: pan-y pinch-zoom;
+    }
+    .carousel::before {
+        content: ""; position: absolute; inset: 0; z-index: 6; pointer-events: none;
+        background: linear-gradient(180deg, rgba(0,0,0,0.02) 0%, transparent 48%, rgba(0,0,0,0.52) 100%);
+    }
+    .carousel::after {
+        content: ""; position: absolute; inset: 0; z-index: 7; pointer-events: none;
+        border-radius: inherit;
+        box-shadow: inset 0 0 90px rgba(0,0,0,0.30);
+    }
+    .slide {
+        position: absolute; inset: 0;
+        opacity: 0; visibility: hidden;
+        transform: scale(1.035);
+        z-index: 1;
+        transition: opacity 500ms var(--ease), transform 800ms var(--ease), visibility 0ms 500ms;
+    }
+    .slide.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 2; transition: opacity 500ms var(--ease), transform 800ms var(--ease), visibility 0ms; }
+    .slide img {
+        position: absolute; inset: 0; width: 100%; height: 100%;
+        display: block; object-fit: cover; object-position: center;
+        user-select: none; -webkit-user-drag: none;
+        background: linear-gradient(135deg, #121620, #05070b);
+    }
+    .slide-caption {
+        position: absolute; left: 50%; bottom: 3.1rem; z-index: 10;
+        width: max-content; max-width: calc(100% - 120px);
+        transform: translateX(-50%) translateY(12px);
+        padding: 0.65rem 1.05rem;
+        border: 1px solid rgba(255,255,255,0.11);
+        border-radius: 999px;
+        background: rgba(5,7,11,0.72); color: white;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        font-size: 0.82rem; font-weight: 750; text-align: center;
+        opacity: 0;
+        transition: opacity 400ms 180ms var(--ease), transform 400ms 180ms var(--ease);
+    }
+    .slide.active .slide-caption { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .carousel-button {
+        position: absolute; top: 50%; z-index: 20;
+        width: 52px; height: 52px;
+        transform: translateY(-50%);
+        display: flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(255,255,255,0.13); border-radius: 50%;
+        background: rgba(6,8,12,0.74); color: white;
+        cursor: pointer;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        transition: transform var(--transition), background var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    .carousel-button:hover {
+        transform: translateY(-50%) scale(1.07);
+        background: var(--purple); border-color: var(--purple);
+        box-shadow: 0 0 25px rgba(124,58,237,0.36);
+    }
+    .carousel-button:active { transform: translateY(-50%) scale(0.96); }
+    .carousel-button.previous { left: 1.15rem; }
+    .carousel-button.next { right: 1.15rem; }
+    .carousel-bottom {
+        position: absolute; left: 50%; bottom: 0.7rem; z-index: 30;
+        transform: translateX(-50%);
+        display: flex; align-items: center; gap: 0.7rem;
+        padding: 0.45rem 0.65rem;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 999px;
+        background: rgba(5,7,11,0.68);
+        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .dots { display: flex; align-items: center; gap: 0.42rem; }
+    .dot {
+        width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%;
+        background: rgba(255,255,255,0.27); cursor: pointer;
+        transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .dot:hover { background: rgba(255,255,255,0.55); transform: scale(1.15); }
+    .dot.active { background: var(--purple-bright); transform: scale(1.45); box-shadow: 0 0 13px rgba(124,58,237,0.65); }
+    .counter { min-width: 48px; color: rgba(255,255,255,0.67); font-size: 0.70rem; font-weight: 800; text-align: center; }
+    .carousel-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; z-index: 31; overflow: hidden; background: rgba(255,255,255,0.07); }
+    .carousel-progress-bar {
+        width: 0%; height: 100%;
+        background: linear-gradient(90deg, var(--purple), var(--purple-light));
+        box-shadow: 0 0 12px rgba(124,58,237,0.8);
+    }
+    .carousel-frame.paused .carousel-progress-bar { animation-play-state: paused !important; }
+    .carousel-help { margin-top: 1rem; color: var(--dim); font-size: 0.77rem; text-align: center; }
+
+    /* Features */
+    .features { padding: 7rem 0; background: linear-gradient(180deg, var(--background-deep), var(--surface)); }
+    .feature-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.2rem; }
+    .feature-card {
+        position: relative; overflow: hidden;
+        padding: 2rem;
+        border: 1px solid var(--border); border-radius: var(--radius);
+        background: linear-gradient(145deg, rgba(16,20,29,0.96), rgba(10,13,19,0.96));
+        transition: transform 400ms var(--ease), border-color 400ms var(--ease), box-shadow 400ms var(--ease);
+    }
+    .feature-card::before {
+        content: ""; position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 3px;
+        background: linear-gradient(90deg, transparent, var(--purple), transparent);
+        transition: left 700ms var(--ease);
+    }
+    .feature-card::after {
+        content: ""; position: absolute;
+        width: 160px; height: 160px;
+        right: -90px; top: -90px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%);
+        pointer-events: none;
+    }
+    .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(124,58,237,0.36);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25), 0 0 30px rgba(124,58,237,0.06);
+    }
+    .feature-card:hover::before { left: 100%; }
+    .feature-icon {
+        width: 50px; height: 50px;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 1.25rem;
+        border: 1px solid rgba(124,58,237,0.20);
+        border-radius: 14px;
+        background: rgba(124,58,237,0.08);
+        color: var(--purple-light);
+        transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .feature-card:hover .feature-icon {
+        transform: translateY(-3px) rotate(-3deg);
+        box-shadow: 0 10px 25px rgba(124,58,237,0.12);
+    }
+    .feature-card h3 { margin-bottom: 0.7rem; font-size: 1.12rem; letter-spacing: -0.02em; }
+    .feature-card p { color: var(--muted); font-size: 0.90rem; }
+
+    /* Benefits */
+    .benefits { padding: 7rem 0; background: var(--surface); }
+    .benefit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.15rem; }
+    .benefit {
+        position: relative; padding: 1.7rem;
+        border: 1px solid var(--border); border-radius: var(--radius);
+        background: rgba(255,255,255,0.018);
+        transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+    .benefit::before {
+        content: ""; position: absolute; left: 1.7rem; top: 1.7rem;
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--purple);
+        box-shadow: 0 0 10px rgba(124,58,237,0.65);
+    }
+    .benefit:hover {
+        transform: translateY(-5px);
+        border-color: rgba(124,58,237,0.30);
+        background: rgba(124,58,237,0.035);
+    }
+    .benefit h3 { margin-bottom: 0.5rem; padding-left: 1.1rem; font-size: 1.04rem; }
+    .benefit p { color: var(--muted); font-size: 0.90rem; }
+
+    /* Community spotlight */
+    .community {
+        position: relative; padding: 7rem 0;
+        background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.13), transparent 50%), var(--surface-2);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        overflow: hidden;
+    }
+    .community::before, .community::after {
+        content: ""; position: absolute;
+        width: 420px; height: 420px; border-radius: 50%;
+        pointer-events: none;
+    }
+    .community::before { top: -270px; left: -170px; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%); }
+    .community::after  { bottom: -270px; right: -170px; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%); }
+    .community-inner { position: relative; z-index: 2; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    .community h2 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.05em; margin-bottom: 0.9rem; }
+    .community p.lede { color: var(--muted); font-size: 1rem; max-width: 760px; margin-bottom: 2.4rem; }
+    .community-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+    .community-card {
+        padding: 1.7rem; border: 1px solid var(--border); border-radius: var(--radius);
+        background: rgba(255,255,255,0.018);
+        transition: transform var(--transition), border-color var(--transition);
+    }
+    .community-card:hover { transform: translateY(-5px); border-color: rgba(124,58,237,0.30); }
+    .community-card h3 { margin-bottom: 0.45rem; font-size: 1.04rem; }
+    .community-card p  { color: var(--muted); font-size: 0.90rem; }
+    .community-card code {
+        background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.25);
+        border-radius: 4px; padding: 1px 6px; font-size: 0.84rem; color: var(--purple-light);
+    }
+
+    /* Open source */
+    .open-source {
+        position: relative; padding: 7rem 0; overflow: hidden; text-align: center;
+        border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.13), transparent 50%), var(--surface-2);
+    }
+    .open-source::before, .open-source::after { content: ""; position: absolute; width: 420px; height: 420px; border-radius: 50%; pointer-events: none; }
+    .open-source::before { top: -270px; left: -170px; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%); }
+    .open-source::after  { bottom: -270px; right: -170px; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%); }
+    .open-source-content { position: relative; z-index: 2; max-width: 850px; margin: 0 auto; }
+    .open-source h2 { margin-bottom: 1rem; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.05em; }
+    .open-source p  { margin-bottom: 1.9rem; color: var(--muted); font-size: 1rem; }
+    .open-source-actions { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.8rem; }
+
+    /* Footer */
+    .footer { padding: 4rem 0 2rem; background: linear-gradient(180deg, var(--surface-2), var(--background-deep)); }
+    .footer-content { display: flex; align-items: center; flex-direction: column; text-align: center; gap: 1.35rem; }
+    .footer-logo { display: inline-flex; align-items: center; font-size: 1.45rem; font-weight: 900; }
+    .footer-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.9rem 1.5rem; color: var(--dim); font-size: 0.84rem; font-weight: 650; }
+    .footer-links a { transition: color var(--transition); }
+    .footer-links a:hover { color: white; }
+    .disclaimer {
+        max-width: 860px; padding: 1.2rem 1.4rem;
+        border: 1px solid var(--border); border-radius: 12px;
+        background: rgba(255,255,255,0.02);
+        color: var(--muted); font-size: 0.79rem;
+    }
+    .disclaimer strong { color: var(--text); }
+    .copyright {
+        width: 100%; margin-top: 1rem; padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
+        color: rgba(255,255,255,0.34); font-size: 0.77rem;
+    }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1050px) {
+        .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .benefit-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .community-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 780px) {
+        .mobile-toggle { display: flex; }
+        .nav-links {
+            position: fixed; top: 72px; left: 0; right: 0;
+            display: none; flex-direction: column;
+            padding: 1rem; gap: 0.4rem;
+            background: rgba(7,8,13,0.97);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.42);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        }
+        .nav-links.active { display: flex; }
+        .nav-links a:not(.button) {
+            width: 100%; padding: 0.85rem; border-radius: 10px;
+            background: rgba(255,255,255,0.025); text-align: center;
+        }
+        .nav-links a:not(.button)::after { display: none; }
+        .nav-links .button { width: 100%; }
+        .hero { padding: 6.7rem 0 4.5rem; }
+        .hero-actions { flex-direction: column; }
+        .hero-actions .button { width: 100%; }
+        .hero-stats { flex-direction: column; gap: 0.7rem; }
+        .screenshots, .features, .benefits, .open-source, .community { padding-top: 5rem; padding-bottom: 5rem; }
+        .carousel-button { width: 42px; height: 42px; }
+        .carousel-button.previous { left: 0.7rem; }
+        .carousel-button.next { right: 0.7rem; }
+        .slide-caption { max-width: calc(100% - 82px); bottom: 3rem; border-radius: 12px; font-size: 0.74rem; }
+    }
+    @media (max-width: 560px) {
+        .container { width: calc(100% - 24px); }
+        .hero h1 { font-size: 2.5rem; }
+        .eyebrow { font-size: 0.68rem; }
+        .intro-card { padding: 1.45rem; }
+        .feature-grid, .benefit-grid { grid-template-columns: 1fr; }
+        .carousel { border-radius: 15px; }
+        .carousel-bottom { gap: 0.45rem; padding: 0.42rem 0.55rem; }
+        .dot { width: 7px; height: 7px; }
+        .counter { min-width: 42px; font-size: 0.66rem; }
+        .carousel-help { font-size: 0.69rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+    </style>
+</head>
+<body>
+<nav class="navbar" aria-label="Main navigation">
+    <div class="container nav-inner">
+        <a href="#top" class="logo" aria-label="NeuraX home">
+            <span class="logo-mark" aria-hidden="true"></span>
+            NeuraX
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#screenshots">Screenshots</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#why">Why NeuraX</a></li>
+            <li><a href="#source">Source</a></li>
+            <li><a href="#download" class="button button-primary">Download v4.0.0</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main id="top">
+    <section class="hero" id="download">
+        <div class="hero-background" aria-hidden="true">
+            <div class="hero-orb one"></div>
+            <div class="hero-orb two"></div>
+            <div class="hero-orb three"></div>
+        </div>
+        <div class="container hero-content">
+            <div class="eyebrow">
+                <span class="eyebrow-dot"></span>
+                NeuraX 4.0.0 — Out Now
+            </div>
+            <h1>
+                Your Minecraft.
+                <br>
+                <span class="hero-accent">Your Launcher.</span>
+            </h1>
+            <p class="hero-description">
+                NeuraX 4.0.0 is a modern Windows Minecraft launcher built for players who want
+                powerful version management, organized instances, integrated Modrinth tools,
+                a local server manager, an AI crash analyzer, a smart server radar, and the
+                new NeuraX Community console — all in one place, all open source.
+            </p>
+            <div class="hero-actions">
+                <a href="https://github.com/Dytalmc/NeuraX/releases/download/4.0.0/NeuraX.exe" class="button button-primary button-large" download>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download NeuraX v4.0.0
+                </a>
+                <a href="https://github.com/Dytalmc/NeuraX" class="button button-secondary button-large" target="_blank" rel="noopener noreferrer">
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path>
+                    </svg>
+                    View GitHub
+                </a>
+            </div>
+            <div class="hero-stats">
+                <span class="hero-stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Windows
+                </span>
+                <span class="hero-stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Open Source
+                </span>
+                <span class="hero-stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    NeuraX Community
+                </span>
+                <span class="hero-stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    No Bloatware
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro">
+        <div class="container">
+            <div class="intro-card reveal">
+                <h2>NeuraX 4.0.0 — Open Source Minecraft Launcher</h2>
+                <p>
+                    NeuraX is a Windows Minecraft launcher designed around flexibility, control
+                    and a modern glassmorphic interface. Manage Minecraft versions, organize
+                    instances, browse and install Modrinth content, run local Paper / Fabric /
+                    Vanilla / Forge / NeoForge / Quilt / Spigot / Folia / Purpur servers,
+                    discover live community servers with a tokenless radar, and keep your
+                    entire Minecraft environment in one place.
+                </p>
+                <ul>
+                    <li>Per-device <strong>UUID</strong> + keyring-persisted identity for the new <strong>NeuraX Community</strong>.</li>
+                    <li>Standalone <code>nx.py</code> dashboard — view every device, its instances, mods and playtime from any other machine.</li>
+                    <li>Microsoft OAuth, silent re-login, full skin/cape sync, and zero-token smart server discovery.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots section" id="screenshots">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Explore NeuraX 4.0.0</h2>
+                <p>
+                    Browse the NeuraX interface: the new Community console, the launcher
+                    dashboard, settings, Modrinth tools, version management, instances,
+                    servers, screenshot gallery, local server creation, and the cross-device
+                    nx.py dashboard.
+                </p>
+            </div>
+            <div class="carousel-frame reveal">
+                <div class="carousel" id="carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="NeuraX 4.0.0 screenshots">
+                    <article class="slide active" data-index="0" aria-hidden="false" aria-roledescription="slide" aria-label="Screenshot 1 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/dashboard.png" width="1920" height="1080" alt="NeuraX 4.0.0 Minecraft launcher library dashboard" fetchpriority="high" loading="eager" decoding="async" draggable="false" />
+                        <div class="slide-caption">Modern Minecraft Launcher Dashboard</div>
+                    </article>
+                    <article class="slide" data-index="1" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 2 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/settings.png" width="1920" height="1080" alt="NeuraX Minecraft launcher settings and configuration" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Advanced Launcher Configuration</div>
+                    </article>
+                    <article class="slide" data-index="2" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 3 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/modrinth.png" width="1920" height="1080" alt="NeuraX Minecraft launcher Modrinth integration and mod manager" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Integrated Modrinth Experience</div>
+                    </article>
+                    <article class="slide" data-index="3" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 4 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/version.png" width="1920" height="1080" alt="NeuraX Minecraft version manager" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Minecraft Version Management</div>
+                    </article>
+                    <article class="slide" data-index="4" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 5 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/servers.png" width="1920" height="1080" alt="NeuraX Minecraft launcher server tools" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Smart Server Radar &amp; Live Servers</div>
+                    </article>
+                    <article class="slide" data-index="5" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 6 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/instance.png" width="1920" height="1080" alt="NeuraX Minecraft launcher instance manager" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Advanced Minecraft Instance Manager</div>
+                    </article>
+                    <article class="slide" data-index="6" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 7 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/gallary.png" width="1920" height="1080" alt="NeuraX Minecraft launcher screenshot gallery" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Built-in Screenshot Gallery</div>
+                    </article>
+                    <article class="slide" data-index="7" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 8 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/create_server.png" width="1920" height="1080" alt="NeuraX Minecraft launcher local server creation" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">Local Minecraft Server Creation</div>
+                    </article>
+                    <article class="slide" data-index="8" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 9 of 9">
+                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/community.png" width="1920" height="1080" alt="NeuraX 4.0.0 Community console and nx.py dashboard" loading="lazy" decoding="async" draggable="false" />
+                        <div class="slide-caption">NeuraX Community Console</div>
+                    </article>
+                    <button class="carousel-button previous" id="previousButton" type="button" aria-label="Previous screenshot">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button class="carousel-button next" id="nextButton" type="button" aria-label="Next screenshot">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                    <div class="carousel-bottom">
+                        <div class="dots" role="tablist" aria-label="Screenshot selection">
+                            <button class="dot active" type="button" data-slide="0" role="tab" aria-selected="true" aria-label="Show screenshot 1"></button>
+                            <button class="dot" type="button" data-slide="1" role="tab" aria-selected="false" aria-label="Show screenshot 2"></button>
+                            <button class="dot" type="button" data-slide="2" role="tab" aria-selected="false" aria-label="Show screenshot 3"></button>
+                            <button class="dot" type="button" data-slide="3" role="tab" aria-selected="false" aria-label="Show screenshot 4"></button>
+                            <button class="dot" type="button" data-slide="4" role="tab" aria-selected="false" aria-label="Show screenshot 5"></button>
+                            <button class="dot" type="button" data-slide="5" role="tab" aria-selected="false" aria-label="Show screenshot 6"></button>
+                            <button class="dot" type="button" data-slide="6" role="tab" aria-selected="false" aria-label="Show screenshot 7"></button>
+                            <button class="dot" type="button" data-slide="7" role="tab" aria-selected="false" aria-label="Show screenshot 8"></button>
+                            <button class="dot" type="button" data-slide="8" role="tab" aria-selected="false" aria-label="Show screenshot 9"></button>
+                        </div>
+                        <div class="counter" id="counter" aria-live="polite">1 / 9</div>
+                    </div>
+                    <div class="carousel-progress"><div class="carousel-progress-bar" id="progressBar"></div></div>
+                </div>
+                <div class="carousel-help">Use the arrows, dots, keyboard arrows or swipe on mobile.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features section" id="features">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Built Around Your Minecraft</h2>
+                <p>A launcher experience focused on management, flexibility, performance and control.</p>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3>Modrinth Integration</h3>
+                    <p>Search, filter and one-click install mods, modpacks, resource packs, shaders, datapacks and plugins. The AI Mod Radar scores every project for compatibility and impact.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 11l-3 3-2-2"></path>
+                            <path d="M22 4l-3 3-2-2"></path>
+                        </svg>
+                    </div>
+                    <h3>NeuraX Community</h3>
+                    <p>A new built-in community console. Every device gets a stable per-launcher UUID, sends anonymized heartbeats, and shows live online / total counters with a sidebar chip.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="8" rx="2"></rect>
+                            <rect x="2" y="14" width="20" height="8" rx="2"></rect>
+                            <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                            <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h3>Local Server Manager</h3>
+                    <p>One-click Paper, Fabric, Vanilla, Forge, NeoForge, Quilt, Spigot, Folia, Purpur and Bukkit servers, with a live stdin console, RAM cap and JVM tuning.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09A1.65 1.65 0 0 0 20.91 10H21a2 2 0 1 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
+                        </svg>
+                    </div>
+                    <h3>Advanced Configuration</h3>
+                    <p>Dark / Light themes, five accent colors, RAM cap, custom JVM args, Discord Rich Presence, lock screen, AFK mode, and full JSON-level launcher control.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="community" id="community">
+        <div class="community-inner">
+            <h2 class="reveal">A cross-device Community, by design.</h2>
+            <p class="lede reveal">
+                NeuraX 4.0.0 ships a full community stack: every launcher auto-generates a
+                stable UUID on first launch, sends an anonymized heartbeat (OS, launcher
+                version, instances, mods, playtime) to a free Supabase backend, and updates a
+                live counter that any other machine can read.
+            </p>
+            <div class="community-grid">
+                <article class="community-card reveal">
+                    <h3>In-launcher Community view</h3>
+                    <p>A new sidebar entry in NeuraX shows your UUID, last heartbeat, online count, total users, and recent activity. A small <code>● N online</code> chip sits in the sidebar and refreshes itself every five minutes.</p>
+                </article>
+                <article class="community-card reveal">
+                    <h3>Standalone <code>nx.py</code> dashboard</h3>
+                    <p>Drop <code>nx.py</code> on any Windows machine with Python and PyQt6. It reads the same Supabase backend and shows every device's UUID, OS, instances, mod list and total playtime — no launcher required.</p>
+                </article>
+                <article class="community-card reveal">
+                    <h3>Anonymized telemetry</h3>
+                    <p>Only metadata is sent: a random UUID, OS string, launcher version, instance folder names and mod slugs. No Microsoft username, no email, no IP logging. You can toggle the heartbeat off at any time.</p>
+                </article>
+                <article class="community-card reveal">
+                    <h3>Free Supabase backend</h3>
+                    <p>Powered by a free Supabase project with row-level security. The publishable key is the only credential, and the SQL schema is a single 20-line <code>CREATE TABLE</code> documented in the README.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits section" id="why">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Why NeuraX?</h2>
+                <p>Designed for Minecraft players who want more control over how they manage the game.</p>
+            </div>
+            <div class="benefit-grid">
+                <article class="benefit reveal">
+                    <h3>Open Source Minecraft Launcher</h3>
+                    <p>NeuraX is developed as an open-source project with its source available on GitHub. Inspect, fork, and contribute.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Minecraft Version Management</h3>
+                    <p>Organize and work with your Minecraft versions from a centralized launcher interface, with loader and Java path per version.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Minecraft Instance Manager</h3>
+                    <p>Keep multiple Minecraft environments organized instead of maintaining everything manually. Per-instance RAM, JVM args, and analytics.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Smart Server Discovery</h3>
+                    <p>Tokenless radar across mcsrvstat.us, DuckDuckGo, YouTube and Reddit surfaces live community servers, with owner-alias injection for popular creators.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>AI Crash Analyzer</h3>
+                    <p>Pattern-matches Minecraft log lines for known issues — missing Java, loader mismatch, OpenGL, OutOfMemoryError — and recommends a fix, all local.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Microsoft Auth, Skin &amp; Cape</h3>
+                    <p>Full OAuth with keyring-backed silent re-login, custom skin upload, Steve / Alex preview, Mojang cape rendering and legacy 32×32 → 64×64 upscale.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Windows Minecraft Launcher</h3>
+                    <p>NeuraX is currently focused on providing a dedicated Windows desktop launcher experience, with PyQt6, QPropertyAnimation and QSS glassmorphism.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Screenshot Gallery</h3>
+                    <p>Aggregates every <code>.png</code> under your global and per-instance <code>screenshots</code> folders, with source chips and a click-to-open OS viewer.</p>
+                </article>
+                <article class="benefit reveal">
+                    <h3>Modern Launcher Interface</h3>
+                    <p>A clean, modern interface keeps your Minecraft management tools accessible without unnecessary clutter — and the chip system means you can keep your eye on community activity while you play.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="open-source" id="source">
+        <div class="container open-source-content">
+            <h2>Built in the Open.</h2>
+            <p>
+                Explore the NeuraX source code, releases and project development on GitHub.
+                NeuraX is an independent open-source Minecraft launcher maintained by Dytalmc.
+            </p>
+            <div class="open-source-actions">
+                <a href="https://github.com/Dytalmc/NeuraX/releases/download/4.0.0/NeuraX.exe" class="button button-primary button-large" download>
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download NeuraX 4.0.0
+                </a>
+                <a href="https://github.com/Dytalmc/NeuraX" class="button button-secondary button-large" target="_blank" rel="noopener noreferrer">
+                    <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"></path>
+                    </svg>
+                    GitHub Repository
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer-content">
+        <div class="footer-logo">
+            <span class="logo-mark" aria-hidden="true"></span>
+            NeuraX
+        </div>
+        <div class="footer-links">
+            <a href="#features">Features</a>
+            <a href="#screenshots">Screenshots</a>
+            <a href="#community">Community</a>
+            <a href="#why">Why NeuraX</a>
+            <a href="https://github.com/Dytalmc/NeuraX">GitHub</a>
+            <a href="#download">Download</a>
+        </div>
+        <div class="disclaimer">
+            <strong>DISCLAIMER:</strong>
+            NeuraX is an independent open-source project and is not an official Minecraft
+            product. It is not approved by, affiliated with, or associated with Mojang or
+            Microsoft. The optional NeuraX Community feature sends only anonymized metadata
+            (UUID, OS, launcher version, instance folder names and mod slugs) to a Supabase
+            project; no Microsoft username, email or IP is ever transmitted.
+        </div>
+        <div class="copyright">
+            © <span id="year"></span> Anish Sandeep Bhargav (Dytalmc). All rights reserved. NeuraX.
+        </div>
+    </div>
+</footer>
+
+<script>
+(function () {
+    "use strict";
+    var yearElement = document.getElementById("year");
+    var mobileToggle = document.getElementById("mobileToggle");
+    var navLinks = document.getElementById("navLinks");
+    var carousel = document.getElementById("carousel");
+    var carouselFrame = document.querySelector(".carousel-frame");
+    var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+    var dots = Array.prototype.slice.call(document.querySelectorAll(".dot"));
+    var previousButton = document.getElementById("previousButton");
+    var nextButton = document.getElementById("nextButton");
+    var counter = document.getElementById("counter");
+    var progressBar = document.getElementById("progressBar");
+    var currentSlide = 0;
+    var autoplayTimer = null;
+    var progressTimer = null;
+    var touchStartX = 0;
+    var touchStartY = 0;
+    var isHovering = false;
+    var isFocused = false;
+    var isPageHidden = false;
+    var autoplayDuration = 5000;
+    var progressStep = 50;
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    yearElement.textContent = new Date().getFullYear();
+
+    function closeMobileMenu() {
+        navLinks.classList.remove("active");
+        mobileToggle.setAttribute("aria-expanded", "false");
+        mobileToggle.setAttribute("aria-label", "Open navigation menu");
+        document.body.classList.remove("menu-open");
+    }
+    mobileToggle.addEventListener("click", function () {
+        var opened = navLinks.classList.toggle("active");
+        mobileToggle.setAttribute("aria-expanded", String(opened));
+        mobileToggle.setAttribute("aria-label", opened ? "Close navigation menu" : "Open navigation menu");
+        document.body.classList.toggle("menu-open", opened);
+    });
+    var navigationLinks = navLinks.querySelectorAll("a");
+    Array.prototype.forEach.call(navigationLinks, function (link) { link.addEventListener("click", closeMobileMenu); });
+
+    function normalizeIndex(index) {
+        if (index < 0) return slides.length - 1;
+        if (index >= slides.length) return 0;
+        return index;
+    }
+    function preloadImage(index) {
+        if (!slides[index]) return;
+        var image = slides[index].querySelector("img");
+        if (!image) return;
+        if (image.complete && image.naturalWidth > 0) return;
+        var preload = new Image();
+        preload.src = image.currentSrc || image.src;
+    }
+    function preloadAdjacent(index) {
+        preloadImage(normalizeIndex(index + 1));
+        preloadImage(normalizeIndex(index - 1));
+    }
+    function resetProgress() {
+        window.clearInterval(progressTimer);
+        progressBar.style.width = "0%";
+        if (reducedMotion) return;
+        var elapsed = 0;
+        progressTimer = window.setInterval(function () {
+            elapsed += progressStep;
+            var percentage = Math.min(100, (elapsed / autoplayDuration) * 100);
+            progressBar.style.width = percentage + "%";
+        }, progressStep);
+    }
+    function stopAutoplay() {
+        window.clearTimeout(autoplayTimer);
+        window.clearInterval(progressTimer);
+        autoplayTimer = null;
+        progressTimer = null;
+        carouselFrame.classList.add("paused");
+    }
+    function shouldAutoplay() {
+        return !reducedMotion && !isHovering && !isFocused && !isPageHidden;
+    }
+    function scheduleAutoplay() {
+        stopAutoplay();
+        if (!shouldAutoplay()) return;
+        carouselFrame.classList.remove("paused");
+        resetProgress();
+        autoplayTimer = window.setTimeout(function () { showSlide(currentSlide + 1, true); }, autoplayDuration);
+    }
+    function updateAria() {
+        slides.forEach(function (slide, index) {
+            var active = index === currentSlide;
+            slide.classList.toggle("active", active);
+            slide.setAttribute("aria-hidden", String(!active));
+            slide.setAttribute("aria-label", "Screenshot " + (index + 1) + " of " + slides.length);
+        });
+        dots.forEach(function (dot, index) {
+            var active = index === currentSlide;
+            dot.classList.toggle("active", active);
+            dot.setAttribute("aria-selected", String(active));
+        });
+        counter.textContent = (currentSlide + 1) + " / " + slides.length;
+    }
+    function showSlide(index, automatic) {
+        currentSlide = normalizeIndex(index);
+        updateAria();
+        preloadAdjacent(currentSlide);
+        if (automatic === true) carouselFrame.classList.remove("paused");
+        scheduleAutoplay();
+    }
+    function nextSlide() { showSlide(currentSlide + 1, false); }
+    function previousSlide() { showSlide(currentSlide - 1, false); }
+
+    nextButton.addEventListener("click", nextSlide);
+    previousButton.addEventListener("click", previousSlide);
+    dots.forEach(function (dot) {
+        dot.addEventListener("click", function () {
+            var index = parseInt(dot.getAttribute("data-slide"), 10);
+            if (Number.isNaN(index)) return;
+            showSlide(index, false);
+        });
+    });
+    carousel.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowRight") { event.preventDefault(); nextSlide(); }
+        if (event.key === "ArrowLeft")  { event.preventDefault(); previousSlide(); }
+        if (event.key === "Home")       { event.preventDefault(); showSlide(0, false); }
+        if (event.key === "End")        { event.preventDefault(); showSlide(slides.length - 1, false); }
+        if (event.key === " ") {
+            event.preventDefault();
+            if (autoplayTimer) stopAutoplay(); else scheduleAutoplay();
+        }
+    });
+    carousel.addEventListener("mouseenter", function () { isHovering = true; stopAutoplay(); });
+    carousel.addEventListener("mouseleave", function () { isHovering = false; scheduleAutoplay(); });
+    carousel.addEventListener("focusin", function () { isFocused = true; stopAutoplay(); });
+    carousel.addEventListener("focusout", function (event) {
+        if (!carousel.contains(event.relatedTarget)) { isFocused = false; scheduleAutoplay(); }
+    });
+    carousel.addEventListener("touchstart", function (event) {
+        if (!event.changedTouches || !event.changedTouches.length) return;
+        touchStartX = event.changedTouches[0].screenX;
+        touchStartY = event.changedTouches[0].screenY;
+        stopAutoplay();
+    }, { passive: true });
+    carousel.addEventListener("touchend", function (event) {
+        if (!event.changedTouches || !event.changedTouches.length) { scheduleAutoplay(); return; }
+        touchEndX = event.changedTouches[0].screenX;
+        var touchEndY = event.changedTouches[0].screenY;
+        var horizontalDistance = touchStartX - touchEndX;
+        var verticalDistance = touchStartY - touchEndY;
+        var minimumDistance = 48;
+        if (Math.abs(horizontalDistance) >= minimumDistance && Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+            if (horizontalDistance > 0) nextSlide(); else previousSlide();
+        } else {
+            scheduleAutoplay();
+        }
+    }, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+        isPageHidden = document.hidden;
+        if (isPageHidden) stopAutoplay(); else scheduleAutoplay();
+    });
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 780) closeMobileMenu();
+    }, { passive: true });
+
+    var revealElements = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+        var revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+        revealElements.forEach(function (element) { revealObserver.observe(element); });
+    } else {
+        revealElements.forEach(function (element) { element.classList.add("visible"); });
+    }
+    slides.forEach(function (slide, index) {
+        var image = slide.querySelector("img");
+        if (!image) return;
+        image.addEventListener("error", function () { slide.classList.add("image-error"); }, { once: true });
+        if (index <= 2) preloadImage(index);
+    });
+    updateAria();
+    preloadAdjacent(0);
+    scheduleAutoplay();
+})();
+</script>
+</body>
+</html>
