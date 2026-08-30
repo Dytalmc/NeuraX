@@ -424,7 +424,7 @@
                 </section>
                 <footer>
                     NeuraX Sitemap.
-                    <a href="https://dytalmc.github.io/NeuraX/">
+                    <a href="https://dytalmc.github.io">
                         Visit Website
                     </a>
                 </footer>
