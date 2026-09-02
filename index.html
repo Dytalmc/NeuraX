@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-    </script>
+    <script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
     <meta charset="UTF-8" />
     <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +9,7 @@
     <title>NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows</title>
     <meta
         name="description"
-        content="NeuraX 4.0.0 is a fast, modern and open-source Minecraft launcher for Windows. It adds the NeuraX Community console, cross-device nx.py dashboard, glassmorphic UI, Modrinth integration, server tools, AI crash analyzer, smart server discovery and advanced configuration." />
+        content="NeuraX 4.0.0 is a fast, modern and open-source Minecraft launcher for Windows. It adds a glassmorphic UI, Modrinth integration, full version and instance management, local server tools, AI crash analyzer, smart server discovery, Microsoft OAuth with skin and cape rendering, and advanced configuration." />
     <meta name="author" content="Anish Sandeep Bhargav (Dytalmc)" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#08090f" />
@@ -22,13 +20,13 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="NeuraX" />
     <meta property="og:title" content="NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows" />
-    <meta property="og:description" content="NeuraX 4.0.0 ships the new NeuraX Community console, a cross-device nx.py dashboard, glassmorphic UI, Modrinth, server tools, smart server discovery and an AI crash analyzer." />
+    <meta property="og:description" content="NeuraX 4.0.0 is a modern, glassmorphic, open-source Minecraft launcher for Windows — full version and instance management, Modrinth integration, local server tools, AI crash analyzer, smart server discovery, Microsoft OAuth with skin and cape rendering, and advanced configuration." />
     <meta property="og:url" content="https://dytalmc.github.io/NeuraX/" />
     <meta property="og:image" content="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.png" />
     <meta property="og:image:alt" content="NeuraX 4.0.0 Minecraft Launcher" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="NeuraX 4.0.0 — Open Source Minecraft Launcher for Windows" />
-    <meta name="twitter:description" content="NeuraX 4.0.0 ships the new NeuraX Community console, a cross-device nx.py dashboard, glassmorphic UI, Modrinth, server tools, smart server discovery and an AI crash analyzer." />
+    <meta name="twitter:description" content="NeuraX 4.0.0 is a modern, glassmorphic, open-source Minecraft launcher for Windows — full version and instance management, Modrinth integration, local server tools, AI crash analyzer, smart server discovery, Microsoft OAuth with skin and cape rendering, and advanced configuration." />
     <meta name="twitter:image" content="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.png" />
     <script type="application/ld+json">
     {
@@ -39,7 +37,7 @@
                 "@id": "https://dytalmc.github.io/NeuraX/#website",
                 "url": "https://dytalmc.github.io/NeuraX/",
                 "name": "NeuraX",
-                "description": "Open-source Minecraft launcher for Windows, with the new NeuraX Community console and the cross-device nx.py dashboard.",
+                "description": "Open-source Minecraft launcher for Windows with a glassmorphic UI, Modrinth integration, full version and instance management, local server tools, AI crash analyzer, smart server discovery, Microsoft OAuth with skin and cape rendering, and advanced configuration.",
                 "inLanguage": "en-US"
             },
             {
@@ -482,34 +480,44 @@
     .benefit h3 { margin-bottom: 0.5rem; padding-left: 1.1rem; font-size: 1.04rem; }
     .benefit p { color: var(--muted); font-size: 0.90rem; }
 
-    /* Community spotlight */
-    .community {
+    /* Performance & Polish */
+    .performance {
         position: relative; padding: 7rem 0;
         background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.13), transparent 50%), var(--surface-2);
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
         overflow: hidden;
     }
-    .community::before, .community::after {
+    .performance::before, .performance::after {
         content: ""; position: absolute;
         width: 420px; height: 420px; border-radius: 50%;
         pointer-events: none;
     }
-    .community::before { top: -270px; left: -170px; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%); }
-    .community::after  { bottom: -270px; right: -170px; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%); }
-    .community-inner { position: relative; z-index: 2; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
-    .community h2 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.05em; margin-bottom: 0.9rem; }
-    .community p.lede { color: var(--muted); font-size: 1rem; max-width: 760px; margin-bottom: 2.4rem; }
-    .community-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
-    .community-card {
-        padding: 1.7rem; border: 1px solid var(--border); border-radius: var(--radius);
+    .performance::before { top: -270px; left: -170px; background: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%); }
+    .performance::after  { bottom: -270px; right: -170px; background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%); }
+    .performance > .container { position: relative; z-index: 2; }
+    .performance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+    .performance-card {
+        position: relative;
+        padding: 1.7rem 1.7rem 1.6rem;
+        border: 1px solid var(--border); border-radius: var(--radius);
         background: rgba(255,255,255,0.018);
-        transition: transform var(--transition), border-color var(--transition);
+        transition: transform var(--transition), border-color var(--transition), background var(--transition);
     }
-    .community-card:hover { transform: translateY(-5px); border-color: rgba(124,58,237,0.30); }
-    .community-card h3 { margin-bottom: 0.45rem; font-size: 1.04rem; }
-    .community-card p  { color: var(--muted); font-size: 0.90rem; }
-    .community-card code {
+    .performance-card::before {
+        content: ""; position: absolute; left: 1.7rem; top: 1.7rem;
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--purple);
+        box-shadow: 0 0 10px rgba(124,58,237,0.65);
+    }
+    .performance-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(124,58,237,0.30);
+        background: rgba(124,58,237,0.035);
+    }
+    .performance-card h3 { margin-bottom: 0.5rem; padding-left: 1.1rem; font-size: 1.04rem; }
+    .performance-card p  { color: var(--muted); font-size: 0.90rem; }
+    .performance-card code {
         background: rgba(124,58,237,0.10); border: 1px solid rgba(124,58,237,0.25);
         border-radius: 4px; padding: 1px 6px; font-size: 0.84rem; color: var(--purple-light);
     }
@@ -556,7 +564,7 @@
     @media (max-width: 1050px) {
         .feature-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
         .benefit-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-        .community-grid { grid-template-columns: 1fr; }
+        .performance-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 780px) {
         .mobile-toggle { display: flex; }
@@ -580,7 +588,7 @@
         .hero-actions { flex-direction: column; }
         .hero-actions .button { width: 100%; }
         .hero-stats { flex-direction: column; gap: 0.7rem; }
-        .screenshots, .features, .benefits, .open-source, .community { padding-top: 5rem; padding-bottom: 5rem; }
+        .screenshots, .features, .benefits, .open-source, .performance { padding-top: 5rem; padding-bottom: 5rem; }
         .carousel-button { width: 42px; height: 42px; }
         .carousel-button.previous { left: 0.7rem; }
         .carousel-button.next { right: 0.7rem; }
@@ -610,9 +618,15 @@
     </style>
 </head>
 <body>
-    <amp-auto-ads type="adsense"
-        data-ad-client="ca-pub-8676747132028409">
-    </amp-auto-ads>
+<amp-ad width="100vw" height="320"
+     type="adsense"
+     data-ad-client="ca-pub-8676747132028409"
+     data-ad-slot="3073046549"
+     data-auto-format="rspv"
+     data-full-width="">
+  <div overflow=""></div>
+</amp-ad>
+<amp-auto-ads type="adsense" data-ad-client="ca-pub-8676747132028409"></amp-auto-ads>
 <nav class="navbar" aria-label="Main navigation">
     <div class="container nav-inner">
         <a href="#top" class="logo" aria-label="NeuraX home">
@@ -629,7 +643,7 @@
         <ul class="nav-links" id="navLinks">
             <li><a href="#features">Features</a></li>
             <li><a href="#screenshots">Screenshots</a></li>
-            <li><a href="#community">Community</a></li>
+            <li><a href="#performance">Performance</a></li>
             <li><a href="#why">Why NeuraX</a></li>
             <li><a href="#source">Source</a></li>
             <li><a href="#download" class="button button-primary">Download v4.0.0</a></li>
@@ -657,8 +671,8 @@
             <p class="hero-description">
                 NeuraX 4.0.0 is a modern Windows Minecraft launcher built for players who want
                 powerful version management, organized instances, integrated Modrinth tools,
-                a local server manager, an AI crash analyzer, a smart server radar, and the
-                new NeuraX Community console — all in one place, all open source.
+                a local server manager, an AI crash analyzer, a smart server radar, and full
+                Microsoft OAuth with skin and cape rendering — all in one place, all open source.
             </p>
             <div class="hero-actions">
                 <a href="https://github.com/Dytalmc/NeuraX/releases/download/4.0.0/NeuraX.exe" class="button button-primary button-large" download>
@@ -687,7 +701,7 @@
                 </span>
                 <span class="hero-stat">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    NeuraX Community
+                    Microsoft OAuth
                 </span>
                 <span class="hero-stat">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--purple-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -706,13 +720,14 @@
                     and a modern glassmorphic interface. Manage Minecraft versions, organize
                     instances, browse and install Modrinth content, run local Paper / Fabric /
                     Vanilla / Forge / NeoForge / Quilt / Spigot / Folia / Purpur servers,
-                    discover live community servers with a tokenless radar, and keep your
-                    entire Minecraft environment in one place.
+                    discover live community servers with a tokenless radar, render custom
+                    skins and Mojang capes, and keep your entire Minecraft environment in
+                    one place.
                 </p>
                 <ul>
-                    <li>Per-device <strong>UUID</strong> + keyring-persisted identity for the new <strong>NeuraX Community</strong>.</li>
-                    <li>Standalone <code>nx.py</code> dashboard — view every device, its instances, mods and playtime from any other machine.</li>
-                    <li>Microsoft OAuth, silent re-login, full skin/cape sync, and zero-token smart server discovery.</li>
+                    <li>AI Mod Radar — scores every Modrinth project for compatibility, impact and loaders before you install.</li>
+                    <li>AI Crash Analyzer — pattern-matches log lines for missing Java, loader mismatch, OpenGL, OutOfMemoryError, and more.</li>
+                    <li>Microsoft OAuth with keyring-backed silent re-login, custom skin upload, Steve / Alex preview, and 64×64 cape rendering.</li>
                 </ul>
             </div>
         </div>
@@ -723,49 +738,44 @@
             <div class="section-header reveal">
                 <h2>Explore NeuraX 4.0.0</h2>
                 <p>
-                    Browse the NeuraX interface: the new Community console, the launcher
-                    dashboard, settings, Modrinth tools, version management, instances,
-                    servers, screenshot gallery, local server creation, and the cross-device
-                    nx.py dashboard.
+                    Browse the NeuraX interface: the launcher dashboard, settings,
+                    Modrinth tools, version management, instances, servers, screenshot
+                    gallery, and local server creation — every surface, one launcher.
                 </p>
             </div>
             <div class="carousel-frame reveal">
                 <div class="carousel" id="carousel" tabindex="0" role="region" aria-roledescription="carousel" aria-label="NeuraX 4.0.0 screenshots">
-                    <article class="slide active" data-index="0" aria-hidden="false" aria-roledescription="slide" aria-label="Screenshot 1 of 9">
+                    <article class="slide active" data-index="0" aria-hidden="false" aria-roledescription="slide" aria-label="Screenshot 1 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/dashboard.png" width="1920" height="1080" alt="NeuraX 4.0.0 Minecraft launcher library dashboard" fetchpriority="high" loading="eager" decoding="async" draggable="false" />
                         <div class="slide-caption">Modern Minecraft Launcher Dashboard</div>
                     </article>
-                    <article class="slide" data-index="1" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 2 of 9">
+                    <article class="slide" data-index="1" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 2 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/settings.png" width="1920" height="1080" alt="NeuraX Minecraft launcher settings and configuration" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Advanced Launcher Configuration</div>
                     </article>
-                    <article class="slide" data-index="2" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 3 of 9">
+                    <article class="slide" data-index="2" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 3 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/modrinth.png" width="1920" height="1080" alt="NeuraX Minecraft launcher Modrinth integration and mod manager" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Integrated Modrinth Experience</div>
                     </article>
-                    <article class="slide" data-index="3" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 4 of 9">
+                    <article class="slide" data-index="3" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 4 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/version.png" width="1920" height="1080" alt="NeuraX Minecraft version manager" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Minecraft Version Management</div>
                     </article>
-                    <article class="slide" data-index="4" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 5 of 9">
+                    <article class="slide" data-index="4" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 5 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/servers.png" width="1920" height="1080" alt="NeuraX Minecraft launcher server tools" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Smart Server Radar &amp; Live Servers</div>
                     </article>
-                    <article class="slide" data-index="5" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 6 of 9">
+                    <article class="slide" data-index="5" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 6 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/instance.png" width="1920" height="1080" alt="NeuraX Minecraft launcher instance manager" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Advanced Minecraft Instance Manager</div>
                     </article>
-                    <article class="slide" data-index="6" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 7 of 9">
+                    <article class="slide" data-index="6" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 7 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/gallary.png" width="1920" height="1080" alt="NeuraX Minecraft launcher screenshot gallery" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Built-in Screenshot Gallery</div>
                     </article>
-                    <article class="slide" data-index="7" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 8 of 9">
+                    <article class="slide" data-index="7" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 8 of 8">
                         <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/create_server.png" width="1920" height="1080" alt="NeuraX Minecraft launcher local server creation" loading="lazy" decoding="async" draggable="false" />
                         <div class="slide-caption">Local Minecraft Server Creation</div>
-                    </article>
-                    <article class="slide" data-index="8" aria-hidden="true" aria-roledescription="slide" aria-label="Screenshot 9 of 9">
-                        <img src="https://raw.githubusercontent.com/Dytalmc/NeuraX/main/src/community.png" width="1920" height="1080" alt="NeuraX 4.0.0 Community console and nx.py dashboard" loading="lazy" decoding="async" draggable="false" />
-                        <div class="slide-caption">NeuraX Community Console</div>
                     </article>
                     <button class="carousel-button previous" id="previousButton" type="button" aria-label="Previous screenshot">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -783,9 +793,8 @@
                             <button class="dot" type="button" data-slide="5" role="tab" aria-selected="false" aria-label="Show screenshot 6"></button>
                             <button class="dot" type="button" data-slide="6" role="tab" aria-selected="false" aria-label="Show screenshot 7"></button>
                             <button class="dot" type="button" data-slide="7" role="tab" aria-selected="false" aria-label="Show screenshot 8"></button>
-                            <button class="dot" type="button" data-slide="8" role="tab" aria-selected="false" aria-label="Show screenshot 9"></button>
                         </div>
-                        <div class="counter" id="counter" aria-live="polite">1 / 9</div>
+                        <div class="counter" id="counter" aria-live="polite">1 / 8</div>
                     </div>
                     <div class="carousel-progress"><div class="carousel-progress-bar" id="progressBar"></div></div>
                 </div>
@@ -817,12 +826,12 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M22 11l-3 3-2-2"></path>
-                            <path d="M22 4l-3 3-2-2"></path>
+                            <path d="M22 11h-6"></path>
+                            <path d="M19 8v6"></path>
                         </svg>
                     </div>
-                    <h3>NeuraX Community</h3>
-                    <p>A new built-in community console. Every device gets a stable per-launcher UUID, sends anonymized heartbeats, and shows live online / total counters with a sidebar chip.</p>
+                    <h3>Microsoft Authentication</h3>
+                    <p>Full OAuth flow with keyring-backed silent re-login, custom skin upload with Steve / Alex preview, Mojang cape rendering and legacy 32×32 to 64×64 upscale.</p>
                 </article>
                 <article class="feature-card reveal">
                     <div class="feature-icon">
@@ -839,42 +848,96 @@
                 <article class="feature-card reveal">
                     <div class="feature-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18h6"></path>
+                            <path d="M10 22h4"></path>
+                            <path d="M12 2a7 7 0 0 0-4 12.7c.8.7 1.5 1.5 1.5 2.3v1h5v-1c0-.8.7-1.6 1.5-2.3A7 7 0 0 0 12 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>AI Crash Analyzer</h3>
+                    <p>Pattern-matches Minecraft log lines for missing Java, loader mismatch, OpenGL, OutOfMemoryError and more — recommends a fix, all local, no upload.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6h.09A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9v.09A1.65 1.65 0 0 0 20.91 10H21a2 2 0 1 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15z"></path>
                         </svg>
                     </div>
                     <h3>Advanced Configuration</h3>
-                    <p>Dark / Light themes, five accent colors, RAM cap, custom JVM args, Discord Rich Presence, lock screen, AFK mode, and full JSON-level launcher control.</p>
+                    <p>Dark / Light themes, five accent colors, RAM cap, custom JVM args, Discord Rich Presence, lock screen and full JSON-level launcher control.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Screenshot Gallery</h3>
+                    <p>Aggregates every <code>.png</code> under your global and per-instance <code>screenshots</code> folders, with source chips and a click-to-open OS viewer.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Smart Server Radar</h3>
+                    <p>Tokenless discovery across mcsrvstat.us, DuckDuckGo, YouTube and Reddit surfaces live community servers, with owner-alias injection for popular creators.</p>
+                </article>
+                <article class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15 8.5 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.5 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3>AI Mod Radar</h3>
+                    <p>Every Modrinth project is scored for loader compatibility, mod count impact and broken-deps risk before you install. No more guessing — the launcher tells you what will work.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <section class="community" id="community">
-        <div class="community-inner">
-            <h2 class="reveal">A cross-device Community, by design.</h2>
-            <p class="lede reveal">
-                NeuraX 4.0.0 ships a full community stack: every launcher auto-generates a
-                stable UUID on first launch, sends an anonymized heartbeat (OS, launcher
-                version, instances, mods, playtime) to a free Supabase backend, and updates a
-                live counter that any other machine can read.
-            </p>
-            <div class="community-grid">
-                <article class="community-card reveal">
-                    <h3>In-launcher Community view</h3>
-                    <p>A new sidebar entry in NeuraX shows your UUID, last heartbeat, online count, total users, and recent activity. A small <code>● N online</code> chip sits in the sidebar and refreshes itself every five minutes.</p>
+    <section class="performance section" id="performance">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Performance &amp; Polish</h2>
+                <p>Every detail tuned for fast launches, smooth launches and a Minecraft environment that just works.</p>
+            </div>
+            <div class="performance-grid">
+                <article class="performance-card reveal">
+                    <h3>Glassmorphic UI</h3>
+                    <p>QSS-driven frosted glass surfaces, QPropertyAnimation transitions, and a custom theme engine — five accent colors, dark and light mode, and a hand-tuned layout that respects your window size.</p>
                 </article>
-                <article class="community-card reveal">
-                    <h3>Standalone <code>nx.py</code> dashboard</h3>
-                    <p>Drop <code>nx.py</code> on any Windows machine with Python and PyQt6. It reads the same Supabase backend and shows every device's UUID, OS, instances, mod list and total playtime — no launcher required.</p>
+                <article class="performance-card reveal">
+                    <h3>Resource Cache</h3>
+                    <p>Every Modrinth asset, Mojang manifest and AI Radar fetch flows through a single disk-backed cache with TTL, atomic writes and raw-byte fallback — the launcher stays fast on a slow link.</p>
                 </article>
-                <article class="community-card reveal">
-                    <h3>Anonymized telemetry</h3>
-                    <p>Only metadata is sent: a random UUID, OS string, launcher version, instance folder names and mod slugs. No Microsoft username, no email, no IP logging. You can toggle the heartbeat off at any time.</p>
+                <article class="performance-card reveal">
+                    <h3>Smart Network Monitor</h3>
+                    <p>A single source of truth for &ldquo;is the link usable right now&rdquo; — online features gate themselves on the same probe so a slow or missing connection never freezes the UI.</p>
                 </article>
-                <article class="community-card reveal">
-                    <h3>Free Supabase backend</h3>
-                    <p>Powered by a free Supabase project with row-level security. The publishable key is the only credential, and the SQL schema is a single 20-line <code>CREATE TABLE</code> documented in the README.</p>
+                <article class="performance-card reveal">
+                    <h3>Vanilla, organized</h3>
+                    <p>All vanilla Minecraft instances share a single global <code>.minecraft</code> root under <code>%APPDATA%\\.neurax\\global\\.minecraft\\</code> — saves, screenshots, servers, libraries and resource packs all in one place.</p>
+                </article>
+                <article class="performance-card reveal">
+                    <h3>Live stdio console</h3>
+                    <p>Every local server runs through a live stdin console with byte-level framing, scrollback and signal forwarding — Ctrl+C cleanly stops the JVM without orphaning the process.</p>
+                </article>
+                <article class="performance-card reveal">
+                    <h3>Recovery scripts</h3>
+                    <p>When an instance breaks, the launcher ships Python-side recovery scripts that detect partial Fabric / Forge installs, repair maven coords and clean orphan <code>.jar</code> files — safe to re-run, idempotent.</p>
+                </article>
+                <article class="performance-card reveal">
+                    <h3>Lock screen overlay</h3>
+                    <p>A full-screen lock overlay anchored to the launcher window protects the UI from accidental clicks. Backed by an encrypted local file so the lock survives restarts and offline mode.</p>
+                </article>
+                <article class="performance-card reveal">
+                    <h3>Lazy view loader</h3>
+                    <p>Only the visible tab is built; every other view is a lightweight placeholder that swaps in on first focus. The launcher comes up in a single event-loop turn regardless of how many tabs you have.</p>
                 </article>
             </div>
         </div>
@@ -921,7 +984,7 @@
                 </article>
                 <article class="benefit reveal">
                     <h3>Modern Launcher Interface</h3>
-                    <p>A clean, modern interface keeps your Minecraft management tools accessible without unnecessary clutter — and the chip system means you can keep your eye on community activity while you play.</p>
+                    <p>A clean, modern interface keeps your Minecraft management tools accessible without unnecessary clutter — every surface you need, none you don't.</p>
                 </article>
             </div>
         </div>
@@ -963,7 +1026,7 @@
         <div class="footer-links">
             <a href="#features">Features</a>
             <a href="#screenshots">Screenshots</a>
-            <a href="#community">Community</a>
+            <a href="#performance">Performance</a>
             <a href="#why">Why NeuraX</a>
             <a href="https://github.com/Dytalmc/NeuraX">GitHub</a>
             <a href="#download">Download</a>
@@ -972,9 +1035,8 @@
             <strong>DISCLAIMER:</strong>
             NeuraX is an independent open-source project and is not an official Minecraft
             product. It is not approved by, affiliated with, or associated with Mojang or
-            Microsoft. The optional NeuraX Community feature sends only anonymized metadata
-            (UUID, OS, launcher version, instance folder names and mod slugs) to a Supabase
-            project; no Microsoft username, email or IP is ever transmitted.
+            Microsoft. Microsoft authentication uses the official OAuth flow and only
+            stores the resulting tokens locally on your machine.
         </div>
         <div class="copyright">
             © <span id="year"></span> Anish Sandeep Bhargav (Dytalmc). All rights reserved. NeuraX.
