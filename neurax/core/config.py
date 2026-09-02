@@ -3,7 +3,10 @@ import os
 import sys
 import ctypes
 import subprocess
+<<<<<<< HEAD
 import logging
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from pathlib import Path
 from PyQt6.QtCore import QObject, pyqtSignal
 
@@ -25,6 +28,7 @@ def get_dot_neurax_dir() -> Path:
         base = Path.home()
     return base / ".neurax"
 
+<<<<<<< HEAD
 
 def get_shared_libraries_dir() -> Path:
     """Shared library cache under `%APPDATA%/neurax/libraries`. All instances
@@ -151,6 +155,8 @@ def get_logo_url(filename: str) -> str:
         p = "/" + p
     return "file://" + p
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def get_icon_path() -> str:
     """Resolves and caches nx.ico inside the user's AppData Roaming neurax cache folder.
     Ensures the main window and application always retrieve the icon directly from the cache folder.
@@ -228,12 +234,17 @@ def get_system_ram_info():
             if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(stat)):
                 total_mb = int(stat.ullTotalPhys // (1024 * 1024))
         elif sys.platform == "darwin":
+<<<<<<< HEAD
             try:
                 from neurax.core._silent_proc import check_output_silent
                 out = check_output_silent(["sysctl", "-n", "hw.memsize"], timeout=2)
             except Exception:
                 out = b""
             total_mb = int(int(out.strip()) // (1024 * 1024)) if out else 0
+=======
+            out = subprocess.check_output(["sysctl", "-n", "hw.memsize"], timeout=2)
+            total_mb = int(int(out.strip()) // (1024 * 1024))
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         else:
             if hasattr(os, "sysconf") and "SC_PAGE_SIZE" in os.sysconf_names and "SC_PHYS_PAGES" in os.sysconf_names:
                 pagesize = os.sysconf("SC_PAGE_SIZE")
@@ -283,7 +294,10 @@ class ConfigManager(QObject):
         "global_sync_source": "auto",
         "global_sync_target": "all",
         "discord_rpc": True,
+<<<<<<< HEAD
         "discord_client_id": "",
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         "discord_launcher_activity": True,
         "discord_mc_activity": True,
         "discord_show_version": True,
@@ -321,6 +335,7 @@ class ConfigManager(QObject):
         self.load()
 
     def ensure_dirs(self):
+<<<<<<< HEAD
         """Guarantees root filesystem architecture on boot.
 
         Persistent launcher state lives under `neurax/`:
@@ -329,17 +344,24 @@ class ConfigManager(QObject):
         Per-instance game data lives under `.neurax/`:
             instances/, global/, servers/, screenshots/
         """
+=======
+        """Guarantees root filesystem architecture on boot."""
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.neurax_dir.mkdir(parents=True, exist_ok=True)
         get_dot_neurax_dir().mkdir(parents=True, exist_ok=True)
         (get_dot_neurax_dir() / "instances").mkdir(exist_ok=True)
         (get_dot_neurax_dir() / "global").mkdir(exist_ok=True)
         (get_dot_neurax_dir() / "global" / ".minecraft").mkdir(parents=True, exist_ok=True)
         (get_dot_neurax_dir() / "servers").mkdir(exist_ok=True)
+<<<<<<< HEAD
         (get_dot_neurax_dir() / "screenshots").mkdir(exist_ok=True)
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         (self.neurax_dir / "cache").mkdir(exist_ok=True)
         (self.neurax_dir / "cache" / "skins").mkdir(exist_ok=True)
         (self.neurax_dir / "cache" / "capes").mkdir(exist_ok=True)
         (self.neurax_dir / "cache" / "icons").mkdir(exist_ok=True)
+<<<<<<< HEAD
         (self.neurax_dir / "cache" / "discord_assets").mkdir(exist_ok=True)
         (self.neurax_dir / "logs").mkdir(exist_ok=True)
         # Shared loader library cache — populated lazily by the launcher and
@@ -355,6 +377,9 @@ class ConfigManager(QObject):
             seed_default_logos()
         except Exception:
             pass
+=======
+        (self.neurax_dir / "logs").mkdir(exist_ok=True)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         get_icon_path()
 
     def load(self):
@@ -368,7 +393,11 @@ class ConfigManager(QObject):
                         self._config["jvm_args"] = self._DEFAULT_CONFIG["jvm_args"]
                         self.save()
             except Exception as e:
+<<<<<<< HEAD
                 logging.getLogger("NeuraX").error(f"[Config] Error reading config.json: {e}")
+=======
+                print(f"[Config] Error reading config.json: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 self._config = dict(self._DEFAULT_CONFIG)
         else: 
             self._config = dict(self._DEFAULT_CONFIG)
@@ -387,7 +416,11 @@ class ConfigManager(QObject):
                     self.config_file.unlink()
                 temp_file.rename(self.config_file)
         except Exception as e:
+<<<<<<< HEAD
             logging.getLogger("NeuraX").error(f"[Config] Save failed: {e}")
+=======
+            print(f"[Config] Save failed: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def get(self, key: str, default=None):
         return self._config.get(key, default if default is not None else self._DEFAULT_CONFIG.get(key))

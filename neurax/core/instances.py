@@ -5,6 +5,7 @@ from typing import List, Dict, Any, Tuple
 from PyQt6.QtCore import QObject, pyqtSignal
 from neurax.core.config import get_system_ram_info, get_dot_neurax_dir
 
+<<<<<<< HEAD
 # The single shared .minecraft root used by every vanilla-loader
 # instance in NeuraX. Lives under the per-user NeuraX directory so
 # survives launcher reinstalls but stays scoped to the Windows
@@ -34,12 +35,17 @@ class InstanceManager(QObject):
     being launched. This matches the user's mental model of a single
     vanilla Minecraft install.
     """
+=======
+class InstanceManager(QObject):
+    """Manages isolated Minecraft instances in %APPDATA%/.neurax/instances/"""
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     instances_changed = pyqtSignal()
 
     def __init__(self, neurax_dir: Path):
         super().__init__()
         self.instances_dir = get_dot_neurax_dir() / "instances"
         self.instances_dir.mkdir(parents=True, exist_ok=True)
+<<<<<<< HEAD
         # Migrate any pre-existing per-instance vanilla folders into
         # the shared global root FIRST so the default-instance
         # creation below doesn't poison the "global already has
@@ -136,6 +142,10 @@ class InstanceManager(QObject):
             return GLOBAL_VANILLA_DIR
         return fallback
 
+=======
+        self.ensure_default_instance()
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def ensure_default_instance(self):
         default_path = self.instances_dir / "Default"
         if not default_path.exists():
@@ -153,6 +163,7 @@ class InstanceManager(QObject):
                         with open(cfg_path, "r", encoding="utf-8") as f:
                             cfg = json.load(f)
                             cfg["folder_name"] = folder.name
+<<<<<<< HEAD
                             cfg["game_dir"] = str(
                                 self.resolve_game_dir(
                                     cfg.get("loader", "Vanilla"),
@@ -162,6 +173,11 @@ class InstanceManager(QObject):
                             cfg.setdefault("loader", "Vanilla")
                             cfg.setdefault("name", folder.name)
                             cfg.setdefault("loader_version", "")
+=======
+                            cfg["game_dir"] = str(folder / ".minecraft")
+                            cfg.setdefault("loader", "Vanilla")
+                            cfg.setdefault("name", folder.name)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             instances.append(cfg)
                     except Exception:
                         pass
@@ -172,13 +188,21 @@ class InstanceManager(QObject):
                         "version": "1.20.4",
                         "max_ram": 4096,
                         "folder_name": folder.name,
+<<<<<<< HEAD
                         "game_dir": str(self.resolve_game_dir("Vanilla", folder / ".minecraft")),
                         "loader_version": ""
+=======
+                        "game_dir": str(folder / ".minecraft")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     }
                     instances.append(cfg)
         return instances
 
+<<<<<<< HEAD
     def create_instance(self, name: str, version: str, loader: str = "Vanilla", max_ram: int = 4096, java_path: str = "auto", jvm_args: str = "", loader_version: str = ""):
+=======
+    def create_instance(self, name: str, version: str, loader: str = "Vanilla", max_ram: int = 4096, java_path: str = "auto", jvm_args: str = ""):
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         safe_name = "".join(c for c in name if c.isalnum() or c in (" ", "_", "-")).strip() or "New_Instance"
         base_name = safe_name
         suffix = 2
@@ -187,6 +211,7 @@ class InstanceManager(QObject):
             safe_name = f"{base_name}_{suffix}"
             inst_dir = self.instances_dir / safe_name
             suffix += 1
+<<<<<<< HEAD
 
         # For non-vanilla loaders we keep the per-instance .minecraft
         # folder so each modded instance is isolated. For vanilla
@@ -203,6 +228,13 @@ class InstanceManager(QObject):
         # Subdirs the launcher relies on (mods, saves, resourcepacks,
         # screenshots, etc.) live inside the shared vanilla root too
         # — that's where Minecraft actually reads them from.
+=======
+        mc_dir = inst_dir / ".minecraft"
+        
+        inst_dir.mkdir(parents=True, exist_ok=True)
+        mc_dir.mkdir(parents=True, exist_ok=True)
+        
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         (mc_dir / "mods").mkdir(exist_ok=True)
         (mc_dir / "saves").mkdir(exist_ok=True)
         (mc_dir / "resourcepacks").mkdir(exist_ok=True)
@@ -213,8 +245,12 @@ class InstanceManager(QObject):
             "version": version,
             "max_ram": max_ram,
             "java_path": java_path,
+<<<<<<< HEAD
             "jvm_args": jvm_args,
             "loader_version": (loader_version or "").strip()
+=======
+            "jvm_args": jvm_args
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
 
         with open(inst_dir / "instance.json", "w", encoding="utf-8") as f:
@@ -226,8 +262,11 @@ class InstanceManager(QObject):
     def delete_instance(self, folder_name: str):
         target = self.instances_dir / folder_name
         if target.exists() and target.is_dir():
+<<<<<<< HEAD
             # Only nuke the per-instance folder — never the shared
             # vanilla root, even if this was the last vanilla instance.
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             shutil.rmtree(target)
             self.instances_changed.emit()
 
@@ -237,6 +276,7 @@ class InstanceManager(QObject):
             with open(target, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 data["folder_name"] = folder_name
+<<<<<<< HEAD
                 data["game_dir"] = str(
                     self.resolve_game_dir(
                         data.get("loader", "Vanilla"),
@@ -246,6 +286,11 @@ class InstanceManager(QObject):
                 data.setdefault("loader", "Vanilla")
                 data.setdefault("name", folder_name)
                 data.setdefault("loader_version", "")
+=======
+                data["game_dir"] = str(self.instances_dir / folder_name / ".minecraft")
+                data.setdefault("loader", "Vanilla")
+                data.setdefault("name", folder_name)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 return data
         return {
             "name": folder_name,
@@ -254,9 +299,14 @@ class InstanceManager(QObject):
             "max_ram": 4096,
             "java_path": "auto",
             "jvm_args": "",
+<<<<<<< HEAD
             "loader_version": "",
             "folder_name": folder_name,
             "game_dir": str(self.resolve_game_dir("Vanilla", self.instances_dir / folder_name / ".minecraft"))
+=======
+            "folder_name": folder_name,
+            "game_dir": str(self.instances_dir / folder_name / ".minecraft")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
 
     def update_instance(self, folder_name: str, **kwargs):

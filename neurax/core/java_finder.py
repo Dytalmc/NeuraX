@@ -7,6 +7,7 @@ from typing import List, Tuple
 
 class JavaFinder:
     _cache = None
+<<<<<<< HEAD
     # Per-path cache so repeated ``get_java_version`` calls (one per
     # candidate during launch) don't keep spawning ``java -version``.
     _version_cache: dict = {}
@@ -14,6 +15,12 @@ class JavaFinder:
     @staticmethod
     def find_java_installations(force_refresh: bool = False) -> List[Tuple[str, str]]:
         if JavaFinder._cache is not None and not force_refresh:
+=======
+
+    @staticmethod
+    def find_java_installations() -> List[Tuple[str, str]]:
+        if JavaFinder._cache is not None:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             return JavaFinder._cache
 
         found = []
@@ -104,6 +111,7 @@ class JavaFinder:
         return found
 
     @staticmethod
+<<<<<<< HEAD
     def _probe_version_direct(java_exe: str) -> str:
         """Spawn ``java -version`` and read its output reliably.
 
@@ -162,10 +170,24 @@ class JavaFinder:
             ver = "Java"
         JavaFinder._version_cache[java_exe] = ver
         return ver
+=======
+    def get_java_version(java_exe: str) -> str:
+        try:
+            creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+            res = subprocess.check_output([java_exe, "-version"], stderr=subprocess.STDOUT, timeout=2, creationflags=creationflags).decode("utf-8", errors="ignore")
+            for line in res.splitlines():
+                if "version" in line.lower():
+                    parts = line.split('"')
+                    return parts[1] if len(parts) > 1 else line.strip()
+        except Exception:
+            pass
+        return "Java"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     @staticmethod
     def get_java_major_version(java_exe: str) -> int:
         version_str = JavaFinder.get_java_version(java_exe)
+<<<<<<< HEAD
         # Parse Java's quoted version banner: ``openjdk version "21.0.3" 2024-04-16``
         # ``version_str`` is the inner quoted text, so it never has the
         # "openjdk version" prefix; just match the first digit run.
@@ -175,4 +197,15 @@ class JavaFinder:
                 return int(m.group(1))
             except (ValueError, TypeError):
                 pass
+=======
+        try:
+            match = re.search(r'(\d+)(?:\.(\d+))?', version_str)
+            if match:
+                first = int(match.group(1))
+                if first == 1 and match.group(2):
+                    return int(match.group(2))
+                return first
+        except Exception:
+            pass
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         return 17

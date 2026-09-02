@@ -539,6 +539,7 @@ class NewServerView(QWidget):
         )
         self.worker.progress.connect(self._on_create_progress)
         self.worker.finished.connect(self._on_create_finished)
+<<<<<<< HEAD
         # Per-file download / install log — show what jar / library
         # is being downloaded right now inside the in-launcher server
         # log panel (the green console drawer), like a real launcher.
@@ -546,6 +547,8 @@ class NewServerView(QWidget):
             self.worker.log_message.connect(self._on_server_log)
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.worker.start()
 
     def _on_create_progress(self, pct: int, msg: str):
@@ -611,6 +614,7 @@ class NewServerView(QWidget):
         )
         self.active_runner.log_output.connect(self._on_server_log)
         self.active_runner.process_finished.connect(self._on_server_stopped)
+<<<<<<< HEAD
         # Per-file download / install log lines for the *preflight*
         # download phase (vanilla.jar, libraries, etc.) get fed into
         # the same in-launcher console panel.
@@ -624,6 +628,8 @@ class NewServerView(QWidget):
                 self.active_runner.start_worker.progress.connect(self._on_server_log)
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.active_runner.start()
 
     def _stop_server(self):
@@ -663,10 +669,13 @@ class NewServerView(QWidget):
         )
         self.worker.progress.connect(self._on_reinstall_progress)
         self.worker.finished.connect(self._on_reinstall_finished)
+<<<<<<< HEAD
         try:
             self.worker.log_message.connect(self._on_server_log)
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.worker.start()
 
     def _on_reinstall_progress(self, pct: int, msg: str):

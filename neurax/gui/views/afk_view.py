@@ -1,5 +1,6 @@
 import time
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QGridLayout
+<<<<<<< HEAD
 from PyQt6.QtCore import Qt, QTimer, QUrl
 from PyQt6.QtGui import QDesktopServices
 from neurax.gui.widgets.glass_card import GlassCard
@@ -10,6 +11,15 @@ class AFKView(QWidget):
     The lock-launcher control used to live in this tab, but locking is
     now exclusive to ``nx.py`` — only ``nx.py`` can lock or unlock a
     specific ``device_uuid``. The launcher itself has no lock UI."""
+=======
+from PyQt6.QtCore import Qt, QTimer, QUrl, QSize
+from PyQt6.QtGui import QDesktopServices, QColor
+from neurax.gui.widgets.glass_card import GlassCard
+from neurax.gui.icons import IconEngine
+
+class AFKView(QWidget):
+    """AFK View: Features live stopwatch, highly immersive ad prototypes, and quick Lock launcher trigger."""
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def __init__(self, config, parent=None):
         super().__init__(parent)
@@ -34,6 +44,7 @@ class AFKView(QWidget):
         title_col.addWidget(subtitle)
         header.addLayout(title_col)
         header.addStretch()
+<<<<<<< HEAD
 
         layout.addLayout(header)
 
@@ -57,6 +68,55 @@ class AFKView(QWidget):
         self.stats_lbl.setStyleSheet("font-size: 12px; color: #00FF99; font-style: italic;")
         core_layout.addWidget(self.stats_lbl)
 
+=======
+        
+        layout.addLayout(header)
+
+        # Core Split: Stopwatch and Lock Control
+        core_card = GlassCard()
+        core_card.setObjectName("GlassCard")
+        core_layout = QHBoxLayout(core_card)
+        core_layout.setContentsMargins(30, 25, 30, 25)
+        core_layout.setSpacing(25)
+
+        # Timer Column
+        timer_col = QVBoxLayout()
+        timer_col.setSpacing(5)
+        
+        timer_lbl = QLabel("ELAPSED AFK TIME")
+        timer_lbl.setStyleSheet("font-size: 11px; font-weight: 800; letter-spacing: 1.5px;")
+        timer_col.addWidget(timer_lbl)
+
+        self.time_display = QLabel("00:00:00")
+        self.time_display.setStyleSheet("font-size: 48px; font-weight: 900; font-family: 'Consolas', monospace;")
+        timer_col.addWidget(self.time_display)
+
+        self.stats_lbl = QLabel("Power consumption optimized • Disk sync idle")
+        self.stats_lbl.setStyleSheet("font-size: 12px; color: #00FF99; font-style: italic;")
+        timer_col.addWidget(self.stats_lbl)
+
+        core_layout.addLayout(timer_col, stretch=1)
+
+        # Action Column (Lock launcher)
+        action_col = QVBoxLayout()
+        action_col.setSpacing(10)
+        action_col.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        lock_prompt = QLabel("Secure your launcher while away:")
+        lock_prompt.setStyleSheet("font-size: 12px; font-weight: bold;")
+        action_col.addWidget(lock_prompt)
+
+        self.lock_btn = QPushButton(" LOCK LAUNCHER")
+        self.lock_btn.setObjectName("PrimaryButton")
+        self.lock_btn.setIcon(IconEngine.get_icon("shield", QColor("#FFFFFF"), QColor("#FFFFFF"), 16))
+        self.lock_btn.setIconSize(QSize(16, 16))
+        self.lock_btn.setFixedSize(220, 44)
+        self.lock_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.lock_btn.clicked.connect(self._lock_launcher)
+        action_col.addWidget(self.lock_btn)
+
+        core_layout.addLayout(action_col)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         layout.addWidget(core_card)
 
         # Ads Prototype Section
@@ -142,3 +202,11 @@ class AFKView(QWidget):
         mins = (self.afk_seconds % 3600) // 60
         secs = self.afk_seconds % 60
         self.time_display.setText(f"{hrs:02d}:{mins:02d}:{secs:02d}")
+<<<<<<< HEAD
+=======
+
+    def _lock_launcher(self):
+        self.config.set("launcher_locked", True)
+        if self.main_window and hasattr(self.main_window, "lock_screen"):
+            self.main_window.lock_screen.show_locked()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0

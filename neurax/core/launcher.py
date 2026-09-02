@@ -18,8 +18,11 @@ from neurax.core.java_finder import JavaFinder
 from neurax.core.logger import Logger
 from neurax.core.discord_rpc import DiscordManager
 from neurax.core.config import get_dot_neurax_dir, get_neurax_dir
+<<<<<<< HEAD
 from neurax.core import loader_versions
 from neurax.core._silent_proc import popen_no_window, run_silent, SILENT_CREATIONFLAGS
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 try:
     import minecraft_launcher_lib
@@ -80,6 +83,7 @@ def name_to_path(name: str) -> str:
 
 
 def get_required_java_major(mc_version: str) -> int:
+<<<<<<< HEAD
     """NeuraX runs on JDK 25 everywhere.
 
     Historically this function picked a different major per MC version
@@ -102,6 +106,34 @@ def get_required_java_major(mc_version: str) -> int:
 
 
 REQUIRED_JAVA_MAJOR = 25
+=======
+    try:
+        parts = [int(p) for p in re.findall(r'\d+', str(mc_version))]
+        if parts:
+            major = parts[0]
+            if major == 1 and len(parts) >= 2:
+                minor = parts[1]
+                if minor >= 20:
+                    patch = parts[2] if len(parts) >= 3 else 0
+                    if minor == 20 and patch >= 5:
+                        return 21
+                    elif minor == 20:
+                        return 17
+                    else:
+                        return 21
+                elif minor >= 18:
+                    return 17
+                elif minor == 17:
+                    return 16
+                else:
+                    return 8
+            elif major >= 26 or major > 1:
+                return 25
+        return 21
+    except Exception:
+        pass
+    return 21
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 
 def ensure_launcher_profiles(game_dir: Path):
@@ -313,14 +345,22 @@ def resolve_forge_version(mc_version: str) -> str:
     return ""
 
 
+<<<<<<< HEAD
 def install_fabric_fallback(mc_version: str, game_dir: Path, logger, pinned_loader_version: str = "") -> str:
+=======
+def install_fabric_fallback(mc_version: str, game_dir: Path, logger) -> str:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     try:
         meta_url = f"https://meta.fabricmc.net/v2/versions/loader/{mc_version}"
         res = requests.get(meta_url, timeout=10)
         if res.status_code == 200:
             data = res.json()
             if isinstance(data, list) and len(data) > 0:
+<<<<<<< HEAD
                 loader_ver = pinned_loader_version or data[0].get("loader", {}).get("version", "0.16.10")
+=======
+                loader_ver = data[0].get("loader", {}).get("version", "0.16.10")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 profile_url = f"https://meta.fabricmc.net/v2/versions/loader/{mc_version}/{loader_ver}/profile/json"
                 p_res = requests.get(profile_url, timeout=10)
                 if p_res.status_code == 200:
@@ -335,14 +375,22 @@ def install_fabric_fallback(mc_version: str, game_dir: Path, logger, pinned_load
     return ""
 
 
+<<<<<<< HEAD
 def install_quilt_fallback(mc_version: str, game_dir: Path, logger, pinned_loader_version: str = "") -> str:
+=======
+def install_quilt_fallback(mc_version: str, game_dir: Path, logger) -> str:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     try:
         meta_url = f"https://meta.quiltmc.org/v2/versions/loader/{mc_version}"
         res = requests.get(meta_url, timeout=10)
         if res.status_code == 200:
             data = res.json()
             if isinstance(data, list) and len(data) > 0:
+<<<<<<< HEAD
                 loader_ver = pinned_loader_version or data[0].get("loader", {}).get("version", "0.26.0")
+=======
+                loader_ver = data[0].get("loader", {}).get("version", "0.26.0")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 profile_url = f"https://meta.quiltmc.org/v2/versions/loader/{mc_version}/{loader_ver}/profile/json"
                 p_res = requests.get(profile_url, timeout=10)
                 if p_res.status_code == 200:
@@ -405,8 +453,14 @@ def install_neoforge_loader(nf_ver: str, mc_ver: str, game_dir: Path, java_exec:
                     f.write(resp.content)
 
                 cmd = [java_exec or "java", "-Djava.awt.headless=true", "-jar", str(temp_jar), "--installClient", str(game_dir)]
+<<<<<<< HEAD
                 logger.info(f"Executing NeoForge installer: {' '.join(cmd)}")
                 res = run_silent(cmd, cwd=str(game_dir), timeout=180)
+=======
+                creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+                logger.info(f"Executing NeoForge installer: {' '.join(cmd)}")
+                res = subprocess.run(cmd, cwd=str(game_dir), stdin=subprocess.DEVNULL, timeout=180, creationflags=creationflags, capture_output=True, text=True)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 if temp_jar.exists():
                     try:
                         temp_jar.unlink()
@@ -479,8 +533,14 @@ def install_forge_loader(forge_ver: str, game_dir: Path, java_exec: str, callbac
                 f.write(resp.content)
 
             cmd = [java_exec or "java", "-Djava.awt.headless=true", "-jar", str(temp_jar), "--installClient", str(game_dir)]
+<<<<<<< HEAD
             logger.info(f"Executing Forge installer: {' '.join(cmd)}")
             res = run_silent(cmd, cwd=str(game_dir), timeout=180)
+=======
+            creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+            logger.info(f"Executing Forge installer: {' '.join(cmd)}")
+            res = subprocess.run(cmd, cwd=str(game_dir), stdin=subprocess.DEVNULL, timeout=180, creationflags=creationflags, capture_output=True, text=True)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             if temp_jar.exists():
                 try:
                     temp_jar.unlink()
@@ -592,6 +652,7 @@ def find_installed_loader_version(game_dir: Path, loader: str, mc_version: str) 
                             is_mc_match = True
 
                     if is_mc_match:
+<<<<<<< HEAD
                         # Require the actual loader jar to exist alongside
                         # the json. A partial install (json present, jar
                         # missing — happens when the upstream installer
@@ -603,6 +664,8 @@ def find_installed_loader_version(game_dir: Path, loader: str, mc_version: str) 
                         loader_jar = v_dir / f"{v_id}.jar"
                         if not loader_jar.exists() or loader_jar.stat().st_size < 1024:
                             continue
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         score += 10000000
                         candidates.append((score, v_id))
 
@@ -619,11 +682,14 @@ class LaunchWorker(QThread):
     game_started = pyqtSignal()
     game_exited = pyqtSignal(int)
     error_occurred = pyqtSignal(str)
+<<<<<<< HEAD
     # Per-line log message — forwarded straight into the in-launcher
     # "game launching" log panel so the user can see exactly which
     # file is being downloaded right now (just like a real Minecraft
     # launcher's log). One line per install/download event.
     log_message = pyqtSignal(str)
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def __init__(
         self, 
@@ -646,12 +712,15 @@ class LaunchWorker(QThread):
         cfg = config or config_mgr
         self.config_mgr = cfg
         self.auth_mgr = auth_mgr
+<<<<<<< HEAD
         # Auto-upgrade bookkeeping: the auto-upgrade block sets this to
         # (loader_low, mc_version, current_str) when it decides to upgrade,
         # and the post-install cleanup block consumes it. Initialised to
         # None here so the post-install block can no-op cleanly on launches
         # where no upgrade was queued.
         self._pending_old_loader_dirs = None
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         if cfg is not None:
             self.neurax_dir = Path(cfg.neurax_dir)
@@ -692,6 +761,7 @@ class LaunchWorker(QThread):
             version = self.instance_data.get("version", "1.20.4")
             loader = self.instance_data.get("loader", "Vanilla")
             inst_name = self.instance_data.get("name", "Default")
+<<<<<<< HEAD
             # Vanilla instances share a single global .minecraft root;
             # modded instances each get their own per-instance folder.
             # ``InstanceManager.get_instance()`` already resolves
@@ -707,6 +777,9 @@ class LaunchWorker(QThread):
                 game_dir = GLOBAL_VANILLA_DIR
             else:
                 game_dir = Path(self.instance_data.get("game_dir", get_dot_neurax_dir() / "instances" / inst_name / ".minecraft"))
+=======
+            game_dir = Path(self.instance_data.get("game_dir", get_dot_neurax_dir() / "instances" / inst_name / ".minecraft"))
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             game_dir.mkdir(parents=True, exist_ok=True)
             (game_dir / "mods").mkdir(parents=True, exist_ok=True)
             ensure_launcher_profiles(game_dir)
@@ -717,6 +790,7 @@ class LaunchWorker(QThread):
             max_val = [100]
 
             def set_status(status: str):
+<<<<<<< HEAD
                 # ``minecraft_launcher_lib`` calls this with the *file
                 # currently being downloaded* (or a coarse status like
                 # "Downloading main jar"). Forward it both to the
@@ -725,6 +799,9 @@ class LaunchWorker(QThread):
                 status_text = (status or "").strip() or "Downloading..."
                 self.progress.emit(50, status_text, "")
                 self.log_message.emit(f"[Download] {status_text}")
+=======
+                self.progress.emit(50, status, "")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
             def set_max(val: int):
                 try:
@@ -771,6 +848,7 @@ class LaunchWorker(QThread):
                 req_major = get_required_java_major(version)
                 java_exec = None
 
+<<<<<<< HEAD
                 # NeuraX standardises on JDK 25 (LTS) for the play launcher.
                 # We still try to be polite: if the user has multiple
                 # JDKs installed we prefer the requested one but fall back
@@ -794,6 +872,17 @@ class LaunchWorker(QThread):
                     except Exception:
                         return
                     candidates.append((p, major))
+=======
+                candidates = []
+                seen_cands = set()
+
+                def add_candidate(p):
+                    if p and os.path.isfile(p):
+                        norm = os.path.normpath(p)
+                        if norm not in seen_cands:
+                            seen_cands.add(norm)
+                            candidates.append(norm)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
                 if self.custom_java and self.custom_java != "auto":
                     add_candidate(self.custom_java)
@@ -810,6 +899,7 @@ class LaunchWorker(QThread):
                 for _name, jpath in JavaFinder.find_java_installations():
                     add_candidate(jpath)
 
+<<<<<<< HEAD
                 # Prefer the exact required major; otherwise the highest
                 # available LTS in our preference list.
                 java_exec = None
@@ -819,29 +909,50 @@ class LaunchWorker(QThread):
                             java_exec = c_path
                             break
                     if java_exec:
+=======
+                for c_path in candidates:
+                    if JavaFinder.get_java_major_version(c_path) == req_major:
+                        java_exec = c_path
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         break
 
                 if not java_exec or not os.path.isfile(java_exec):
                     try:
+<<<<<<< HEAD
                         req_jvm = "java-runtime-delta"  # JDK 25
                         if hasattr(minecraft_launcher_lib, "runtime"):
                             if hasattr(minecraft_launcher_lib.runtime, "get_executable_path"):
                                 cand = minecraft_launcher_lib.runtime.get_executable_path(req_jvm, str(game_dir))
                                 if cand and os.path.isfile(cand) and JavaFinder.get_java_major_version(cand) == 25:
+=======
+                        req_jvm = "java-runtime-gamma" if req_major == 21 else ("java-runtime-delta" if req_major == 25 else "java-runtime-alpha")
+                        if hasattr(minecraft_launcher_lib, "runtime"):
+                            if hasattr(minecraft_launcher_lib.runtime, "get_executable_path"):
+                                cand = minecraft_launcher_lib.runtime.get_executable_path(req_jvm, str(game_dir))
+                                if cand and os.path.isfile(cand) and JavaFinder.get_java_major_version(cand) == req_major:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                                     java_exec = cand
 
                             if (not java_exec or not os.path.isfile(java_exec)) and hasattr(minecraft_launcher_lib.runtime, "install_jvm_runtime"):
                                 self.progress.emit(22, f"Downloading Java Runtime ({req_jvm})...", "")
+<<<<<<< HEAD
                                 self.log_message.emit(f"[Java] No system Java 25 found — downloading Minecraft bundled JRE ({req_jvm})...")
                                 minecraft_launcher_lib.runtime.install_jvm_runtime(req_jvm, str(game_dir), callback=callback)
                                 cand = minecraft_launcher_lib.runtime.get_executable_path(req_jvm, str(game_dir))
                                 if cand and os.path.isfile(cand) and JavaFinder.get_java_major_version(cand) == 25:
                                     java_exec = cand
                                     self.log_message.emit(f"[Java] Installed Minecraft JRE at {cand}")
+=======
+                                minecraft_launcher_lib.runtime.install_jvm_runtime(req_jvm, str(game_dir), callback=callback)
+                                cand = minecraft_launcher_lib.runtime.get_executable_path(req_jvm, str(game_dir))
+                                if cand and os.path.isfile(cand) and JavaFinder.get_java_major_version(cand) == req_major:
+                                    java_exec = cand
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     except Exception as je:
                         self.logger.warning(f"Failed to auto-install JVM runtime: {je}")
 
                 if not java_exec or not os.path.isfile(java_exec):
+<<<<<<< HEAD
                     # NeuraX now ships with JDK 25 as the single supported
                     # runtime. The error message tells the user exactly
                     # what to install and where to get it.
@@ -854,6 +965,13 @@ class LaunchWorker(QThread):
                         f"It was not found on your PC. Please install {req_name} and "
                         f"make sure it's on PATH or set the JAVA_HOME environment variable. "
                         f"Detected Java installations: {found}."
+=======
+                    req_name = "Java 21" if req_major == 21 else "JDK 25 (Java 25)"
+                    ver_desc = "1.21.11 or below" if req_major == 21 else "26.1+"
+                    err_msg = (
+                        f"Java {req_major} is required for Minecraft {version} ({ver_desc}), "
+                        f"but Java {req_major} was not found on your PC. Please install {req_name}."
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     )
                     self.logger.error(err_msg)
                     raise RuntimeError(err_msg)
@@ -862,6 +980,7 @@ class LaunchWorker(QThread):
                 vanilla_jar = game_dir / "versions" / version / f"{version}.jar"
                 if not vanilla_json.exists() or not vanilla_jar.exists() or vanilla_jar.stat().st_size == 0:
                     self.progress.emit(25, f"Installing base Minecraft {version}...", "")
+<<<<<<< HEAD
                     self.log_message.emit(f"[Vanilla] Downloading Minecraft {version} client jar + assets + libraries...")
                     try:
                         minecraft_launcher_lib.install.install_minecraft_version(version, str(game_dir), callback=callback)
@@ -924,6 +1043,15 @@ class LaunchWorker(QThread):
                         except Exception:
                             pass
 
+=======
+                    try:
+                        minecraft_launcher_lib.install.install_minecraft_version(version, str(game_dir), callback=callback)
+                    except Exception as ie:
+                        self.logger.warning(f"Base Minecraft install notice: {ie}")
+
+                loader_low = loader.lower().strip()
+                
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 # If Vanilla loader selected, check if mods exist in game_dir/mods and auto-detect loader
                 if loader_low in ("vanilla", ""):
                     mods_dir = game_dir / "mods"
@@ -947,6 +1075,7 @@ class LaunchWorker(QThread):
 
                 version_id = find_installed_loader_version(game_dir, loader, version)
 
+<<<<<<< HEAD
                 # ---------------------------------------------------------------
                 # Auto-upgrade: if the loader is already installed but a newer
                 # stable build is available upstream, queue a reinstall so
@@ -1010,6 +1139,8 @@ class LaunchWorker(QThread):
                     except Exception as ex:
                         self.logger.warning(f"Auto-upgrade check failed: {ex}")
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 need_loader_install = False
                 if loader_low not in ("vanilla", ""):
                     if version_id == version:
@@ -1020,6 +1151,7 @@ class LaunchWorker(QThread):
                             need_loader_install = True
 
                 if need_loader_install:
+<<<<<<< HEAD
                     # Honour the user's pinned loader version. Two sources,
                     # in priority order:
                     #   1. Per-instance pin (`instance_data["loader_version"]`).
@@ -1051,15 +1183,25 @@ class LaunchWorker(QThread):
                                 # minecraft-launcher-lib. Older builds ignore
                                 # it (and install latest). We pass it through
                                 # when available.
+=======
+                    if loader_low == "fabric":
+                        try:
+                            self.progress.emit(35, f"Installing Fabric Loader for {version}...", "")
+                            if hasattr(minecraft_launcher_lib, "fabric"):
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                                 try:
                                     minecraft_launcher_lib.fabric.install_fabric(
                                         version,
                                         str(game_dir),
+<<<<<<< HEAD
                                         desired_loader_version or None,
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                                         callback=callback,
                                         java=java_exec if (java_exec and os.path.isfile(java_exec)) else None
                                     )
                                 except TypeError:
+<<<<<<< HEAD
                                     try:
                                         minecraft_launcher_lib.fabric.install_fabric(
                                             version,
@@ -1073,17 +1215,29 @@ class LaunchWorker(QThread):
                                             str(game_dir),
                                             callback=callback
                                         )
+=======
+                                    minecraft_launcher_lib.fabric.install_fabric(
+                                        version,
+                                        str(game_dir),
+                                        callback=callback
+                                    )
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         except Exception as fe:
                             self.logger.warning(f"Fabric installation warning: {fe}")
                         version_id = find_installed_loader_version(game_dir, "fabric", version)
                         if version_id == version:
+<<<<<<< HEAD
                             fallback_v = install_fabric_fallback(version, game_dir, self.logger, desired_loader_version or None)
+=======
+                            fallback_v = install_fabric_fallback(version, game_dir, self.logger)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             if fallback_v:
                                 version_id = fallback_v
 
                     elif loader_low == "forge":
                         try:
                             self.progress.emit(35, f"Installing Forge Loader for {version}...", "")
+<<<<<<< HEAD
                             self.log_message.emit(f"[Forge] Resolving Forge build for Minecraft {version}...")
                             forge_ver = resolve_forge_version(version)
                             # If the user pinned a specific Forge version,
@@ -1093,6 +1247,9 @@ class LaunchWorker(QThread):
                                     forge_ver = desired_loader_version
                                 elif "-" not in desired_loader_version:
                                     forge_ver = f"{version}-{desired_loader_version}"
+=======
+                            forge_ver = resolve_forge_version(version)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             if forge_ver:
                                 install_forge_loader(forge_ver, game_dir, java_exec, callback, self.logger)
                         except Exception as fe:
@@ -1102,17 +1259,24 @@ class LaunchWorker(QThread):
                     elif loader_low == "quilt":
                         try:
                             self.progress.emit(35, f"Installing Quilt Loader for {version}...", "")
+<<<<<<< HEAD
                             self.log_message.emit(f"[Quilt] Resolving Quilt loader for Minecraft {version}...")
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             if hasattr(minecraft_launcher_lib, "quilt"):
                                 try:
                                     minecraft_launcher_lib.quilt.install_quilt(
                                         version,
                                         str(game_dir),
+<<<<<<< HEAD
                                         desired_loader_version or None,
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                                         callback=callback,
                                         java=java_exec if (java_exec and os.path.isfile(java_exec)) else None
                                     )
                                 except TypeError:
+<<<<<<< HEAD
                                     try:
                                         minecraft_launcher_lib.quilt.install_quilt(
                                             version,
@@ -1126,17 +1290,29 @@ class LaunchWorker(QThread):
                                             str(game_dir),
                                             callback=callback
                                         )
+=======
+                                    minecraft_launcher_lib.quilt.install_quilt(
+                                        version,
+                                        str(game_dir),
+                                        callback=callback
+                                    )
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         except Exception as fe:
                             self.logger.warning(f"Quilt installation warning: {fe}")
                         version_id = find_installed_loader_version(game_dir, "quilt", version)
                         if version_id == version:
+<<<<<<< HEAD
                             fallback_v = install_quilt_fallback(version, game_dir, self.logger, desired_loader_version or None)
+=======
+                            fallback_v = install_quilt_fallback(version, game_dir, self.logger)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             if fallback_v:
                                 version_id = fallback_v
 
                     elif loader_low == "neoforge":
                         try:
                             self.progress.emit(35, f"Installing NeoForge Loader for {version}...", "")
+<<<<<<< HEAD
                             self.log_message.emit(f"[NeoForge] Resolving NeoForge build for Minecraft {version}...")
                             nf_ver = resolve_neoforge_version(version)
                             if desired_loader_version:
@@ -1149,6 +1325,9 @@ class LaunchWorker(QThread):
                                     # Bare number — treat as the loader build
                                     # for the current MC version.
                                     nf_ver = desired_loader_version
+=======
+                            nf_ver = resolve_neoforge_version(version)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                             if nf_ver:
                                 install_neoforge_loader(nf_ver, version, game_dir, java_exec, callback, self.logger)
                         except Exception as nfe:
@@ -1161,6 +1340,7 @@ class LaunchWorker(QThread):
                         "Please check your internet connection and Java installation."
                     )
 
+<<<<<<< HEAD
                 # ---------------------------------------------------------------
                 # Post-install verification + cleanup. If the auto-upgrade
                 # block earlier decided to swap to a newer loader build, it
@@ -1224,6 +1404,8 @@ class LaunchWorker(QThread):
                     except Exception as ex:
                         self.logger.warning(f"Post-install verification failed: {ex}")
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 self.progress.emit(85, "Building launch arguments...", "")
 
                 ram_args = [f"-Xmx{self.max_ram}M", f"-Xms{min(1024, self.max_ram)}M"]
@@ -1254,6 +1436,7 @@ class LaunchWorker(QThread):
 
                 cmd = minecraft_launcher_lib.command.get_minecraft_command(version_id, str(game_dir), options)
 
+<<<<<<< HEAD
                 # Append the shared library cache (`%APPDATA%/neurax/libraries`)
                 # to the existing classpath so every instance can share loader
                 # JARs across the launcher. The path is added only if it
@@ -1274,12 +1457,21 @@ class LaunchWorker(QThread):
                 except Exception as ex:
                     self.logger.warning(f"Could not add shared libraries to classpath: {ex}")
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 java_major = JavaFinder.get_java_major_version(java_exec)
                 if java_major < 24:
                     cmd = [arg for arg in cmd if not arg.startswith("--sun-misc-unsafe-memory-access")]
 
                 self.progress.emit(95, "Launching Minecraft...", "")
 
+<<<<<<< HEAD
+=======
+                creationflags = 0
+                if sys.platform == "win32":
+                    creationflags = subprocess.CREATE_NO_WINDOW
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 self.logger.info(f"Executing command: {' '.join(cmd)}")
 
                 DiscordManager.get_instance().set_game_activity(
@@ -1290,6 +1482,7 @@ class LaunchWorker(QThread):
                     server_port=self.server_port
                 )
 
+<<<<<<< HEAD
                 # Spawn the game with `CREATE_NO_WINDOW | DETACHED_PROCESS
                 # | CREATE_NEW_PROCESS_GROUP`. CREATE_NO_WINDOW alone is
                 # not enough on Windows — if the launcher ever inherited
@@ -1299,6 +1492,9 @@ class LaunchWorker(QThread):
                 # launching" log still receives Minecraft's stdout, but
                 # stdin is DEVNULL so the JVM cannot read a console.
                 self.process = popen_no_window(
+=======
+                self.process = subprocess.Popen(
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     cmd,
                     cwd=str(game_dir),
                     stdout=subprocess.PIPE,
@@ -1307,6 +1503,10 @@ class LaunchWorker(QThread):
                     encoding="utf-8",
                     errors="replace",
                     bufsize=1,
+<<<<<<< HEAD
+=======
+                    creationflags=creationflags
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 )
 
                 self.progress.emit(100, "Minecraft is running!", "")

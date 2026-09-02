@@ -5,7 +5,11 @@ from PyQt6.QtWidgets import (
     QLineEdit, QComboBox, QCheckBox, QFileDialog, QRadioButton,
     QButtonGroup, QProgressBar
 )
+<<<<<<< HEAD
 from PyQt6.QtCore import Qt, QUrl, QSize, QThread, pyqtSignal
+=======
+from PyQt6.QtCore import Qt, QUrl, QSize
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from PyQt6.QtGui import QDesktopServices, QColor
 from neurax.gui.widgets.glass_card import GlassCard
 from neurax.gui.widgets.ram_slider import RamSlider
@@ -16,6 +20,7 @@ from neurax.core.versions import VersionManager
 from neurax.core.java_finder import JavaFinder
 from neurax.core.mrpack import MRPackConverterWorker
 from neurax.core.logger import Logger
+<<<<<<< HEAD
 from neurax.core import loader_versions
 from neurax.gui.views.play_view import format_playtime
 from neurax.gui.views.loader_versions_view import LoaderVersionsDialog
@@ -35,6 +40,9 @@ class _LoaderListFetchWorker(QThread):
             versions = []
         self.finished_with_data.emit(self.loader, versions)
 
+=======
+from neurax.gui.views.play_view import format_playtime
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 class MRPackDialog(QDialog):
     """Dialog for selecting .mrpack file and converting to .zip archive or working instance."""
@@ -235,15 +243,22 @@ class InstanceDialog(QDialog):
     def __init__(self, parent=None, config: ConfigManager = None, title: str = "Instance Settings",
                  name: str = "", loader: str = "Vanilla", version: str = "1.20.4",
                  max_ram: int = 4096, java_path: str = "auto", jvm_args: str = "",
+<<<<<<< HEAD
                  folder_name: str = "", instance_mgr: InstanceManager = None,
                  loader_version: str = ""):
+=======
+                 folder_name: str = "", instance_mgr: InstanceManager = None):
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         super().__init__(parent)
         self.config = config
         self.folder_name = folder_name
         self.instance_mgr = instance_mgr
         self.logger = Logger.get_instance()
         self.version_mgr = VersionManager.get_instance(config.neurax_dir / "cache") if config else None
+<<<<<<< HEAD
         self._initial_loader_version = (loader_version or "").strip()
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         self.setWindowTitle(title)
         self.resize(500, 680)
@@ -271,6 +286,7 @@ class InstanceDialog(QDialog):
         self.loader_combo = QComboBox()
         self.loader_combo.addItems(["Vanilla", "Fabric", "Forge", "NeoForge", "Quilt"])
         self.loader_combo.setCurrentText(loader)
+<<<<<<< HEAD
         self.loader_combo.currentIndexChanged.connect(self._on_loader_changed)
         layout.addWidget(self.loader_combo)
 
@@ -311,6 +327,10 @@ class InstanceDialog(QDialog):
         layout.addWidget(self.loader_status_lbl)
         self._loader_workers = []  # keep refs so threads aren't GC'd early
 
+=======
+        layout.addWidget(self.loader_combo)
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         # Filter Checkboxes
         layout.addWidget(QLabel("Version Filters:"))
         filter_grid = QVBoxLayout()
@@ -424,6 +444,7 @@ class InstanceDialog(QDialog):
                 self.version_combo.addItem(version)
                 self.version_combo.setCurrentText(version)
 
+<<<<<<< HEAD
         # Loader-version list: seed the dropdown with whatever was saved
         # (passed in via `loader_version`), then kick an async fetch so the
         # latest versions show up as soon as the network call returns.
@@ -433,6 +454,8 @@ class InstanceDialog(QDialog):
         self._update_loader_status_label()
         self._refresh_loader_versions()
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def done(self, r):
         if hasattr(self, "version_mgr") and self.version_mgr:
             try:
@@ -445,6 +468,7 @@ class InstanceDialog(QDialog):
         latest_snap = info.get("latest_snapshot", "")
         loaders = info.get("loaders", {})
         fab = loaders.get("Fabric", "")
+<<<<<<< HEAD
         # Pull the latest loader versions too so the chip in this dialog
         # always matches what the AI Radar thinks is newest.
         loader_versions_radar = info.get("loader_versions", {}) or {}
@@ -452,10 +476,13 @@ class InstanceDialog(QDialog):
             # Re-fetch the loader list so the user sees the AI's picks
             # highlighted without us hard-coding anything here.
             self._refresh_loader_versions()
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         if latest_snap:
             self.ai_radar_lbl.setText(f"Live AI Radar: Active | Latest Snapshot: {latest_snap}" + (f" | Fabric: {fab}" if fab else ""))
         self.populate_versions()
 
+<<<<<<< HEAD
     # ----- Loader-version picker -----
     def _on_loader_changed(self, _index: int):
         # Switching loader resets the pinned version. The user can pick a
@@ -530,6 +557,8 @@ class InstanceDialog(QDialog):
                 self.loader_status_lbl.setText("Loader version: uses upstream latest")
             self.loader_status_lbl.setStyleSheet("color: #94A3B8; font-size: 11px;")
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def _open_folder(self):
         if self.folder_name:
             if self.instance_mgr:
@@ -573,19 +602,26 @@ class InstanceDialog(QDialog):
                 self.version_combo.setCurrentIndex(idx)
 
     def get_data(self):
+<<<<<<< HEAD
         loader_version = ""
         try:
             loader_version = self.loader_version_combo.currentData() or ""
         except Exception:
             loader_version = ""
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         return {
             "name": self.name_input.text().strip(),
             "loader": self.loader_combo.currentText(),
             "version": self.version_combo.currentText() or "1.20.4",
             "max_ram": self.max_ram_slider.value(),
             "java_path": self.java_combo.currentData() or "auto",
+<<<<<<< HEAD
             "jvm_args": self.jvm_input.text().strip(),
             "loader_version": loader_version.strip() if isinstance(loader_version, str) else "",
+=======
+            "jvm_args": self.jvm_input.text().strip()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
 
 
@@ -631,6 +667,7 @@ class InstancesView(QWidget):
         mrpack_btn.clicked.connect(self.open_mrpack_converter)
         header.addWidget(mrpack_btn)
 
+<<<<<<< HEAD
         loader_btn = QPushButton(" Loader Versions")
         loader_btn.setObjectName("SecondaryButton")
         loader_btn.setIcon(IconEngine.get_icon("refresh", QColor("#94A3B8"), QColor(accent), 14))
@@ -640,6 +677,8 @@ class InstancesView(QWidget):
         loader_btn.clicked.connect(self.open_loader_versions)
         header.addWidget(loader_btn)
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         sync_btn = QPushButton(" Global Sync")
         sync_btn.setObjectName("SecondaryButton")
         sync_btn.setIcon(IconEngine.get_icon("refresh", QColor("#94A3B8"), QColor(accent), 14))
@@ -716,6 +755,7 @@ class InstancesView(QWidget):
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.reload_list()
 
+<<<<<<< HEAD
     def open_loader_versions(self):
         """Open the Loader Version Manager for the currently-selected instance."""
         item = self.inst_list.currentItem()
@@ -731,6 +771,8 @@ class InstancesView(QWidget):
         dialog = LoaderVersionsDialog(self, config=self.config, instance_data=inst)
         dialog.exec()
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def run_global_sync(self):
         self.logger.user_action("Triggered manual Global Sync from InstancesView")
         ok, msg = self.instance_mgr.sync_global_data(self.config)
@@ -751,8 +793,12 @@ class InstancesView(QWidget):
                     loader=data["loader"],
                     max_ram=data["max_ram"],
                     java_path=data["java_path"],
+<<<<<<< HEAD
                     jvm_args=data["jvm_args"],
                     loader_version=data.get("loader_version", "")
+=======
+                    jvm_args=data["jvm_args"]
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 )
                 self.config.set("selected_instance", new_folder)
                 self.logger.user_action(f"Created instance '{data['name']}' ({data['loader']} {data['version']})")
@@ -770,7 +816,10 @@ class InstancesView(QWidget):
             name=inst["name"], loader=inst.get("loader", "Vanilla"),
             version=inst["version"], max_ram=inst["max_ram"],
             java_path=inst.get("java_path", "auto"), jvm_args=inst.get("jvm_args", ""),
+<<<<<<< HEAD
             loader_version=inst.get("loader_version", ""),
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             folder_name=folder_name, instance_mgr=self.instance_mgr
         )
         if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -782,8 +831,12 @@ class InstancesView(QWidget):
                 version=data["version"],
                 max_ram=data["max_ram"],
                 java_path=data["java_path"],
+<<<<<<< HEAD
                 jvm_args=data["jvm_args"],
                 loader_version=data.get("loader_version", "")
+=======
+                jvm_args=data["jvm_args"]
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             )
             self.logger.user_action(f"Updated instance '{folder_name}' settings")
 

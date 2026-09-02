@@ -5,6 +5,7 @@ from PyQt6.QtCore import QThread, pyqtSignal
 from neurax.core.logger import Logger
 
 
+<<<<<<< HEAD
 def _fetch_latest_loader_versions(timeout: int = 6) -> Dict[str, str]:
     """Best-effort fetch of the newest available version for each loader.
     Returns a dict like {"fabric": "0.16.10", "quilt": "0.26.0",
@@ -58,6 +59,8 @@ def _fetch_latest_loader_versions(timeout: int = 6) -> Dict[str, str]:
     return out
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 class AIVersionRadar:
     """
     Enhanced AI Version Radar & Release Pipeline Intelligence Engine.
@@ -199,7 +202,10 @@ class AIVersionRadarWorker(QThread):
         readiness = AIVersionRadar.check_loader_readiness(latest_rel)
         stability = AIVersionRadar.calculate_stability_index(latest_rel, "release")
         snap_stability = AIVersionRadar.calculate_stability_index(latest_snap, "snapshot") if latest_snap else {}
+<<<<<<< HEAD
         loader_versions = _fetch_latest_loader_versions()
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         return {
             "latest_release": latest_rel,
@@ -213,7 +219,10 @@ class AIVersionRadarWorker(QThread):
             "snapshot_status": snap_stability.get("status", ""),
             "snapshot_stability": snap_stability.get("stability_index", 0),
             "loaders": readiness,
+<<<<<<< HEAD
             "loader_versions": loader_versions,
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             "timestamp": int(time.time())
         }
 

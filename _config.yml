@@ -1,0 +1,28 @@
+# Site Configuration
+title: NeuraX
+description: NeuraX is an expert-engineered, ultra-fast Minecraft Launcher built with Python 3.11+ and PyQt6. It features a modern glassmorphism interface, GPU-accelerated micro-interactions, full instance isolation, Microsoft authentication, dynamic version manifests, dynamic Java detection, and 3D head/body skin rendering.
+url: "https://dytalmc.github.io"
+
+# Build Settings
+markdown: kramdown
+permalink: pretty
+
+# Ensure your static SEO and asset files are included in the published build
+include:
+  - sitemap.xml
+  - robots.txt
+  - app.manifest
+  - nx.ico
+  - nx.png
+
+# Exclude repository source files from being processed into the public web build
+exclude:
+  - main.py
+  - pyproject.toml
+  - requirements.txt
+  - version.txt
+  - src/
+  - neurax/
+  - LICENSE
+  - README.md
+  - .github/

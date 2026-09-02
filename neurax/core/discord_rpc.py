@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 import os
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 import time
 import threading
 import queue
 import asyncio
+<<<<<<< HEAD
 import subprocess
 import ipaddress
 import re
@@ -20,6 +24,12 @@ from neurax.core.config import (
     get_logo_url,
     seed_default_logos,
 )
+=======
+import ipaddress
+import re
+import sys
+from neurax.core.logger import Logger
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 # Windows asyncio ProactorEventLoop Pipe deallocator safety patch
 if sys.platform == "win32":
@@ -54,6 +64,7 @@ try:
 except ImportError:
     PYPRESENCE_AVAILABLE = False
 
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Client IDs
@@ -65,10 +76,14 @@ except ImportError:
 # `discord_client_id` in the user's config to a freshly registered
 # application to override.
 LEGACY_CLIENT_IDS = [
+=======
+CLIENT_IDS = [
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     "1089247653258100806",
     "1115278784742838342",
     "1077677906477527130",
     "943488506840223764",
+<<<<<<< HEAD
     "1218520338780770304",
 ]
 
@@ -88,6 +103,12 @@ REMOTE_ASSET_FALLBACKS = [
     "https://raw.githubusercontent.com/Dytalmc/NeuraX/main/nx.ico",
     "https://raw.githubusercontent.com/Dytalmc/NeuraX/main/n2/nx.png",
 ]
+=======
+    "1218520338780770304"
+]
+
+ASSET_NEURAX = "https://raw.githubusercontent.com/Dytalmc/NeuraX/main/n2/nx.ico"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 KNOWN_SERVERS = {
     "hypixel.net": "Hypixel Network",
@@ -103,10 +124,13 @@ KNOWN_SERVERS = {
     "2b2t.org": "2b2t Anarchy",
 }
 
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def is_private_ip(host: str) -> bool:
     if not host:
         return True
@@ -122,7 +146,10 @@ def is_private_ip(host: str) -> bool:
         return True
     return False
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def resolve_friendly_server_name(host: str) -> str:
     if not host:
         return "Multiplayer"
@@ -135,6 +162,7 @@ def resolve_friendly_server_name(host: str) -> str:
         return parts[-2].capitalize() + " Server"
     return host
 
+<<<<<<< HEAD
 
 def _discord_is_running() -> bool:
     """Best-effort, stdlib-only check for whether the Discord desktop
@@ -364,10 +392,17 @@ class DiscordManager:
       moment Discord opens, presence shows up within seconds.
     * Caches assets under `neurax/logos/` and `neurax/cache/discord_assets/`
       so Discord can pull them via `file://` URLs with zero outbound HTTP.
+=======
+class DiscordManager:
+    """Thread-safe background manager for NeuraX Discord Rich Presence (RPC).
+    Provides live in-game status, player skin avatar integration, modloader identification,
+    server discovery reporting, and seamless error recovery.
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     """
     _instance = None
     _lock = threading.Lock()
 
+<<<<<<< HEAD
     # Exponential backoff between connect attempts (seconds).
     RECONNECT_BACKOFF = (5.0, 15.0, 60.0)
     RATE_LIMIT_MIN_INTERVAL = 1.5
@@ -407,6 +442,8 @@ class DiscordManager:
         if client_id and client_id not in self._dead_client_ids:
             self._dead_client_ids.add(client_id)
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def __init__(self):
         self.logger = Logger.get_instance()
         self.rpc = None
@@ -414,11 +451,16 @@ class DiscordManager:
         self.config = None
         self.start_time = int(time.time())
         self.game_start_time = None
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.in_game = False
         self.game_info = {}
         self.launcher_state = "Exploring NeuraX"
         self.launcher_details = "Dashboard"
+<<<<<<< HEAD
 
         self._last_update_time = 0.0
         self._last_payload = {}
@@ -431,13 +473,24 @@ class DiscordManager:
         # Track whether we've logged a fatal "all IDs rejected" so we
         # don't spam the log every retry.
         self._fatal_logged = False
+=======
+        
+        self._last_update_time = 0.0
+        self._last_payload = {}
+        self._reconnect_cooldown = 0.0
+        self._last_log_error = ""
+        self._testing = False
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         self._queue = queue.Queue()
         self._running = True
         self._worker_thread = threading.Thread(target=self._worker_loop, daemon=True, name="DiscordRPCWorker")
         self._worker_thread.start()
 
+<<<<<<< HEAD
     # --- Singleton --------------------------------------------------------
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     @classmethod
     def get_instance(cls, config=None):
         with cls._lock:
@@ -447,6 +500,7 @@ class DiscordManager:
                 cls._instance.initialize(config)
             return cls._instance
 
+<<<<<<< HEAD
     # --- Worker loop ------------------------------------------------------
     def _worker_loop(self):
         loop = asyncio.new_event_loop()
@@ -484,6 +538,45 @@ class DiscordManager:
                 pass
 
     # --- Connect ----------------------------------------------------------
+=======
+    def _worker_loop(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        while self._running:
+            now = time.time()
+            if self.is_enabled() and not self.connected and now >= self._reconnect_cooldown and not self._testing:
+                self._do_connect(loop)
+
+            try:
+                cmd, data = self._queue.get(timeout=0.5)
+            except queue.Empty:
+                continue
+
+            try:
+                if cmd == "CONNECT":
+                    if not self.connected:
+                        self._do_connect(loop)
+                elif cmd == "UPDATE":
+                    payload, force = data
+                    self._do_update(payload, force)
+                elif cmd == "CLEAR":
+                    self._do_clear()
+                elif cmd == "CLOSE":
+                    self._do_clear()
+                    self._do_close()
+                    break
+            except Exception as e:
+                self.logger.warning(f"Discord RPC worker command error: {e}")
+            finally:
+                self._queue.task_done()
+
+        try:
+            loop.close()
+        except Exception:
+            pass
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def _do_connect(self, loop):
         if not PYPRESENCE_AVAILABLE or self.connected:
             return
@@ -492,6 +585,7 @@ class DiscordManager:
         if now < self._reconnect_cooldown:
             return
 
+<<<<<<< HEAD
         # Pre-flight: is Discord actually running?
         discord_running = _discord_is_running()
         if not discord_running:
@@ -530,6 +624,15 @@ class DiscordManager:
                 break
             rejected_4000 = False
             for pipe_idx in self.PIPE_RANGE:
+=======
+        connected = False
+        last_error = ""
+
+        for cid in CLIENT_IDS:
+            if connected:
+                break
+            for pipe_idx in range(10):
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 try:
                     if self.rpc:
                         try:
@@ -537,12 +640,17 @@ class DiscordManager:
                         except Exception:
                             pass
                         self.rpc = None
+<<<<<<< HEAD
+=======
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     presence = pypresence.Presence(cid, pipe=pipe_idx, loop=loop)
                     presence.connect()
                     self.rpc = presence
                     self.connected = True
                     connected = True
                     self._reconnect_cooldown = 0.0
+<<<<<<< HEAD
                     self._reconnect_attempts = 0
                     self._fatal_logged = False
                     self._last_log_error = ""
@@ -553,6 +661,10 @@ class DiscordManager:
                         self._warm_assets_for_client(cid)
                     except Exception:
                         pass
+=======
+                    self._last_log_error = ""
+                    self.logger.info(f"Discord Rich Presence connected successfully using Client ID {cid} on pipe {pipe_idx}.")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     self._build_and_send_presence(force=True)
                     break
                 except Exception as e:
@@ -564,6 +676,7 @@ class DiscordManager:
                         except Exception:
                             pass
                         self.rpc = None
+<<<<<<< HEAD
                     if "4000" in err_msg or "Invalid" in err_msg or "client_id" in err_msg.lower():
                         # Client ID is provably dead — stop trying pipes
                         # for it and mark it dead for the rest of the
@@ -573,10 +686,15 @@ class DiscordManager:
                         rejected_4000 = True
                         break
                     if "Pipe not found" in err_msg or "Connection refused" in err_msg:
+=======
+
+                    if "4000" in err_msg or "Invalid" in err_msg or "client_id" in err_msg.lower():
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         break
 
         if not connected:
             self.connected = False
+<<<<<<< HEAD
             self._schedule_retry(force_quick=False)
             if not last_error:
                 last_error = (
@@ -640,15 +758,28 @@ class DiscordManager:
         self._reconnect_attempts += 1
 
     # --- Update / clear / close ------------------------------------------
+=======
+            self._reconnect_cooldown = now + 45.0
+            if last_error and last_error != self._last_log_error:
+                self._last_log_error = last_error
+                self.logger.warning(f"Discord RPC connection skipped or failed: {last_error}")
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def _do_update(self, payload: dict, force: bool):
         if not self.connected or not self.rpc:
             return
 
         now = time.time()
         if not force:
+<<<<<<< HEAD
             if payload == self._last_payload and (now - self._last_update_time < self.PRESENCE_DEDUPE_INTERVAL):
                 return
             if (now - self._last_update_time) < self.RATE_LIMIT_MIN_INTERVAL:
+=======
+            if payload == self._last_payload and (now - self._last_update_time < 15.0):
+                return
+            if (now - self._last_update_time) < 1.5:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 return
 
         try:
@@ -664,8 +795,12 @@ class DiscordManager:
                 except Exception:
                     pass
             self.rpc = None
+<<<<<<< HEAD
             # Quick reconnect on disconnect mid-update.
             self._reconnect_cooldown = time.time() + 5.0
+=======
+            self._reconnect_cooldown = now + 30.0
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def _do_clear(self):
         if self.connected and self.rpc:
@@ -691,7 +826,10 @@ class DiscordManager:
             self.rpc = None
             self._last_payload = {}
 
+<<<<<<< HEAD
     # --- Public API -------------------------------------------------------
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def initialize(self, config):
         self.config = config
         if self.config:
@@ -699,12 +837,15 @@ class DiscordManager:
                 self.config.config_changed.connect(self._on_config_changed)
             except Exception:
                 pass
+<<<<<<< HEAD
         # Seed logos on every boot so the cache is always fresh if the
         # user replaced a bundled asset.
         try:
             seed_default_logos(force=False)
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         if self.is_enabled():
             self.connect()
 
@@ -717,6 +858,7 @@ class DiscordManager:
 
     def connect(self):
         if not PYPRESENCE_AVAILABLE:
+<<<<<<< HEAD
             return False, "pypresence is not installed."
         # Reset backoff so a manual connect actually tries immediately.
         self._reconnect_cooldown = 0.0
@@ -735,6 +877,10 @@ class DiscordManager:
             return False, msg
         self._queue.put(("CONNECT", None))
         return True, "queued"
+=======
+            return
+        self._queue.put(("CONNECT", None))
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def _on_config_changed(self, key: str, value):
         if key == "discord_rpc":
@@ -742,6 +888,7 @@ class DiscordManager:
                 self.connect()
             else:
                 self.clear_presence()
+<<<<<<< HEAD
         elif key == "discord_client_id":
             # New Client ID — anything previously marked dead is
             # potentially fine again, so clear the list and reconnect.
@@ -749,6 +896,8 @@ class DiscordManager:
             self._fatal_logged = False
             if self.is_enabled():
                 self.connect()
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         elif key.startswith("discord_"):
             self.refresh_presence(force=True)
 
@@ -764,7 +913,11 @@ class DiscordManager:
             7: ("Reading Announcements", "News & Updates"),
             8: ("Configuring Launcher", "Settings & Optimization"),
             9: ("Managing Local Servers", "+ New Local Server"),
+<<<<<<< HEAD
             10: ("Resting", "AFK Zone"),
+=======
+            10: ("Resting", "AFK Zone")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
         state, details = tab_names.get(index, ("Exploring NeuraX", "Dashboard"))
         self.set_launcher_activity(state, details)
@@ -784,7 +937,11 @@ class DiscordManager:
             "loader": loader,
             "server_ip": server_ip,
             "server_port": server_port,
+<<<<<<< HEAD
             "crashed": False,
+=======
+            "crashed": False
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
         self.refresh_presence(force=True)
 
@@ -796,6 +953,7 @@ class DiscordManager:
             "loader": "Vanilla",
             "server_ip": "",
             "server_port": 25565,
+<<<<<<< HEAD
             "crashed": True,
         }
         self.refresh_presence(force=True)
@@ -803,6 +961,13 @@ class DiscordManager:
         def revert():
             self.clear_game_activity()
 
+=======
+            "crashed": True
+        }
+        self.refresh_presence(force=True)
+        def revert():
+            self.clear_game_activity()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         threading.Timer(6.0, revert).start()
 
     def clear_game_activity(self):
@@ -813,6 +978,7 @@ class DiscordManager:
 
     def test_presence(self):
         self._testing = True
+<<<<<<< HEAD
         large = get_cached_discord_asset(ASSET_KEY_LARGE)
         small = get_cached_discord_asset(ASSET_KEY_SMALL) or large
         payload = {
@@ -823,6 +989,16 @@ class DiscordManager:
             "small_image": small or "",
             "small_text": "All Systems Operational",
             "start": int(time.time()),
+=======
+        payload = {
+            "details": "Playing NeuraX Launcher",
+            "state": "Discord RPC Test Successful",
+            "large_image": ASSET_NEURAX,
+            "large_text": "NeuraX Launcher by Dytalmc",
+            "small_image": ASSET_NEURAX,
+            "small_text": "All Systems Operational",
+            "start": int(time.time())
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         }
         self._queue.put(("UPDATE", (payload, True)))
 
@@ -855,6 +1031,7 @@ class DiscordManager:
         launcher_activity_enabled = cfg.get("discord_launcher_activity", True) if cfg else True
 
         username = cfg.get("username", "NeuraPlayer") if cfg else "NeuraPlayer"
+<<<<<<< HEAD
 
         # Resolve all the URLs up front so the payload is consistent
         # across the various branches below.
@@ -865,6 +1042,9 @@ class DiscordManager:
             if username and username != "NeuraPlayer"
             else small_image or large_image
         )
+=======
+        avatar_url = f"https://minotar.net/helm/{username}/64.png" if username and username != "NeuraPlayer" else ASSET_NEURAX
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         payload = {}
 
@@ -873,21 +1053,33 @@ class DiscordManager:
             if g.get("crashed"):
                 payload["details"] = f"Minecraft {g.get('version', '')} Crashed"
                 payload["state"] = f"Instance: {g.get('instance_name', 'Default')}"
+<<<<<<< HEAD
                 if large_image:
                     payload["large_image"] = large_image
+=======
+                payload["large_image"] = ASSET_NEURAX
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 payload["large_text"] = "NeuraX Launcher"
             elif mode == "Private":
                 payload["details"] = "Playing Minecraft"
                 payload["state"] = "In Game"
+<<<<<<< HEAD
                 if large_image:
                     payload["large_image"] = large_image
+=======
+                payload["large_image"] = ASSET_NEURAX
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 payload["large_text"] = "NeuraX Launcher"
             elif mode == "Minimal":
                 v_str = f" {g.get('version')}" if show_version and g.get("version") else ""
                 payload["details"] = f"Playing Minecraft{v_str}"
                 payload["state"] = "In Game"
+<<<<<<< HEAD
                 if large_image:
                     payload["large_image"] = large_image
+=======
+                payload["large_image"] = ASSET_NEURAX
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 payload["large_text"] = "NeuraX Launcher"
             else:
                 inst_name = g.get("instance_name", "Default")
@@ -920,33 +1112,50 @@ class DiscordManager:
 
                 payload["details"] = details
                 payload["state"] = " • ".join(state_parts)
+<<<<<<< HEAD
                 if large_image:
                     payload["large_image"] = large_image
                 payload["large_text"] = f"NeuraX Launcher • {ver} ({loader})"
                 if avatar_url:
                     payload["small_image"] = avatar_url
+=======
+                payload["large_image"] = ASSET_NEURAX
+                payload["large_text"] = f"NeuraX Launcher • {ver} ({loader})"
+                payload["small_image"] = avatar_url
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 payload["small_text"] = f"{username} ({loader})"
 
                 if show_time and self.game_start_time:
                     payload["start"] = self.game_start_time
 
                 if show_buttons and mode == "Full":
+<<<<<<< HEAD
                     payload["buttons"] = [
                         {"label": "NeuraX Launcher", "url": "https://github.com/Dytalmc/NeuraX"}
                     ]
+=======
+                    payload["buttons"] = [{"label": "NeuraX Launcher", "url": "https://github.com/Dytalmc/NeuraX"}]
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         elif not self.in_game and launcher_activity_enabled:
             payload["details"] = self.launcher_details or "Dashboard"
             payload["state"] = self.launcher_state or "Exploring NeuraX"
+<<<<<<< HEAD
             if large_image:
                 payload["large_image"] = large_image
             payload["large_text"] = "NeuraX Launcher"
             if avatar_url:
                 payload["small_image"] = avatar_url
+=======
+            payload["large_image"] = ASSET_NEURAX
+            payload["large_text"] = "NeuraX Launcher"
+            payload["small_image"] = avatar_url
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             payload["small_text"] = username
             if show_time and self.start_time:
                 payload["start"] = self.start_time
             if show_buttons and mode == "Full":
+<<<<<<< HEAD
                 payload["buttons"] = [
                     {"label": "NeuraX Launcher", "url": "https://github.com/Dytalmc/NeuraX"}
                 ]
@@ -955,6 +1164,11 @@ class DiscordManager:
             # Drop empty string values — pypresence rejects "" for
             # image keys.
             payload = {k: v for k, v in payload.items() if v != ""}
+=======
+                payload["buttons"] = [{"label": "NeuraX Launcher", "url": "https://github.com/Dytalmc/NeuraX"}]
+
+        if payload:
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             self._queue.put(("UPDATE", (payload, force)))
         else:
             self.clear_presence()
@@ -970,4 +1184,8 @@ class DiscordManager:
 
     def close(self):
         self._running = False
+<<<<<<< HEAD
         self._queue.put(("CLOSE", None))
+=======
+        self._queue.put(("CLOSE", None))
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0

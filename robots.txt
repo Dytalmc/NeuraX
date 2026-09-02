@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dytalmc.github.io/sitemap.xml

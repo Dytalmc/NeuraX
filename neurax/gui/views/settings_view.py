@@ -479,6 +479,7 @@ class SettingsView(QWidget):
         mode_sel_row.addStretch()
         card_layout.addLayout(mode_sel_row)
 
+<<<<<<< HEAD
         # Own Client ID — paste your application's ID here so RPC has a
         # registered application to talk to. Without this the bundled
         # legacy IDs may all be rejected with `Error 4000: Client ID is
@@ -515,6 +516,8 @@ class SettingsView(QWidget):
         cid_row.addWidget(help_btn)
         card_layout.addLayout(cid_row)
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         scroll_layout.addWidget(card)
         scroll.setWidget(scroll_widget)
         main_layout.addWidget(scroll)
@@ -658,6 +661,7 @@ class SettingsView(QWidget):
         self.logger.user_input("Discord RPC", val)
         rpc = DiscordManager.get_instance(self.config)
         if val:
+<<<<<<< HEAD
             ok, msg = rpc.connect()
             if not ok:
                 QMessageBox.information(self, "Discord RPC", msg)
@@ -715,15 +719,32 @@ class SettingsView(QWidget):
                 QMessageBox.warning(self, "Discord RPC", msg)
                 return
         rpc.set_launcher_activity("Testing Rich Presence", "In NeuraX Launcher Settings")
+=======
+            rpc.start()
+        else:
+            rpc.stop()
+
+    def _test_discord_presence(self):
+        rpc = DiscordManager.get_instance(self.config)
+        if not rpc.enabled:
+            QMessageBox.information(self, "Discord RPC", "Discord RPC is currently disabled. Please enable it first.")
+            return
+        rpc.update_presence(state="Testing Rich Presence", details="In NeuraX Launcher Settings", force=True)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         QMessageBox.information(self, "Discord RPC", "Discord presence updated! Check your Discord profile.")
 
     def _reconnect_discord(self):
         rpc = DiscordManager.get_instance(self.config)
+<<<<<<< HEAD
         ok, msg = rpc.connect()
         if not ok:
             QMessageBox.warning(self, "Discord RPC", msg)
         else:
             QMessageBox.information(self, "Discord RPC", "Reconnection attempt initiated.")
+=======
+        rpc.reconnect()
+        QMessageBox.information(self, "Discord RPC", "Reconnection attempt initiated.")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def _ms_login(self):
         self.logger.user_action("Triggered Microsoft Auth from SettingsView")

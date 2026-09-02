@@ -8,14 +8,20 @@ import threading
 import zipfile
 import requests
 from pathlib import Path
+<<<<<<< HEAD
 import re
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from typing import List, Dict, Any
 from PyQt6.QtCore import QThread, pyqtSignal, QObject
 from neurax.core.config import get_dot_neurax_dir
 from neurax.core.java_finder import JavaFinder
 from neurax.core.logger import Logger
+<<<<<<< HEAD
 from neurax.core._silent_proc import popen_no_window, run_silent, SILENT_CREATIONFLAGS
 from neurax.core._streaming_dl import stream_download
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from neurax.core.launcher import get_required_java_major
 
 def kill_server_process_by_folder(folder_path: Path):
@@ -26,7 +32,13 @@ def kill_server_process_by_folder(folder_path: Path):
     folder_str_posix = str(resolved).lower().replace("\\", "/")
 
     if sys.platform == "win32":
+<<<<<<< HEAD
         try:
+=======
+        creationflags = subprocess.CREATE_NO_WINDOW
+        
+        try: 
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             ps_win = folder_str_win.replace("'", "''")
             ps_posix = folder_str_posix.replace("'", "''")
             ps_cmd = (
@@ -34,6 +46,7 @@ def kill_server_process_by_folder(folder_path: Path):
                 f"Where-Object {{ $_.CommandLine -and ($_.CommandLine.ToLower().Contains('{ps_win}') -or $_.CommandLine.ToLower().Contains('{ps_posix}')) }} | "
                 f"ForEach-Object {{ Stop-Process -Id $_.ProcessId -Force }}"
             )
+<<<<<<< HEAD
             # Run PowerShell with our silent creation flags
             # (CREATE_NO_WINDOW | DETACHED_PROCESS |
             # CREATE_NEW_PROCESS_GROUP) so killing the server never
@@ -49,10 +62,14 @@ def kill_server_process_by_folder(folder_path: Path):
                 )
             except Exception:
                 pass
+=======
+            subprocess.run(["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", ps_cmd], capture_output=True, text=True, creationflags=creationflags, timeout=5)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         except Exception:
             pass
 
         try:
+<<<<<<< HEAD
             # wmic has been deprecated and frequently flashes a console;
             # use CIM directly via PowerShell instead, with the same
             # silent flags. We collect (PID, commandline) pairs and kill
@@ -93,6 +110,24 @@ def kill_server_process_by_folder(folder_path: Path):
                             )
                         except Exception:
                             pass
+=======
+            cmd = 'wmic process where "name=\'java.exe\' or name=\'javaw.exe\'" get processid,commandline'
+            res = subprocess.run(cmd, shell=True, capture_output=True, text=True, creationflags=creationflags, timeout=5)
+            if res.returncode == 0:
+                for line in res.stdout.splitlines():
+                    line_low = line.lower()
+                    if folder_str_win in line_low or folder_str_posix in line_low:
+                        parts = line.strip().split()
+                        if parts:
+                            pid = parts[-1]
+                            if pid.isdigit():
+                                subprocess.run(
+                                    ["taskkill", "/F", "/T", "/PID", pid],
+                                    creationflags=creationflags,
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL
+                                )
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         except Exception:
             pass
     else:
@@ -151,6 +186,7 @@ def _force_rmtree(target_path: Path, max_retries: int = 5, delay: float = 0.3) -
 
     if target_path.exists() and sys.platform == "win32":
         try:
+<<<<<<< HEAD
             cmd = f'cmd.exe /c rmdir /s /q "{target_path.resolve()}"'
             subprocess.run(
                 cmd,
@@ -160,6 +196,11 @@ def _force_rmtree(target_path: Path, max_retries: int = 5, delay: float = 0.3) -
                 stderr=subprocess.DEVNULL,
                 creationflags=SILENT_CREATIONFLAGS,
             )
+=======
+            creationflags = subprocess.CREATE_NO_WINDOW
+            cmd = f'cmd.exe /c rmdir /s /q "{target_path.resolve()}"'
+            subprocess.run(cmd, shell=True, capture_output=True, creationflags=creationflags)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         except Exception:
             pass
 
@@ -324,11 +365,14 @@ class LocalServerManager(QObject):
 class CreateServerWorker(QThread):
     progress = pyqtSignal(int, str)
     finished = pyqtSignal(bool, str, str)
+<<<<<<< HEAD
     # Per-line log message — streamed straight into the in-launcher
     # "new server launching" log panel so the user sees exactly which
     # jar / library is being downloaded. Like a real Minecraft
     # launcher's server console.
     log_message = pyqtSignal(str)
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def __init__(self, name: str, version: str, loader: str, max_ram: int,
                  port: int = 25565, java_path: str = "auto",
@@ -527,10 +571,15 @@ class CreateServerWorker(QThread):
             return False
 
     def _download_vanilla_server(self, version: str, dest_path: Path) -> bool:
+<<<<<<< HEAD
         try:
             from neurax.core._streaming_dl import stream_download
             manifest_url = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
             self.log_message.emit(f"[Vanilla] Fetching Mojang version manifest...")
+=======
+        try: 
+            manifest_url = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             res = requests.get(manifest_url, timeout=10)
             if res.status_code == 200:
                 data = res.json()
@@ -546,6 +595,7 @@ class CreateServerWorker(QThread):
                         server_info = v_data.get("downloads", {}).get("server", {})
                         server_url = server_info.get("url")
                         if server_url:
+<<<<<<< HEAD
                             self.log_message.emit(
                                 f"[Vanilla] Streaming server.jar for {version}..."
                             )
@@ -581,6 +631,15 @@ class CreateServerWorker(QThread):
                 self.log_message.emit(f"[Vanilla] error: {e}")
             except Exception:
                 pass
+=======
+                            jar_res = requests.get(server_url, timeout=30)
+                            if jar_res.status_code == 200:
+                                with open(dest_path, "wb") as f:
+                                    f.write(jar_res.content)
+                                return True
+        except Exception as e:
+            self.logger.warning(f"Vanilla server download failed for {version}: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         return False
 
     def _download_papermc_v3(self, project: str, version: str, dest_path: Path) -> bool:
@@ -598,11 +657,17 @@ class CreateServerWorker(QThread):
             self.logger.warning(f"_download_papermc_v3 called with unknown project {project!r}")
             return False
         try:
+<<<<<<< HEAD
             from neurax.core._streaming_dl import stream_download
             url = (
                 f"https://fill.papermc.io/v3/projects/{project_low}/versions/{version}/builds"
             )
             self.log_message.emit(f"[PaperMC] Querying {project_low.title()} {version} builds...")
+=======
+            url = (
+                f"https://fill.papermc.io/v3/projects/{project_low}/versions/{version}/builds"
+            )
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             res = requests.get(
                 url, timeout=15, allow_redirects=True,
                 headers={"User-Agent": "NeuraX-Launcher/4.0.0"},
@@ -611,14 +676,20 @@ class CreateServerWorker(QThread):
                 self.logger.warning(
                     f"PaperMC v3 list failed for {project_low} {version}: HTTP {res.status_code}"
                 )
+<<<<<<< HEAD
                 self.log_message.emit(f"[PaperMC] Build list failed: HTTP {res.status_code}")
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 return False
             builds = res.json()
             if not builds:
                 self.logger.warning(
                     f"PaperMC v3 returned no builds for {project_low} {version}"
                 )
+<<<<<<< HEAD
                 self.log_message.emit(f"[PaperMC] No builds available for {project_low} {version}")
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 return False
             # Prefer STABLE builds, then fall back to the newest build overall.
             stable = [b for b in builds if b.get("channel") == "STABLE"]
@@ -634,6 +705,7 @@ class CreateServerWorker(QThread):
                     f"PaperMC v3 build {chosen.get('id')} for {project_low} {version} "
                     "exposes no server download URL"
                 )
+<<<<<<< HEAD
                 self.log_message.emit(f"[PaperMC] No server download URL on build {chosen.get('id')}")
                 return False
             dl_url = server_dl["url"]
@@ -681,6 +753,27 @@ class CreateServerWorker(QThread):
                 self.log_message.emit(f"[PaperMC] error: {e}")
             except Exception:
                 pass
+=======
+                return False
+            dl_url = server_dl["url"]
+            jar_res = requests.get(
+                dl_url, timeout=120, allow_redirects=True,
+                headers={"User-Agent": "NeuraX-Launcher/4.0.0"},
+            )
+            if jar_res.status_code == 200 and len(jar_res.content) > 0:
+                with open(dest_path, "wb") as f:
+                    f.write(jar_res.content)
+                self.logger.info(
+                    f"Downloaded {project_low} {version} build "
+                    f"{chosen.get('id')} ({len(jar_res.content)} bytes) to {dest_path}"
+                )
+                return True
+            self.logger.warning(
+                f"PaperMC v3 jar download failed for {project_low} {version}: HTTP {jar_res.status_code}"
+            )
+        except Exception as e:
+            self.logger.warning(f"PaperMC v3 download error for {project_low} {version}: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         return False
 
     def _download_paper_server(self, version: str, dest_path: Path) -> bool:
@@ -703,11 +796,17 @@ class CreateServerWorker(QThread):
         We pick the highest build number and download its ``primary`` artifact.
         """
         try:
+<<<<<<< HEAD
             from neurax.core._streaming_dl import stream_download
             list_url = (
                 f"https://api.leafmc.one/v2/projects/leaf/versions/{version}"
             )
             self.log_message.emit(f"[Leaf] Querying Leaf {version} builds...")
+=======
+            list_url = (
+                f"https://api.leafmc.one/v2/projects/leaf/versions/{version}"
+            )
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             res = requests.get(
                 list_url, timeout=15,
                 headers={"User-Agent": "NeuraX-Launcher/4.0.0"},
@@ -721,6 +820,7 @@ class CreateServerWorker(QThread):
                         f"https://api.leafmc.one/v2/projects/leaf/versions/{version}"
                         f"/builds/{latest_build}/downloads/leaf-{version}-{latest_build}.jar"
                     )
+<<<<<<< HEAD
                     self.log_message.emit(
                         f"[Leaf] Streaming Leaf {version} build {latest_build}..."
                     )
@@ -751,19 +851,35 @@ class CreateServerWorker(QThread):
                     ):
                         self.logger.info(
                             f"Downloaded Leaf {version} build {latest_build} to {dest_path}"
+=======
+                    jar_res = requests.get(
+                        dl_url, timeout=60,
+                        headers={"User-Agent": "NeuraX-Launcher/4.0.0"},
+                    )
+                    if jar_res.status_code == 200 and len(jar_res.content) > 0:
+                        with open(dest_path, "wb") as f:
+                            f.write(jar_res.content)
+                        self.logger.info(
+                            f"Downloaded Leaf {version} build {latest_build} "
+                            f"({len(jar_res.content)} bytes) to {dest_path}"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         )
                         return True
         except Exception as e:
             self.logger.warning(f"Leaf server download failed for {version}: {e}")
+<<<<<<< HEAD
             try:
                 self.log_message.emit(f"[Leaf] error: {e}")
             except Exception:
                 pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         # Fallback: Leaf is a PaperMC fork — Paper is a perfectly usable drop-in.
         return self._download_papermc_v3("paper", version, dest_path)
 
     def _download_purpur_server(self, version: str, dest_path: Path) -> bool:
         try:
+<<<<<<< HEAD
             from neurax.core._streaming_dl import stream_download
             dl_url = f"https://api.purpurmc.org/v2/purpur/{version}/latest/download"
             self.log_message.emit(f"[Purpur] Streaming Purpur {version} server.jar...")
@@ -794,6 +910,16 @@ class CreateServerWorker(QThread):
                 self.log_message.emit(f"[Purpur] error: {e}")
             except Exception:
                 pass
+=======
+            dl_url = f"https://api.purpurmc.org/v2/purpur/{version}/latest/download"
+            jar_res = requests.get(dl_url, timeout=30)
+            if jar_res.status_code == 200:
+                with open(dest_path, "wb") as f:
+                    f.write(jar_res.content)
+                return True
+        except Exception as e:
+            self.logger.warning(f"Purpur server download failed for {version}: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         return False
 
     def _download_fabric_server(self, version: str, dest_path: Path) -> bool:
@@ -839,6 +965,7 @@ class CreateServerWorker(QThread):
                 f"https://meta.fabricmc.net/v2/versions/loader/{version}/"
                 f"{loader_ver}/{installer_ver}/server/jar"
             )
+<<<<<<< HEAD
             self.log_message.emit(
                 f"[Fabric] Streaming Fabric server jar (loader {loader_ver}, installer {installer_ver})..."
             )
@@ -866,6 +993,12 @@ class CreateServerWorker(QThread):
                 dl_url, dest_path,
                 progress_cb=_cb, timeout=180.0,
             ):
+=======
+            jar_res = requests.get(dl_url, timeout=120)
+            if jar_res.status_code == 200 and len(jar_res.content) > 0:
+                with open(dest_path, "wb") as f:
+                    f.write(jar_res.content)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 for prop in (
                     "fabric-server-launch.properties",
                     "fabric-server-launcher.properties",
@@ -874,6 +1007,7 @@ class CreateServerWorker(QThread):
                         f.write("serverJar=vanilla.jar\n")
                 self.logger.info(
                     f"Downloaded Fabric server {version} (loader {loader_ver}, "
+<<<<<<< HEAD
                     f"installer {installer_ver}) to {dest_path}"
                 )
                 return True
@@ -886,6 +1020,16 @@ class CreateServerWorker(QThread):
                 self.log_message.emit(f"[Fabric] error: {e}")
             except Exception:
                 pass
+=======
+                    f"installer {installer_ver}, {len(jar_res.content)} bytes)"
+                )
+                return True
+            self.logger.warning(
+                f"Fabric server download returned HTTP {jar_res.status_code} for {version}"
+            )
+        except Exception as e:
+            self.logger.warning(f"Fabric server download failed for {version}: {e}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         # Last-ditch fallback: a plain Vanilla server (mods/ folder still
         # exists so users can still drop Fabric/Quilt mods in — but the jar
         # itself is Vanilla).
@@ -1024,6 +1168,7 @@ class CreateServerWorker(QThread):
 
             # ---- Step 4: download every common library jar ----
             failed = []
+<<<<<<< HEAD
             total_libs = len(jar_paths)
             self.log_message.emit(
                 f"[Quilt] Downloading {total_libs} launcher libraries..."
@@ -1067,6 +1212,25 @@ class CreateServerWorker(QThread):
                         self.log_message.emit(f"[Quilt]   ({idx}/{total_libs}) {name} error: {e}")
                     except Exception:
                         pass
+=======
+            for name, rel, jar_url in jar_paths:
+                dest = s_dir / rel
+                if dest.exists() and dest.stat().st_size > 0:
+                    continue
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    resp = requests.get(
+                        jar_url, timeout=60,
+                        headers={"User-Agent": "NeuraX-Launcher/4.0.0"},
+                    )
+                    if resp.status_code == 200 and len(resp.content) > 0:
+                        with open(dest, "wb") as f:
+                            f.write(resp.content)
+                    else:
+                        failed.append(f"{name} HTTP {resp.status_code}")
+                except Exception as e:
+                    failed.append(f"{name} ({e})")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
             if failed:
                 self.logger.warning(
@@ -1154,6 +1318,7 @@ class CreateServerWorker(QThread):
                     head = None
                 if not head or head.status_code != 200:
                     return False
+<<<<<<< HEAD
                 self.log_message.emit(
                     f"[Forge] Streaming Forge {fv} installer jar..."
                 )
@@ -1187,6 +1352,14 @@ class CreateServerWorker(QThread):
                     progress_cb=_cb, timeout=180.0,
                 ):
                     return False
+=======
+                resp = requests.get(url, timeout=60)
+                if resp.status_code != 200 or len(resp.content) == 0:
+                    return False
+                installer_jar = s_dir / "forge-installer.jar"
+                with open(installer_jar, "wb") as f:
+                    f.write(resp.content)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 req_major = get_required_java_major(version)
                 which_j = None
                 cands = []
@@ -1206,15 +1379,27 @@ class CreateServerWorker(QThread):
                     which_j = cands[0]
                 if which_j and os.path.isfile(which_j):
                     cmd = [which_j, "-jar", str(installer_jar), "--installServer"]
+<<<<<<< HEAD
+=======
+                    creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                     try:
                         # Forge/NeoForge installers prompt for Y/N when
                         # asked to download additional libraries from the
                         # local .m2 cache; feed "yes" to keep them moving.
+<<<<<<< HEAD
                         run_silent(
                             cmd,
                             cwd=str(s_dir),
                             timeout=900,
                             input=b"yes\nyes\nyes\n",
+=======
+                        subprocess.run(
+                            cmd, cwd=str(s_dir), timeout=900,
+                            input=b"yes\nyes\nyes\n",
+                            capture_output=True,
+                            creationflags=creationflags,
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         )
                     except Exception as e:
                         self.logger.warning(f"Forge installer run failed: {e}")
@@ -1294,6 +1479,7 @@ class CreateServerWorker(QThread):
                     head = None
                 if not head or head.status_code != 200:
                     return False
+<<<<<<< HEAD
                 self.log_message.emit(
                     f"[NeoForge] Streaming NeoForge {nfv} installer jar..."
                 )
@@ -1327,6 +1513,14 @@ class CreateServerWorker(QThread):
                     progress_cb=_cb, timeout=180.0,
                 ):
                     return False
+=======
+                resp = requests.get(url, timeout=60)
+                if resp.status_code != 200 or len(resp.content) == 0:
+                    return False
+                installer_jar = s_dir / "neoforge-installer.jar"
+                with open(installer_jar, "wb") as f:
+                    f.write(resp.content)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 req_major = get_required_java_major(version)
                 which_j = None
                 cands = []
@@ -1346,12 +1540,22 @@ class CreateServerWorker(QThread):
                     which_j = cands[0]
                 if which_j and os.path.isfile(which_j):
                     cmd = [which_j, "-jar", str(installer_jar), "--installServer"]
+<<<<<<< HEAD
                     try:
                         run_silent(
                             cmd,
                             cwd=str(s_dir),
                             timeout=900,
                             input=b"yes\nyes\nyes\n",
+=======
+                    creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+                    try:
+                        subprocess.run(
+                            cmd, cwd=str(s_dir), timeout=900,
+                            input=b"yes\nyes\nyes\n",
+                            capture_output=True,
+                            creationflags=creationflags,
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                         )
                     except Exception as e:
                         self.logger.warning(f"NeoForge installer run failed: {e}")
@@ -1416,8 +1620,11 @@ class CreateServerWorker(QThread):
 class LocalServerStartWorker(QThread):
     progress = pyqtSignal(str)
     finished = pyqtSignal(bool, str, list, str)
+<<<<<<< HEAD
     # Per-line log — also forwards to the in-launcher server console.
     log_message = pyqtSignal(str)
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def __init__(self, server_folder: str, max_ram: int, java_path: str):
         super().__init__()
@@ -1481,6 +1688,7 @@ class LocalServerStartWorker(QThread):
                     raise RuntimeError("Failed to install server binaries and libraries.")
                 self.progress.emit("[LocalServer] Server files installed successfully.")
 
+<<<<<<< HEAD
             # ---------------------------------------------------------------
             # Auto-upgrade loader version on every start.
             # ---------------------------------------------------------------
@@ -1567,6 +1775,8 @@ class LocalServerStartWorker(QThread):
                 except Exception as ex:
                     self.logger.warning(f"Local server loader auto-upgrade check failed: {ex}")
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             loader_low = loader.lower().strip()
             if loader_low in ("fabric", "quilt"):
                 vanilla_jar = self.server_dir / "vanilla.jar"
@@ -1598,6 +1808,7 @@ class LocalServerStartWorker(QThread):
 
             self.progress.emit("[LocalServer] Resolving Java runtime environment...")
             req_major = get_required_java_major(version)
+<<<<<<< HEAD
 
             # NeuraX standardises on JDK 25 (LTS) for everything — play,
             # local server, modded, vanilla. Older majors (8/11/17/21)
@@ -1625,6 +1836,19 @@ class LocalServerStartWorker(QThread):
                     return None
                 candidates.append((p, major))
                 return (p, major)
+=======
+            java_exec = None
+
+            candidates = []
+            seen_cands = set()
+
+            def add_candidate(p):
+                if p and os.path.isfile(p):
+                    norm = os.path.normpath(p)
+                    if norm not in seen_cands:
+                        seen_cands.add(norm)
+                        candidates.append(norm)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
             if self.java_path and self.java_path != "auto":
                 add_candidate(self.java_path)
@@ -1641,6 +1865,7 @@ class LocalServerStartWorker(QThread):
             for _name, jpath in JavaFinder.find_java_installations():
                 add_candidate(jpath)
 
+<<<<<<< HEAD
             java_exec = None
             for want in PREFERENCE:
                 for c_path, major in candidates:
@@ -1659,6 +1884,23 @@ class LocalServerStartWorker(QThread):
                     f"It was not found on your PC. Please install JDK 25 (Java 25) and make sure it's on PATH "
                     f"or set the JAVA_HOME environment variable. "
                     f"Detected Java installations: {found}."
+=======
+            for c_path in candidates:
+                if JavaFinder.get_java_major_version(c_path) == req_major:
+                    java_exec = c_path
+                    break
+
+            if not java_exec or not os.path.isfile(java_exec):
+                if req_major == 21:
+                    req_name = "Java 21"
+                    ver_desc = "1.21.x"
+                else:
+                    req_name = f"JDK {req_major} (Java {req_major})"
+                    ver_desc = f"{req_major - 18}.x+"
+                err_msg = (
+                    f"Java {req_major} is required for Minecraft {version} ({ver_desc}), "
+                    f"but Java {req_major} was not found on your PC. Please install {req_name}."
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 )
                 self.progress.emit(f"[LocalServer ERROR] {err_msg}")
                 self.logger.error(err_msg)
@@ -1786,6 +2028,7 @@ class LocalServerRunner(QObject):
             return
 
         self.log_output.emit(f"[LocalServer] Starting server process: {' '.join(cmd)}")
+<<<<<<< HEAD
 
         try:
             # Spawn the server with CREATE_NO_WINDOW | DETACHED_PROCESS
@@ -1795,6 +2038,12 @@ class LocalServerRunner(QObject):
             # in-launcher console panel, and stdout=PIPE so the launcher
             # keeps streaming the server log into its built-in console.
             self.process = popen_no_window(
+=======
+        creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+
+        try:
+            self.process = subprocess.Popen(
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 cmd,
                 cwd=str(self.server_dir),
                 stdin=subprocess.PIPE,
@@ -1804,7 +2053,11 @@ class LocalServerRunner(QObject):
                 encoding="utf-8",
                 errors="replace",
                 bufsize=1,
+<<<<<<< HEAD
                 allow_stdin_pipe=True,
+=======
+                creationflags=creationflags
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             )
             self.is_running = True
             self.status_changed.emit("ONLINE")

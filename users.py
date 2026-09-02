@@ -48,20 +48,31 @@ from __future__ import annotations
 # itself only needs this if a user re-provisions a brand-new Supabase project
 # later; the first-run helper that copied it to the clipboard is no longer
 # surfaced in the Community view UI.
+<<<<<<< HEAD
 _SETUP_SQL = """-- NeuraX Community heartbeats table (improved)
 create extension if not exists "pgcrypto";
 
+=======
+_SETUP_SQL = """-- NeuraX Community heartbeats table
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 create table if not exists public.heartbeats (
   device_id text primary key,
   os text,
   launcher_version text,
+<<<<<<< HEAD
   instance_count int default 0,
   mod_count int default 0,
   total_playtime_seconds int default 0,
+=======
+  instance_count int,
+  mod_count int,
+  total_playtime_seconds int,
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
   last_seen timestamptz not null default now(),
   online boolean not null default false,
   instance_names jsonb default '[]'::jsonb,
   instance_mods jsonb default '{}'::jsonb,
+<<<<<<< HEAD
   payload jsonb default '{}'::jsonb,
   created_at timestamptz not null default now(),
   constraint heartbeats_device_id_len check (char_length(device_id) between 8 and 64)
@@ -102,6 +113,19 @@ create policy "anon_read"   on public.heartbeats for select to anon using (true)
 create policy "anon_upsert" on public.heartbeats for insert to anon with check (true);
 create policy "anon_update" on public.heartbeats for update to anon using (true) with check (true);
 create policy "anon_delete" on public.heartbeats for delete to anon using (false);
+=======
+  created_at timestamptz not null default now()
+);
+
+alter table public.heartbeats enable row level security;
+
+drop policy if exists "anon read" on public.heartbeats;
+drop policy if exists "anon upsert" on public.heartbeats;
+drop policy if exists "anon update" on public.heartbeats;
+create policy "anon read"   on public.heartbeats for select using (true);
+create policy "anon upsert" on public.heartbeats for insert with check (true);
+create policy "anon update" on public.heartbeats for update using (true);
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 """
 
 import json
@@ -141,6 +165,7 @@ def _project_root() -> Path:
         return Path.home() / ".neurax"
 
 
+<<<<<<< HEAD
 def _project_file_search_roots() -> List[Path]:
     """Directories to scan for fallback ``users_config.json`` /
     ``nx_config.json`` when the canonical ``%APPDATA%\\.neurax``
@@ -186,10 +211,13 @@ def _project_file_search_roots() -> List[Path]:
     return roots
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def _users_config_path() -> Path:
     return _project_root() / "users_config.json"
 
 
+<<<<<<< HEAD
 # Extra fallback paths the chip's refresh logic searches for a Supabase
 # config. Some installs ship the credentials in the workspace-level
 # ``nx_config.json`` (used by ``nx.py`` and the standalone dashboard) but
@@ -321,6 +349,8 @@ def _load_effective_users_config() -> Dict[str, Any]:
     return cfg
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 # ---------------------------------------------------------------------------
 # Device UUID
 # ---------------------------------------------------------------------------
@@ -370,6 +400,7 @@ def _store_uuid_in_file(device_uuid: str) -> None:
         pass
 
 
+<<<<<<< HEAD
 def _clear_uuid_from_keyring() -> None:
     """Best-effort: drop the keychain entry so a regenerated UUID
     can take its place. Failures are ignored (some Windows sessions
@@ -410,13 +441,18 @@ def force_regenerate_device_uuid() -> str:
     return new_uuid
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def get_or_create_device_uuid() -> str:
     """Return this device's persistent UUID, generating one on first call.
 
     Storage order: OS keychain -> users_config.json -> device_uuid.txt.
     Once written, the UUID is never rotated by this code path.
+<<<<<<< HEAD
     Use :func:`force_regenerate_device_uuid` to deliberately rotate
     (e.g. when the server reports a 1-month-stale UUID).
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     """
     # 1. Keychain.
     v = _load_uuid_from_keyring()
@@ -441,11 +477,32 @@ def get_or_create_device_uuid() -> str:
 _DEFAULT_USERS_CONFIG: Dict[str, Any] = {
     "supabase_url": "",
     "supabase_anon_key": "",
+<<<<<<< HEAD
     "heartbeat_interval_seconds": 5,  # chip auto-refreshes + heartbeat fires every 5s
+=======
+    "heartbeat_interval_seconds": 300,  # 5 min
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     "offline_mode": False,
 }
 
 
+<<<<<<< HEAD
+=======
+def _load_users_config() -> Dict[str, Any]:
+    p = _users_config_path()
+    if not p.exists():
+        return dict(_DEFAULT_USERS_CONFIG)
+    try:
+        with open(p, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+        merged = dict(_DEFAULT_USERS_CONFIG)
+        merged.update({k: v for k, v in data.items() if k in _DEFAULT_USERS_CONFIG})
+        return merged
+    except Exception:
+        return dict(_DEFAULT_USERS_CONFIG)
+
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def _save_users_config(cfg: Dict[str, Any]) -> None:
     p = _users_config_path()
     try:
@@ -472,6 +529,7 @@ def set_offline_mode(offline: bool) -> None:
 
 
 def get_users_config() -> Dict[str, Any]:
+<<<<<<< HEAD
     """Public config reader. Walks the fallback paths so a launcher
     that just had its ``%APPDATA%\\.neurax\\users_config.json`` deleted
     (or never had one) still picks up credentials from the
@@ -482,6 +540,9 @@ def get_users_config() -> Dict[str, Any]:
     Callers that need the raw file can call :func:`_load_users_config`.
     """
     return _load_effective_users_config()
+=======
+    return _load_users_config()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 
 # ---------------------------------------------------------------------------
@@ -592,6 +653,7 @@ class CommunityClient:
     def _url(self, path: str, query: str = "") -> str:
         return f"{self.supabase_url}/rest/v1/{path}{query}"
 
+<<<<<<< HEAD
     def beat(self, payload: Dict[str, Any], *, rotate_on_recycle: bool = True) -> Optional[Dict[str, Any]]:
         """Single send+receive round trip against the v2 ``beat()``
         RPC. Returns the full response payload on success
@@ -739,6 +801,17 @@ class CommunityClient:
             r = requests.patch(
                 self._url("heartbeats", query=f"?device_id=eq.{device_id}"),
                 json={"online": False, "last_seen": datetime.now(timezone.utc).isoformat()},
+=======
+    def send_heartbeat(self, payload: Dict[str, Any]) -> bool:
+        """Upsert a heartbeat row keyed by device_id. Returns True on success."""
+        if not self.is_configured():
+            return False
+        try:
+            r = requests.post(
+                self._url("heartbeats"),
+                params={"on_conflict": "device_id"},
+                json=payload,
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 headers=self._headers(),
                 timeout=self.timeout,
             )
@@ -750,6 +823,7 @@ class CommunityClient:
             self.last_error = str(e)
             return False
 
+<<<<<<< HEAD
     def check_lock_status(self, device_id: str) -> Dict[str, Any]:
         """Fetch this device's lock state from Supabase.
 
@@ -832,10 +906,60 @@ class CommunityClient:
         try:
             r = requests.get(
                 self._url("community_online_count", "?select=online_count,total_count,locked_count,country_count"),
+=======
+    def needs_table(self) -> bool:
+        """True if the last response was 404 / PGRST205 (table missing)."""
+        try:
+            return int(getattr(self, "last_status", 0)) == 404
+        except Exception:
+            return False
+
+    def set_offline(self, device_id: str) -> bool:
+        """Mark this device offline (called on graceful shutdown)."""
+        if not self.is_configured():
+            return False
+        try:
+            r = requests.patch(
+                self._url("heartbeats", query=f"?device_id=eq.{device_id}"),
+                json={"online": False, "last_seen": datetime.now(timezone.utc).isoformat()},
+                headers=self._headers(),
+                timeout=self.timeout,
+            )
+            return 200 <= r.status_code < 300
+        except Exception:
+            return False
+
+    def fetch_counters(self) -> Dict[str, Any]:
+        """Return a dict with `online_count` and `total_count`."""
+        out = {"online_count": 0, "total_count": 0, "recent": []}
+        if not self.is_configured():
+            return out
+        try:
+            # Online = seen in the last 5 minutes. Supabase REST supports
+            # the `now() - interval '5 minutes'` form via the RPC endpoint
+            # but for portability we filter on a conservative ISO cutoff.
+            # The backend `last_seen` is timestamptz so this works.
+            cutoff = datetime.now(timezone.utc).isoformat()
+            # The "last 5 min" filter: we ask for rows where last_seen > cutoff - 5m
+            # using the server-side `now() - interval '5 minutes'` operator.
+            online_q = (
+                f"?select=device_id,os,launcher_version,instance_count,mod_count,"
+                f"total_playtime_seconds,last_seen&last_seen=gt.{(cutoff[:19])}Z"
+            )
+            # The above filter isn't reliable for relative math; use a
+            # server-side filter instead. Supabase PostgREST supports
+            # `now() - interval` via the `and=` operator with a separate
+            # server-side function, but the simplest portable approach is
+            # to fetch the last N rows and filter client-side. The
+            # heartbeats table will rarely exceed a few thousand rows.
+            r = requests.get(
+                self._url("heartbeats", "?select=device_id,os,last_seen,instance_count,mod_count,total_playtime_seconds&order=last_seen.desc&limit=500"),
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 headers=self._headers(),
                 timeout=self.timeout,
             )
             self.last_status = r.status_code
+<<<<<<< HEAD
             if not (200 <= r.status_code < 300):
                 self.last_error = (r.text or "")[:300]
                 return empty
@@ -855,6 +979,43 @@ class CommunityClient:
             self.last_status = 0
             self.last_error = f"{type(e).__name__}: {e}"
             return empty
+=======
+            self.last_error = "" if 200 <= r.status_code < 300 else (r.text or "")[:300]
+            if not (200 <= r.status_code < 300):
+                return out
+            rows = r.json() or []
+            from datetime import timedelta
+            threshold = datetime.now(timezone.utc) - timedelta(minutes=5)
+            online = 0
+            recent: List[Dict[str, Any]] = []
+            for row in rows:
+                ls = row.get("last_seen")
+                is_online = False
+                if ls:
+                    try:
+                        # Strip trailing Z, treat as UTC
+                        ls_dt = datetime.fromisoformat(ls.replace("Z", "+00:00"))
+                        is_online = ls_dt >= threshold
+                    except Exception:
+                        is_online = False
+                if is_online:
+                    online += 1
+                recent.append({
+                    "device_id": row.get("device_id", ""),
+                    "os": row.get("os", ""),
+                    "online": is_online,
+                    "instance_count": row.get("instance_count", 0),
+                    "mod_count": row.get("mod_count", 0),
+                    "total_playtime_seconds": row.get("total_playtime_seconds", 0),
+                    "last_seen": ls or "",
+                })
+            out["online_count"] = online
+            out["total_count"] = len({r.get("device_id") for r in rows if r.get("device_id")})
+            out["recent"] = recent[:25]
+            return out
+        except Exception:
+            return out
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 
 # ---------------------------------------------------------------------------
@@ -874,9 +1035,12 @@ if _PYQT_OK:
         heartbeat_ok = pyqtSignal()
         heartbeat_failed = pyqtSignal(str)
         counters_ready = pyqtSignal(dict)
+<<<<<<< HEAD
         # Emitted every time we re-check the lock state. UI listens for
         # this to show / hide the lock screen overlay.
         lock_state_ready = pyqtSignal(dict)
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         def __init__(self, client: CommunityClient):
             super().__init__()
@@ -887,6 +1051,7 @@ if _PYQT_OK:
             """Slot called when the QThread starts."""
             self.send_heartbeat()
             self.fetch_counters()
+<<<<<<< HEAD
             self.check_lock()
 
         def send_heartbeat(self):
@@ -907,6 +1072,10 @@ if _PYQT_OK:
                         return
                 except Exception:
                     pass
+=======
+
+        def send_heartbeat(self):
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             payload = assemble_heartbeat_payload()
             self._last_payload = payload
             if self.client.send_heartbeat(payload):
@@ -924,6 +1093,7 @@ if _PYQT_OK:
                     msg = f"Heartbeat failed (HTTP {status}): {err[:160]}" if err else f"Heartbeat failed (HTTP {status})"
                 self.heartbeat_failed.emit(msg)
 
+<<<<<<< HEAD
         def check_lock(self):
             """Standalone lock check — exposed so the UI can poll more
             often than the heartbeat cadence if it wants."""
@@ -941,6 +1111,8 @@ if _PYQT_OK:
             except Exception:
                 self.lock_state_ready.emit({"locked": False, "message": "", "locked_at": "", "locked_by": ""})
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         def fetch_counters(self):
             data = self.client.fetch_counters()
             self.counters_ready.emit(data)
@@ -954,6 +1126,7 @@ if _PYQT_OK:
 # ---------------------------------------------------------------------------
 # Backward-compatible shim that app.py already calls
 # ---------------------------------------------------------------------------
+<<<<<<< HEAD
 def bootstrap_users_config() -> bool:
     """Mirror Supabase credentials from the workspace into the runtime
     users_config.json if they're missing there.
@@ -1003,12 +1176,15 @@ def bootstrap_users_config() -> bool:
         return False
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 def update_users_file() -> bool:
     """Sync update entry point. Kept for `app.py`'s existing import.
 
     Performs one heartbeat + counter fetch synchronously. Returns True on
     success. Safe to call when Supabase is not configured (returns False,
     no exception).
+<<<<<<< HEAD
 
     Locking gate:
         Before sending a heartbeat we re-check `check_lock_status()`.
@@ -1016,6 +1192,8 @@ def update_users_file() -> bool:
         (the launcher's lock overlay is already up and the lock must not
         be cleared by the launcher). The launcher UI reads the lock
         state via the `CommunityWorker.lock_state_ready` signal.
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     """
     try:
         cfg = _load_users_config()
@@ -1024,6 +1202,7 @@ def update_users_file() -> bool:
         client = CommunityClient(cfg.get("supabase_url", ""), cfg.get("supabase_anon_key", ""))
         if not client.is_configured():
             return False
+<<<<<<< HEAD
         # Even though `assemble_heartbeat_payload` is cheap, we still
         # want to skip it when the device is locked — the launcher on a
         # locked device must not appear "online" in the counters view.
@@ -1042,12 +1221,15 @@ def update_users_file() -> bool:
                 # not freeze the launcher; the next heartbeat will
                 # re-check.
                 pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         payload = assemble_heartbeat_payload()
         return client.send_heartbeat(payload)
     except Exception:
         return False
 
 
+<<<<<<< HEAD
 def is_current_device_locked() -> Dict[str, Any]:
     """Synchronous helper the launcher calls on every UI tick to decide
     whether to show the lock overlay. Same return shape as
@@ -1068,6 +1250,8 @@ def is_current_device_locked() -> Dict[str, Any]:
         return {"locked": False, "message": "", "locked_at": "", "locked_by": ""}
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 # ---------------------------------------------------------------------------
 # PyQt6 Community View
 # ---------------------------------------------------------------------------
@@ -1076,7 +1260,11 @@ if _PYQT_OK:
         QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame,
         QScrollArea, QGridLayout, QSizePolicy, QApplication, QMessageBox,
     )
+<<<<<<< HEAD
     from PyQt6.QtCore import Qt, QTimer, QThread, QPropertyAnimation
+=======
+    from PyQt6.QtCore import Qt, QTimer, QThread
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     from PyQt6.QtGui import QColor, QFont, QCursor
     try:
         from neurax.gui.widgets.glass_card import GlassCard
@@ -1213,7 +1401,11 @@ if _PYQT_OK:
             tl_col.addWidget(self.total_caption)
             counters_row.addLayout(tl_col)
             counters_row.addStretch()
+<<<<<<< HEAD
             self.status_lbl = QLabel("Offline")
+=======
+            self.status_lbl = QLabel("Connecting…")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             self.status_lbl.setStyleSheet("font-size: 11px; color: #94A3B8;")
             self.status_lbl.setAlignment(Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignRight)
             counters_row.addWidget(self.status_lbl)
@@ -1254,6 +1446,7 @@ if _PYQT_OK:
             if not client.is_configured():
                 self.status_lbl.setText("Offline — Supabase URL + key not configured.")
 
+<<<<<<< HEAD
         def set_device_uuid(self, device_uuid: str) -> None:
             """Update the YOUR DEVICE label to reflect a UUID that was
             rotated locally (e.g. after a 1-month-stale recycle).
@@ -1273,6 +1466,8 @@ if _PYQT_OK:
             except Exception:
                 pass
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         def _on_send_clicked(self):
             if self.worker:
                 self.worker.send_heartbeat()
@@ -1293,10 +1488,14 @@ if _PYQT_OK:
 
         def _on_heartbeat_failed(self, msg: str):
             self._set_device_badge(False)
+<<<<<<< HEAD
             # Binary offline — keep the message short. The chip on the
             # nav bar already says "offline", so the view only adds the
             # last update time once a fresh beat lands again.
             self.status_lbl.setText("Offline")
+=======
+            self.status_lbl.setText(f"Heartbeat failed: {msg}")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         def _on_counters_ready(self, data: dict):
             online = int(data.get("online_count", 0) or 0)
@@ -1394,6 +1593,7 @@ if _PYQT_OK:
 # ---------------------------------------------------------------------------
 if _PYQT_OK:
     class CommunityChip(QPushButton):
+<<<<<<< HEAD
         """Tiny chip showing a binary online/offline status + click
         trigger for an on-demand beat.
 
@@ -1426,10 +1626,14 @@ if _PYQT_OK:
         # listens for this and runs the same _TelemetryJob worker
         # that powers the 10s timer.
         beat_requested = pyqtSignal()
+=======
+        """Tiny clickable chip showing the live online count."""
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         def __init__(self, parent=None):
             super().__init__(parent)
             self.setObjectName("CommunityChip")
+<<<<<<< HEAD
             # Clickable: pointing-hand cursor + a quiet pulse on click
             # so the user knows something happened.
             self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -1643,16 +1847,37 @@ if _PYQT_OK:
                 "offline": ("#FF3366", "255, 51, 102"),
             }
             color, rgb = palette.get(state, palette["offline"])
+=======
+            self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+            self.setText("● —")
+            self.setToolTip("Click to open the NeuraX Community view")
+            self._apply_style(False)
+            self._client = None
+            self._timer = QTimer(self)
+            self._timer.setInterval(5 * 60 * 1000)
+            self._timer.timeout.connect(self._refresh)
+            self._timer.start()
+            # Initial async fetch.
+            QTimer.singleShot(800, self._refresh)
+
+        def _apply_style(self, online: bool):
+            color = "#00FF99" if online else "#94A3B8"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             self.setStyleSheet(
                 f"QPushButton#CommunityChip {{"
                 f" background: transparent;"
                 f" color: {color};"
                 f" font-size: 11px; font-weight: 800; letter-spacing: 0.5px;"
+<<<<<<< HEAD
                 f" border: 1px solid rgba({rgb}, 0.4);"
+=======
+                f" border: 1px solid rgba(0, 255, 153, 0.4);"
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 f" border-radius: 10px;"
                 f" padding: 3px 10px;"
                 f" }}"
                 f"QPushButton#CommunityChip:hover {{"
+<<<<<<< HEAD
                 f" background: rgba({rgb}, 0.1);"
                 f" }}"
             )
@@ -1752,3 +1977,20 @@ if _PYQT_OK:
                 if self._acknowledged:
                     return
                 self._render_offline(f"{type(e).__name__}: {e}")
+=======
+                f" background: rgba(0, 255, 153, 0.1);"
+                f" }}"
+            )
+
+        def _refresh(self):
+            cfg = _load_users_config()
+            client = CommunityClient(cfg.get("supabase_url", ""), cfg.get("supabase_anon_key", ""))
+            if not client.is_configured():
+                self.setText("● offline")
+                self._apply_style(False)
+                return
+            data = client.fetch_counters()
+            n = int(data.get("online_count", 0) or 0)
+            self.setText(f"● {n:,} online")
+            self._apply_style(n > 0)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0

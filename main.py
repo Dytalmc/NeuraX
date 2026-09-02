@@ -1,5 +1,6 @@
 import sys
 import os
+<<<<<<< HEAD
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -103,6 +104,11 @@ except Exception:
         pass
 
 
+=======
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 if sys.platform == "win32":
     try:
         import asyncio
@@ -133,6 +139,7 @@ if sys.platform == "win32":
 
 from neurax.app import main
 
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Unhandled exception hook
@@ -159,5 +166,7 @@ def _silent_excepthook(exc_type, exc_value, exc_tb):
 sys.excepthook = _silent_excepthook
 
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 if __name__ == "__main__":
     sys.exit(main())

@@ -6,13 +6,21 @@ from PyQt6.QtWidgets import (
     QApplication, QFrame, QLabel, QPushButton
 )
 from PyQt6.QtGui import QIcon, QColor
+<<<<<<< HEAD
 from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QPoint, QParallelAnimationGroup, QSize, QTimer, QObject, QRunnable, QThreadPool, pyqtSlot
+=======
+from PyQt6.QtCore import Qt, QPropertyAnimation, QEasingCurve, QPoint, QParallelAnimationGroup, QSize, QTimer
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from neurax.gui.theme import Theme, create_monochrome_icon
 from neurax.gui.widgets.nav_bar import NavBar
 from neurax.gui.widgets.animated_stacked_widget import AnimatedStackedWidget
 from neurax.gui.views.play_view import PlayView
 from neurax.gui.views.instances_view import InstancesView
+<<<<<<< HEAD
 from neurax.gui.views.versions_view import VersionsView  # noqa: F401  # kept for the background AI manifest radar
+=======
+from neurax.gui.views.versions_view import VersionsView
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from neurax.gui.views.servers_view import ServersView
 from neurax.gui.views.modrinth_view import ModrinthView
 from neurax.gui.views.skins_view import SkinsView
@@ -21,12 +29,17 @@ from neurax.gui.views.announcement_view import AnnouncementView
 from neurax.gui.views.settings_view import SettingsView
 from neurax.gui.views.new_server_view import NewServerView
 from neurax.gui.views.afk_view import AFKView
+<<<<<<< HEAD
+=======
+from neurax.gui.widgets.lock_screen import LockScreenOverlay
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 from neurax.gui.widgets.status_bar import StatusBarWidget
 from neurax.core.config import ConfigManager, get_icon_path
 from neurax.core.instances import InstanceManager
 from neurax.core.auth import AuthManager
 from neurax.core.logger import Logger
 from neurax.core.discord_rpc import DiscordManager
+<<<<<<< HEAD
 from neurax.core._silent_proc import detach_existing_console
 from neurax.core import network_monitor as _netmon
 from neurax.core.network_monitor import NetworkMonitor, State as _NetState
@@ -69,6 +82,16 @@ except Exception:
     CommunityClient = None  # type: ignore
     assemble_heartbeat_payload = None  # type: ignore
     get_or_create_device_uuid = None  # type: ignore
+=======
+
+try:
+    from users import CommunityView, CommunityClient, assemble_heartbeat_payload, get_users_config
+    _USERS_OK = True
+except Exception:
+    CommunityView = None  # type: ignore
+    CommunityClient = None  # type: ignore
+    assemble_heartbeat_payload = None  # type: ignore
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     get_users_config = None  # type: ignore
     _USERS_OK = False
 
@@ -80,6 +103,7 @@ class MainWindow(QMainWindow):
         self.auth_mgr = auth_mgr
         self.logger = Logger.get_instance()
 
+<<<<<<< HEAD
         # Belt-and-suspenders: re-detach from any inherited console
         # here too, in case the GUI is hosted in a process that was
         # spawned without main.py's FreeConsole() call (for example,
@@ -128,6 +152,11 @@ class MainWindow(QMainWindow):
         # exclusive to ``nx.py``. The launcher has no lock UI, no
         # lock overlay, and no on-disk lock polling.
 
+=======
+        # Initialize Discord RPC System
+        DiscordManager.get_instance().initialize(self.config)
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.setWindowTitle("NeuraX Launcher")
         icon_path = get_icon_path()
         if os.path.exists(icon_path):
@@ -172,6 +201,10 @@ class MainWindow(QMainWindow):
         self.nav_bar.set_theme_mode(mode)
         self.nav_bar.set_accent_color(accent)
         self.nav_bar.tab_changed.connect(self._on_tab_changed)
+<<<<<<< HEAD
+=======
+        self.nav_bar.community_chip_clicked.connect(self._open_community_view)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         main_layout.addWidget(self.nav_bar)
 
         # Right pane layout
@@ -220,6 +253,7 @@ class MainWindow(QMainWindow):
         self.stacked_widget = AnimatedStackedWidget()
         right_layout.addWidget(self.stacked_widget, stretch=1)
 
+<<<<<<< HEAD
         # ------------------------------------------------------------------
         # View construction
         # ------------------------------------------------------------------
@@ -271,6 +305,43 @@ class MainWindow(QMainWindow):
         # retired. Detailed stats are still available via the standalone
         # `nx.py` dashboard. The sidebar chip keeps the live online count
         # visible without a separate page.
+=======
+        # Instantiate Views
+        self.play_view = PlayView(self.config, self.instance_mgr, self.auth_mgr, self)
+        self.instances_view = InstancesView(self.config, self.instance_mgr, self)
+        self.versions_view = VersionsView(self.config, self.instance_mgr, self.auth_mgr, self)
+        self.servers_view = ServersView(self.config, self.instance_mgr, self.auth_mgr, self, self)
+        self.modrinth_view = ModrinthView(self.config, self.instance_mgr, self.auth_mgr, self, self)
+        self.skins_view = SkinsView(self.config, self.auth_mgr, self)
+        self.gallery_view = GalleryView(self.config, self.instance_mgr, self)
+        self.announcement_view = AnnouncementView(self.config, self, self)
+        self.settings_view = SettingsView(self.config, self.auth_mgr, self)
+        self.new_server_view = NewServerView(self.config, self.auth_mgr, self)
+        self.afk_view = AFKView(self.config, self)
+
+        # Community view (optional — depends on users.py + PyQt6 being present)
+        self.community_view = None
+        if _USERS_OK and CommunityView is not None:
+            try:
+                self.community_view = CommunityView(self)
+            except Exception:
+                self.community_view = None
+
+        # Add Views to Stacked Widget
+        self.stacked_widget.addWidget(self.play_view)          # index 0
+        self.stacked_widget.addWidget(self.instances_view)     # index 1
+        self.stacked_widget.addWidget(self.versions_view)      # index 2
+        self.stacked_widget.addWidget(self.servers_view)       # index 3
+        self.stacked_widget.addWidget(self.modrinth_view)      # index 4
+        self.stacked_widget.addWidget(self.skins_view)         # index 5
+        self.stacked_widget.addWidget(self.gallery_view)       # index 6
+        self.stacked_widget.addWidget(self.announcement_view)  # index 7
+        self.stacked_widget.addWidget(self.settings_view)      # index 8
+        self.stacked_widget.addWidget(self.new_server_view)    # index 9
+        self.stacked_widget.addWidget(self.afk_view)           # index 10
+        if self.community_view is not None:
+            self.stacked_widget.addWidget(self.community_view) # index 11
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         # Bottom Status/Progress Bar
         self.status_bar = StatusBarWidget(self.config)
@@ -281,6 +352,7 @@ class MainWindow(QMainWindow):
 
         self.config.config_changed.connect(self._on_config_changed)
 
+<<<<<<< HEAD
         # Lock feature removed: locking is now exclusive to ``nx.py``.
         # The launcher no longer constructs a lock overlay, no longer
         # polls the on-disk lock file, and no longer probes Supabase
@@ -796,6 +868,36 @@ class MainWindow(QMainWindow):
                     timer.stop()
                 except Exception:
                     pass
+=======
+        # Lock Screen Overlay
+        self.lock_screen = LockScreenOverlay(self.config, self)
+        self.lock_screen.setGeometry(self.rect())
+        self._check_lock_state()
+
+        # Check lock state timer to support telemetry lock toggle in real time
+        self.lock_timer = QTimer(self)
+        self.lock_timer.setInterval(1000)
+        self.lock_timer.timeout.connect(self._poll_lock_file)
+        self.lock_timer.start()
+
+        # Community heartbeat — fire every 5 minutes so the device stays
+        # "online" on the Supabase counters. The first beat is sent ~10s
+        # after the window is shown, so the loading screen has time to
+        # fade out and any UI work isn't blocked.
+        self._heartbeat_timer = None
+        if _USERS_OK and CommunityClient is not None and assemble_heartbeat_payload is not None:
+            self._heartbeat_timer = QTimer(self)
+            self._heartbeat_timer.setInterval(5 * 60 * 1000)
+            self._heartbeat_timer.timeout.connect(self._send_heartbeat)
+            self._heartbeat_timer.start()
+            QTimer.singleShot(10_000, self._send_heartbeat)
+
+    def enter_background_mode(self):
+        self.hide()
+        if hasattr(self, "announcement_view") and self.announcement_view:
+            if hasattr(self.announcement_view, "timer") and self.announcement_view.timer:
+                self.announcement_view.timer.stop()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
         gc.collect()
 
@@ -814,6 +916,7 @@ class MainWindow(QMainWindow):
         self.activateWindow()
         self.raise_()
 
+<<<<<<< HEAD
         announcement = self._view_cache.get("announcement_view") if hasattr(self, "_view_cache") else None
         if announcement is not None:
             timer = getattr(announcement, "timer", None)
@@ -828,6 +931,114 @@ class MainWindow(QMainWindow):
             accent = self.config.get("accent_color", "#00F0FF")
             mode = self.config.get("theme_mode", "dark")
 
+=======
+        if hasattr(self, "announcement_view") and self.announcement_view:
+            if hasattr(self.announcement_view, "timer") and self.announcement_view.timer:
+                self.announcement_view.timer.start()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if hasattr(self, "lock_screen"):
+            self.lock_screen.setGeometry(self.rect())
+        if not self.isMaximized() and not self.isMinimized():
+            self.config.set("window_width", self.width())
+            self.config.set("window_height", self.height())
+
+    def closeEvent(self, event):
+        # Mark our device as offline before tearing down — best effort,
+        # never block the close on a network failure.
+        try:
+            self._mark_offline()
+        except Exception:
+            pass
+        DiscordManager.get_instance().close()
+        super().closeEvent(event)
+
+    def _send_heartbeat(self):
+        """Send one heartbeat + refresh the chip. Safe to call when offline."""
+        if not _USERS_OK or CommunityClient is None or assemble_heartbeat_payload is None:
+            return
+        cfg = get_users_config() if get_users_config is not None else {}
+        if cfg.get("offline_mode"):
+            return
+        client = CommunityClient(cfg.get("supabase_url", ""), cfg.get("supabase_anon_key", ""))
+        if not client.is_configured():
+            return
+        try:
+            payload = assemble_heartbeat_payload()
+            client.send_heartbeat(payload)
+        except Exception:
+            pass
+        # Refresh the chip + community view counters too.
+        try:
+            if self.nav_bar is not None and hasattr(self.nav_bar, "refresh_community_chip"):
+                self.nav_bar.refresh_community_chip()
+        except Exception:
+            pass
+        try:
+            if self.community_view is not None and hasattr(self.community_view, "_on_refresh_clicked"):
+                self.community_view._on_refresh_clicked()
+        except Exception:
+            pass
+
+    def _mark_offline(self):
+        if not _USERS_OK or CommunityClient is None or assemble_heartbeat_payload is None:
+            return
+        cfg = get_users_config() if get_users_config is not None else {}
+        client = CommunityClient(cfg.get("supabase_url", ""), cfg.get("supabase_anon_key", ""))
+        if not client.is_configured():
+            return
+        try:
+            payload = assemble_heartbeat_payload()
+            client.set_offline(payload.get("device_id", ""))
+        except Exception:
+            pass
+
+    def _open_community_view(self):
+        """Switch the stacked widget to the Community view (index 11)."""
+        if self.community_view is None:
+            return
+        target = self.stacked_widget.indexOf(self.community_view)
+        if target < 0:
+            return
+        # Re-use the same slide animation as the regular tab clicks.
+        self.stacked_widget.slide_to_index(target)
+        # Kick off a refresh as soon as the view is shown.
+        try:
+            if hasattr(self.community_view, "_on_refresh_clicked"):
+                self.community_view._on_refresh_clicked()
+        except Exception:
+            pass
+
+    def _toggle_nav_bar(self):
+        self.nav_bar.setVisible(not self.nav_bar.isVisible())
+
+    def _on_tab_changed(self, index: int):
+        self.stacked_widget.slide_to_index(index)
+        self.status_bar.setVisible(index == 0)
+        DiscordManager.get_instance().on_tab_changed(index)
+
+        if index == 7:
+            self.announcement_view.mark_as_read()
+        if index == 10:
+            self.afk_view.reset_timer()
+        if index == 11 and self.community_view is not None and hasattr(self.community_view, "_on_refresh_clicked"):
+            try:
+                self.community_view._on_refresh_clicked()
+            except Exception:
+                pass
+
+    def _toggle_console(self):
+        self.play_view.toggle_console()
+
+    def _on_config_changed(self, key: str, value: object):
+        if key == "launcher_locked":
+            self._check_lock_state()
+        elif key in ("accent_color", "theme_mode"):
+            accent = self.config.get("accent_color", "#00F0FF")
+            mode = self.config.get("theme_mode", "dark")
+            
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             qss = Theme.get_stylesheet(accent, mode)
             self.setStyleSheet(qss)
             app = QApplication.instance()
@@ -840,6 +1051,7 @@ class MainWindow(QMainWindow):
             self.toggle_nav_btn.setIcon(create_monochrome_icon("hamburger", Theme.get_icon_color(mode), QColor(accent)))
             self.bug_btn.setIcon(create_monochrome_icon("bug", Theme.get_icon_color(mode), QColor(accent)))
 
+<<<<<<< HEAD
     def _on_network_state_changed(self, state: object, detail: str) -> None:
         """React to network monitor transitions.
 
@@ -958,3 +1170,27 @@ class _TelemetryJob(QRunnable):
             }
         except Exception as e:
             return {**empty, "error": f"{type(e).__name__}: {e}"}
+=======
+    def _check_lock_state(self):
+        locked = self.config.get("launcher_locked", False)
+        if locked:
+            self.lock_screen.show_locked()
+        else: 
+            self.lock_screen.hide_unlocked()
+
+    def _poll_lock_file(self):
+        try:
+            cfg_path = self.config.config_path
+            if cfg_path.exists():
+                mtime = os.path.getmtime(cfg_path)
+                if not hasattr(self, "_last_config_mtime") or mtime > getattr(self, "_last_config_mtime", 0):
+                    self._last_config_mtime = mtime
+                    self.config.load()
+                    self._check_lock_state()
+        except Exception:
+            pass
+
+    def quick_join(self, host: str, port: int):
+        self.nav_bar._on_btn_clicked(0)
+        self.play_view.launch_game(host, port)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0

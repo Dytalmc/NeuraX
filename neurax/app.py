@@ -42,6 +42,7 @@ from neurax.core.versions import VersionManager
 from neurax.gui.theme import ButtonHoverFilter, Theme
 from neurax.gui.main_window import MainWindow
 
+<<<<<<< HEAD
 
 # ---------------------------------------------------------------------------
 # Silent Qt message handler
@@ -82,6 +83,12 @@ try:
 except ImportError:
     update_users_file = None
     bootstrap_users_config = None
+=======
+try:
+    from users import update_users_file
+except ImportError:
+    update_users_file = None
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 class LoadingScreen(QWidget):
     def __init__(self, config: ConfigManager = None):
@@ -155,16 +162,20 @@ class LoadingScreen(QWidget):
         self.timer.timeout.connect(self.update_progress)
         self.timer.start(10)
         self.step = 0
+<<<<<<< HEAD
         # Flag flipped by ``_on_bootstrap_finished`` once the background
         # bootstrap thread completes. Until then ``update_progress``
         # holds the bar at 100% so the splash never out-lives the work.
         self._bootstrap_done = False
         self._bootstrap_thread = None
         self._auth_bootstrap = None
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def update_progress(self):
         self.step += 1
         self.progress_bar.setValue(self.step)
+<<<<<<< HEAD
         if self.step == 1:
             # Kick off the slow work on a background thread immediately
             # so the GUI thread never blocks on a network round-trip or
@@ -221,6 +232,25 @@ class LoadingScreen(QWidget):
         self.step = 100
         self.update_progress()
 
+=======
+        if self.step == 20:
+            self.status_lbl.setText("Scanning Java installations...")
+        elif self.step == 40:
+            self.status_lbl.setText("Fetching device and instance telemetry...")
+            if update_users_file:
+                try:
+                    update_users_file()
+                except Exception:
+                    pass
+        elif self.step == 50:
+            self.status_lbl.setText("Verifying database index...")
+        elif self.step == 80:
+            self.status_lbl.setText("Launching NeuraX dashboard...")
+        elif self.step >= 100:
+            self.timer.stop()
+            self.launch_main_window()
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def launch_main_window(self):
         config = self.config
         instance_mgr = InstanceManager(config.neurax_dir)
@@ -245,6 +275,7 @@ class LoadingScreen(QWidget):
 def main():
     logger = Logger.get_instance()
     logger.info("Starting NeuraX Launcher loading screen...")
+<<<<<<< HEAD
     _install_qt_message_handler()
     # Mirror Supabase credentials from the workspace-level nx_config.json
     # into the runtime users_config.json so the community chip and the
@@ -255,6 +286,8 @@ def main():
             bootstrap_users_config()
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     if update_users_file:
         try:
             update_users_file()

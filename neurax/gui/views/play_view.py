@@ -62,15 +62,19 @@ class HoverPlayButton(QPushButton):
         bottom_color = base_color.darker(int(140 - 25 * hover_val)).name()
         border_color = QColor(r, g, b).lighter(int(105 + 35 * hover_val)).name()
 
+<<<<<<< HEAD
         # Arial Black is requested — falls back to Impact then sans-serif
         # black-weight families if the platform lacks Arial Black.
         # ALL CAPS, bold, NOT italic, tight letter-spacing.
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.setStyleSheet(f"""
             QPushButton#PlayButton {{
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 {top_color}, stop:1 {bottom_color});
                 border: 2px solid {border_color};
                 border-radius: 12px;
                 color: #FFFFFF;
+<<<<<<< HEAD
                 font-family: 'Arial Black', 'Helvetica Black', 'Impact', 'Segoe UI Black', sans-serif;
                 font-size: 26px;
                 font-weight: 900;
@@ -78,6 +82,13 @@ class HoverPlayButton(QPushButton):
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 padding: 0 4px;
+=======
+                font-family: 'Segoe UI Black', 'Segoe UI', 'Inter', 'Arial Black', sans-serif;
+                font-size: 24px;
+                font-weight: 900;
+                font-style: italic;
+                letter-spacing: 4px;
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             }}
             QPushButton#PlayButton:pressed {{
                 background: {base_color.darker(160).name()};
@@ -466,6 +477,7 @@ class PlayView(QWidget):
         self.launch_worker.game_started.connect(self._on_game_started)
         self.launch_worker.game_exited.connect(self._on_game_exited)
         self.launch_worker.error_occurred.connect(self._on_launch_error)
+<<<<<<< HEAD
         # Per-file download / install log lines — show what file is
         # being downloaded right now inside the in-launcher log panel
         # (the green console drawer), like a real Minecraft launcher.
@@ -473,6 +485,8 @@ class PlayView(QWidget):
             self.launch_worker.log_message.connect(self._append_log)
         except Exception:
             pass
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.launch_worker.start()
 
     def _on_launch_progress(self, percent: int, status_text: str, speed_text: str = ""):

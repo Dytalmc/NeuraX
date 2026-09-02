@@ -1,5 +1,8 @@
 import json
+<<<<<<< HEAD
 import logging
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 import requests
 import time
 import re
@@ -29,6 +32,7 @@ def fetch_latest_loader_versions() -> Dict[str, str]:
         "Paper": "Latest",
         "Purpur": "Latest"
     }
+<<<<<<< HEAD
 
     # Try the disk-backed cache first so a slow or missing internet
     # connection still surfaces the last known loader versions. This
@@ -60,6 +64,9 @@ def fetch_latest_loader_versions() -> Dict[str, str]:
         except Exception:
             pass
 
+=======
+    
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     # 1. Fabric
     try:
         r = requests.get("https://meta.fabricmc.net/v2/versions/loader", headers=HEADERS, timeout=4)
@@ -124,7 +131,10 @@ def fetch_latest_loader_versions() -> Dict[str, str]:
     except Exception:
         pass
 
+<<<<<<< HEAD
     _save()
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     return loaders
 
 class VersionMonitorThread(QThread):
@@ -252,7 +262,11 @@ class VersionManager(QObject):
             self._cached_manifest = data
             return data
         except Exception as e:
+<<<<<<< HEAD
             logging.getLogger("NeuraX").warning(f"[Versions] Network fetch failed ({e}). Using cached fallback.")
+=======
+            print(f"[Versions] Warning: Network fetch failed ({e}). Using cached fallback.")
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             if self.manifest_file.exists():
                 try:
                     with open(self.manifest_file, "r", encoding="utf-8") as f:

@@ -40,6 +40,10 @@ class NavButton(QPushButton):
 class NavBar(QFrame):
     """Left Navigation Sidebar with vector QIcon tab indicators and animated glowing active indicator bar."""
     tab_changed = pyqtSignal(int)
+<<<<<<< HEAD
+=======
+    community_chip_clicked = pyqtSignal()
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -84,12 +88,20 @@ class NavBar(QFrame):
         self.indicator.setStyleSheet(f"background-color: {self.accent_color}; border-radius: 2px;")
         self.indicator.hide()
 
+<<<<<<< HEAD
         # Tabs configuration — Community tab removed; only the sidebar chip
         # remains for the public online counter. Detailed community stats are
         # reachable via the standalone `nx.py` dashboard.
         self.tabs_config = [
             ("Play", "play"),
             ("Instances", "instances"),
+=======
+        # Tabs configuration
+        self.tabs_config = [
+            ("Play", "play"),
+            ("Instances", "instances"),
+            ("Versions", "versions"),
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
             ("Servers", "servers"),
             ("Modrinth", "modrinth"),
             ("Skins", "skins"),
@@ -109,13 +121,22 @@ class NavBar(QFrame):
         self.layout.addStretch()
 
         # Community chip — tiny "● N online" badge anchored at the bottom of
+<<<<<<< HEAD
         # the sidebar. The chip keeps auto-refreshing every 5 minutes so the
         # live counter is always visible, but the in-launcher Community view
         # has been removed (the standalone `nx.py` dashboard replaces it).
+=======
+        # the sidebar. Click emits community_chip_clicked(index) so the main
+        # window can switch to the Community view.
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         self.community_chip = None
         if _CHIP_OK and _CommunityChip is not None:
             try:
                 self.community_chip = _CommunityChip(self)
+<<<<<<< HEAD
+=======
+                self.community_chip.clicked.connect(self._on_community_chip_clicked)
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
                 self.layout.addWidget(self.community_chip)
             except Exception:
                 self.community_chip = None
@@ -159,6 +180,18 @@ class NavBar(QFrame):
         self.set_active_tab(index)
         self.tab_changed.emit(index)
 
+<<<<<<< HEAD
+=======
+    def _on_community_chip_clicked(self):
+        """User clicked the '● N online' chip at the bottom of the sidebar."""
+        # Bump the indicator onto the last real tab (AFK Zone) so the user
+        # sees *some* nav feedback. The actual view switch is owned by the
+        # main window, which listens to community_chip_clicked.
+        if self.buttons:
+            self.set_active_tab(len(self.buttons) - 1)
+        self.community_chip_clicked.emit()
+
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def set_active_tab(self, index: int):
         if index < 0 or index >= len(self.buttons):
             return

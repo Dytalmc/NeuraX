@@ -1,5 +1,9 @@
 from PyQt6.QtWidgets import QStackedWidget
+<<<<<<< HEAD
 from PyQt6.QtCore import QPropertyAnimation, QEasingCurve, QPoint, QParallelAnimationGroup, Qt, QTimer
+=======
+from PyQt6.QtCore import QPropertyAnimation, QEasingCurve, QPoint, QParallelAnimationGroup, Qt
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
 class AnimatedStackedWidget(QStackedWidget):
     """StackedWidget with GPU-accelerated ultra-smooth page sliding transitions."""
@@ -9,6 +13,7 @@ class AnimatedStackedWidget(QStackedWidget):
         self._anim_group = None
         self._is_animating = False
         self._target_index = 0
+<<<<<<< HEAD
         # Pending swap request: when the caller asks us to reveal a tab
         # whose slot is still a placeholder, we keep the current view
         # visible and wait for ``set_lazy_widget`` to fill the slot. The
@@ -17,6 +22,8 @@ class AnimatedStackedWidget(QStackedWidget):
         # ``MainWindow._on_tab_changed``.
         self._pending_slide_index = None
         self._pending_slide_duration = 250
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
 
     def _reset_widgets(self, active_index: int):
         if self._anim_group and self._anim_group.state() == QParallelAnimationGroup.State.Running:
@@ -33,6 +40,7 @@ class AnimatedStackedWidget(QStackedWidget):
                 else:
                     w.hide()
 
+<<<<<<< HEAD
     def _is_placeholder(self, index: int) -> bool:
         if index < 0 or index >= self.count():
             return False
@@ -55,6 +63,11 @@ class AnimatedStackedWidget(QStackedWidget):
 
         self._pending_slide_index = None
 
+=======
+    def slide_to_index(self, index: int, duration: int = 250):
+        if index < 0 or index >= self.count():
+            return
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
         if index == self.currentIndex() and not self._is_animating:
             return
 
@@ -109,6 +122,7 @@ class AnimatedStackedWidget(QStackedWidget):
         self._anim_group.finished.connect(on_anim_finished)
         self._anim_group.start()
 
+<<<<<<< HEAD
     def set_lazy_widget(self, index: int, real_widget) -> None:
         """Atomically replace a placeholder at ``index`` with the real
         widget and run the pending slide animation. Called from
@@ -150,6 +164,8 @@ class AnimatedStackedWidget(QStackedWidget):
         if was_current:
             self.setCurrentIndex(index)
 
+=======
+>>>>>>> 58ef251b48a95b0e95d454002d3ac1e332f91ab0
     def resizeEvent(self, event):
         super().resizeEvent(event)
         if not self._is_animating:
